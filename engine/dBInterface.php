@@ -5,6 +5,8 @@
 //base queries
 define('SelectPatient_BasicQuery', 'SELECT * from Patients WHERE 1');
 define('SelectCompany_BasicQuery', 'SELECT * from Companies WHERE 1');
+define('InsertPatient_BasicQuery', 'INSERT INTO Patients');
+// TODO: define base queries for the other operations
 
 
 //1. GLOBAL VARS
@@ -16,6 +18,9 @@ $query = "NONE"; //working
 
 
 //2. FUNCT DEF
+// TODO: create more functions for other operations 
+// TODO: add more actionDB_Param for other operations
+//
 
 //function to read generic parameters
 //capture URL params $ActionDB_Param and $UserID_Param
@@ -33,7 +38,9 @@ function ReadGenericParameters(){
 		else if($ActionDB_Param=="SelectCompany"){
 			ReadCompanyParams(); //Creating Company Select Query String
 		}
-		
+		else if($ActionDB_Param=="InsertPatient"){
+			InsertPatientParams(); //Creating Patient INSERT INTO Query String
+		}		
 	}
 
 	if (isset($_GET['UserIDToken'])) {
@@ -144,6 +151,74 @@ function ReadPatientParams() {
 	}		
 
 }
+//function to insert params related to patient:
+function InsertPatientParams() {   //define('InsertPatient_BasicQuery', 'INSERT INTO');
+		
+	global $query;
+	$query = InsertPatient_BasicQuery;
+	$ColumnList = " (PatientID,Forename,FirstSurname,SecondSurname,Email,CompanyID)";
+	$query .= $ColumnList;
+	$ValuesList = " VALUES (";
+
+	if (isset($_GET['PatientIDToken'])) {
+		$PatientID_Param=$_GET['PatientIDToken'];
+		
+		if($PatientID_Param!="NONE"){
+			$ValuesList .= "'$PatientID_Param',";				
+		}
+	}
+
+	if (isset($_GET['ForenameToken'])) {
+		$Forename_Param=$_GET['ForenameToken'];
+
+		if($Forename_Param!="NONE"){
+			$ValuesList .= "'$Forename_Param',";				
+		}
+		
+	}	
+
+	if (isset($_GET['FirstSurnameToken'])) {
+		$FirstSurname_Param=$_GET['FirstSurnameToken'];
+		
+		if($FirstSurname_Param!="NONE"){
+			$ValuesList .= "'$FirstSurname_Param',";				
+		}
+		
+	}	
+
+	if (isset($_GET['SecondSurnameToken'])) {
+		$SecondSurname_Param=$_GET['SecondSurnameToken'];
+		
+		if($SecondSurname_Param!="NONE"){
+			$ValuesList .= "'$SecondSurname_Param',";				
+		}	
+		
+	}
+
+	if (isset($_GET['EmailToken'])) {
+		$Email_Param=$_GET['EmailToken'];
+		
+		if($Email_Param!="NONE"){
+			$ValuesList .= "'$Email_Param',";				
+		}		
+		 
+		
+	}	
+
+	
+	if (isset($_GET['CompanyIDToken'])) {
+		$Company_Param=$_GET['CompanyIDToken'];
+		
+		if($Company_Param!="NONE"){
+			$ValuesList .= "'$Company_Param')";				
+		}	
+		
+	}
+	$query .= $ValuesList;
+
+
+}
+// TODO: add other function definitions for the sql operations. Starting with single insert
 //eof
 
 function Main(){
@@ -151,13 +226,14 @@ function Main(){
 	global $query;
 	
 	ReadGenericParameters();
-	//ReadCompanyParams();	
-	//ReadPatientParams();
 	
-	$connect = mysqli_connect("mysql.hostinger.es","u910477891_ramvq","joliewatt0123","u910477891_bicoy");
+	
+	
+	$connect = mysqli_connect("mysql.hostinger.es","u884088163_erix","L4rd_erix","u884088163_irixs");
 	$result = mysqli_query($connect,$query);
 	
 	$data = array();
+	print $query . "\n";
 
 	while ($row = mysqli_fetch_array($result)) {
 	  $data[] = $row;
