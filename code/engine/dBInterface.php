@@ -6,6 +6,7 @@
 define('SelectPatient_BasicQuery', 'SELECT * from Patients WHERE 1');
 define('SelectCompany_BasicQuery', 'SELECT * from Companies WHERE 1');
 define('InsertPatient_BasicQuery', 'INSERT INTO Patients');
+define('DeletePatient_BasicQuery', 'DELETE FROM Patients WHERE 1');
 // TODO: define base queries for the other operations
 
 
@@ -40,6 +41,9 @@ function ReadGenericParameters(){
 		}
 		else if($ActionDB_Param=="InsertPatient"){
 			InsertPatientParams(); //Creating Patient INSERT INTO Query String
+		}
+		else if($ActionDB_Param=="DeletePatient"){
+			DeletePatientParams(); //Creating Patient DELETE INTO Query String
 		}		
 	}
 
@@ -151,6 +155,23 @@ function ReadPatientParams() {
 	}		
 
 }
+
+//function to read params related to patient:
+function DeletePatientParams() {
+		
+	global $query;
+	$query = DeletePatient_BasicQuery;
+
+	if (isset($_GET['PatientIDToken'])) {
+		$PatientID_Param=$_GET['PatientIDToken'];
+		
+		if($PatientID_Param!="NONE"){
+			$query .= " AND PatientID LIKE $PatientID_Param";				
+		}
+	}
+}
+
+
 //function to insert params related to patient:
 function InsertPatientParams() {   //define('InsertPatient_BasicQuery', 'INSERT INTO');
 		
