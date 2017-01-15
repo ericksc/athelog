@@ -7,6 +7,7 @@ define('SelectPatient_BasicQuery', 'SELECT * from Patients WHERE 1');
 define('SelectCompany_BasicQuery', 'SELECT * from Companies WHERE 1');
 define('InsertPatient_BasicQuery', 'INSERT INTO Patients');
 define('DeletePatient_BasicQuery', 'DELETE FROM Patients WHERE 1');
+define('DeleteCompany_BasicQuery', 'DELETE FROM Companies WHERE 1');
 // TODO: define base queries for the other operations
 
 
@@ -44,9 +45,14 @@ function ReadGenericParameters(){
 		}
 		else if($ActionDB_Param=="DeletePatient"){
 			DeletePatientParams(); //Creating Patient DELETE INTO Query String
-		}		
+		}
+		else if($ActionDB_Param=="DeleteCompany"){
+			DeleteCompanyParams(); //Creating Patient DELETE INTO Query String
+		}			
 	}
 
+	
+	
 	if (isset($_GET['UserIDToken'])) {
 		$UserID_Param=$_GET['UserIDToken'];
 	}
@@ -156,7 +162,7 @@ function ReadPatientParams() {
 
 }
 
-//function to read params related to patient:
+//function to delete patient:
 function DeletePatientParams() {
 		
 	global $query;
@@ -171,7 +177,20 @@ function DeletePatientParams() {
 	}
 }
 
+//function to delete company:
+function DeleteCompanyParams() {
+		
+	global $query;
+	$query = DeleteCompany_BasicQuery;
 
+	if (isset($_GET['CompanyIDToken'])) {
+		$CompanyID_Param=$_GET['CompanyIDToken'];
+		
+		if($CompanyID_Param!="NONE"){
+			$query .= " AND CompanyID LIKE $CompanyID_Param";				
+		}
+	}
+}
 //function to insert params related to patient:
 function InsertPatientParams() {   //define('InsertPatient_BasicQuery', 'INSERT INTO');
 		
