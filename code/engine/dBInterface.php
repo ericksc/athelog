@@ -6,6 +6,7 @@
 define('SelectPatient_BasicQuery', 'SELECT * from Patients WHERE 1');
 define('SelectCompany_BasicQuery', 'SELECT * from Companies WHERE 1');
 define('InsertPatient_BasicQuery', 'INSERT INTO Patients');
+define('InsertCompany_BasicQuery', 'INSERT INTO Companies');
 define('DeletePatient_BasicQuery', 'DELETE FROM Patients WHERE 1');
 define('DeleteCompany_BasicQuery', 'DELETE FROM Companies WHERE 1');
 // TODO: define base queries for the other operations
@@ -48,6 +49,9 @@ function ReadGenericParameters(){
 		}
 		else if($ActionDB_Param=="DeleteCompany"){
 			DeleteCompanyParams(); //Creating Patient DELETE INTO Query String
+		}
+                else if($ActionDB_Param=="InsertCompany"){
+			InsertCompanyParams(); //Creating Patient DELETE INTO Query String
 		}			
 	}
 
@@ -191,6 +195,7 @@ function DeleteCompanyParams() {
 		}
 	}
 }
+
 //function to insert params related to patient:
 function InsertPatientParams() {   //define('InsertPatient_BasicQuery', 'INSERT INTO');
 		
@@ -258,6 +263,53 @@ function InsertPatientParams() {   //define('InsertPatient_BasicQuery', 'INSERT 
 
 
 }
+//function to insert params related to Company:
+function InsertCompanyParams() {   //define('InsertCompany_BasicQuery', 'INSERT INTO');
+		
+	global $query;
+	$query = InsertCompany_BasicQuery;
+	$ColumnList = " (CompanyID,Phone,Email,Address)";
+	$query .= $ColumnList;
+	$ValuesList = " VALUES (";
+
+	if (isset($_GET['CompanyIDToken'])) {
+		$CompanyID_Param=$_GET['CompanyIDToken'];
+		
+		if($CompanyID_Param!="NONE"){
+			$ValuesList .= "'$CompanyID_Param',";				
+		}
+	}
+
+	if (isset($_GET['PhoneToken'])) {
+		$Phone_Param=$_GET['PhoneToken'];
+
+		if($Phone_Param!="NONE"){
+			$ValuesList .= "'$Phone_Param',";				
+		}
+		
+	}	
+
+	if (isset($_GET['EmailToken'])) {
+		$Email_Param=$_GET['EmailToken'];
+		
+		if($Email_Param!="NONE"){
+			$ValuesList .= "'$Email_Param',";				
+		}
+		
+	}	
+
+	if (isset($_GET['AddressToken'])) {
+		$Address_Param=$_GET['AddressToken'];
+		
+		if($Address_Param!="NONE"){
+			$ValuesList .= "'$Address_Param')";				
+		}	
+		
+	}
+	$query .= $ValuesList;
+
+
+}
 // TODO: add other function definitions for the sql operations. Starting with single insert
 //eof
 
@@ -291,6 +343,7 @@ function Main(){
 
 //--3. Executing script
 Main();
+
 
 
 ?>
