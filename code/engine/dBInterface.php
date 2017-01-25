@@ -55,7 +55,7 @@ function ReadGenericParameters(){
 		}			
 	}
 
-	
+
 	
 	if (isset($_GET['UserIDToken'])) {
 		$UserID_Param=$_GET['UserIDToken'];
@@ -325,7 +325,7 @@ function Main(){
 	$result = mysqli_query($connect,$query);
 	
 	$data = array();
-	print $query . "\n";
+	//print $query . "\n";
 
 	while ($row = mysqli_fetch_array($result)) {
 	  $data[] = $row;
