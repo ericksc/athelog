@@ -9,12 +9,14 @@ define('InsertPatient_BasicQuery', 'INSERT INTO Patients');
 define('InsertCompany_BasicQuery', 'INSERT INTO Companies');
 define('DeletePatient_BasicQuery', 'DELETE FROM Patients WHERE 1');
 define('DeleteCompany_BasicQuery', 'DELETE FROM Companies WHERE 1');
+define('UpdatePatient_BasicQuery', 'UPDATE `Patients` SET ');
 // TODO: define base queries for the other operations
 
 
 //1. GLOBAL VARS
 $ActionDB_Param="NONE";
 $UserID_Param="NONE";
+$DebugFlag="TRUE";
 
 //$query = "SELECT * from Patients WHERE 1"; //working
 $query = "NONE"; //working
@@ -29,7 +31,7 @@ $query = "NONE"; //working
 //capture URL params $ActionDB_Param and $UserID_Param
 function ReadGenericParameters(){
 	
-	global $ActionDB_Param, $UserID_Param;
+	global $ActionDB_Param, $UserID_Param, $DebugFlag;
 	
 	
 	if (isset($_GET['ActionDBToken'])) {
@@ -51,14 +53,14 @@ function ReadGenericParameters(){
 			DeleteCompanyParams(); //Creating Patient DELETE INTO Query String
 		}
                 else if($ActionDB_Param=="InsertCompany"){
-			InsertCompanyParams(); //Creating Patient DELETE INTO Query String
-		}			
+			InsertCompanyParams(); //Creating Patient INSERT INTO Query String
+		}
+                else if($ActionDB_Param=="UpdatePatient"){
+			UpdatePatientParams(); //Updating Patient UPDATE INTO Query String
+		}                
 	}
-
-
-	
 	if (isset($_GET['UserIDToken'])) {
-		$UserID_Param=$_GET['UserIDToken'];
+            $UserID_Param=$_GET['UserIDToken'];
 	}
 
 	if($DebugFlag=="TRUE"){	
@@ -312,7 +314,128 @@ function InsertCompanyParams() {   //define('InsertCompany_BasicQuery', 'INSERT 
 }
 // TODO: add other function definitions for the sql operations. Starting with single insert
 //eof
+//
+//function to Update params related to patient:
+function UpdatePatientParams() {   //define('UpdatePatient_BasicQuery', 'UPDATE');
+		
+	global $query;
+	$query = UpdatePatient_BasicQuery;
 
+	if (isset($_GET['ForenameToken'])) {
+		$Forename_Param=$_GET['ForenameToken'];
+		
+		if($Forename_Param!="NONE"){
+			$query .= "`Forename` = '$Forename_Param', ";				
+		}
+	}
+
+	if (isset($_GET['FirstSurnameToken'])) {
+		$FirstSurname_Param=$_GET['FirstSurnameToken'];
+
+		if($FirstSurname_Param!="NONE"){
+			$query .= "`FirstSurname` = '$FirstSurname_Param', ";			
+		}
+		
+	}	
+
+	if (isset($_GET['SecondSurnameToken'])) {
+		$SecondSurname_Param=$_GET['SecondSurnameToken'];
+
+		if($SecondSurname_Param!="NONE"){
+			$query .= "`SecondSurname` = '$SecondSurname_Param', ";			
+		}
+		
+	}
+
+	if (isset($_GET['EmailToken'])) {
+		$Email_Param=$_GET['EmailToken'];
+
+		if($Email_Param!="NONE"){
+			$query .= "`Email` = '$Email_Param', ";			
+		}
+		
+	}	
+
+	if (isset($_GET['PhoneToken'])) {
+		$Phone_Param=$_GET['PhoneToken'];
+
+		if($Phone_Param!="NONE"){
+			$query .= "`Phone` = '$Phone_Param', ";			
+		}
+		
+	}
+	
+	if (isset($_GET['BirthDateToken'])) {
+		$BirthDate_Param=$_GET['BirthDateToken'];
+
+		if($BirthDate_Param!="NONE"){
+			$query .= "`BirthDate` = '$BirthDate_Param', ";			
+		}
+		
+	}
+		
+	if (isset($_GET['GenderToken'])) {
+		$Gender_Param=$_GET['GenderToken'];
+
+		if($Gender_Param!="NONE"){
+			$query .= "`Gender` = '$Gender_Param', ";			
+		}
+		
+	}
+	
+	if (isset($_GET['AddressToken'])) {
+		$Address_Param=$_GET['AddressToken'];
+
+		if($Address_Param!="NONE"){
+			$query .= "`Address` = '$Address_Param', ";			
+		}
+		
+	}
+	
+	if (isset($_GET['DepartmentToken'])) {
+		$Department_Param=$_GET['DepartmentToken'];
+
+		if($Department_Param!="NONE"){
+			$query .= "`Department` = '$Department_Param', ";			
+		}
+		
+	}
+	
+	if (isset($_GET['SiteToken'])) {
+		$Site_Param=$_GET['SiteToken'];
+
+		if($Site_Param!="NONE"){
+			$query .= "`Site` = '$Site_Param' ";			
+		}
+		
+	}					
+
+	if (isset($_GET['PatientIDToken'])) {
+		$PatientID_Param=$_GET['PatientIDToken'];
+
+		if($PatientID_Param!="NONE"){
+			$query .= " WHERE `PatientID` = '$PatientID_Param'";			
+		}
+		
+	}	
+
+
+}
+
+//function to login user:
+function LoginUserParams() {
+		
+	global $query;
+	$query = DeletePatient_BasicQuery;
+
+	if (isset($_GET['PatientIDToken'])) {
+		$PatientID_Param=$_GET['PatientIDToken'];
+		
+		if($PatientID_Param!="NONE"){
+			$query .= " AND PatientID LIKE $PatientID_Param";				
+		}
+	}
+}
 function Main(){
 	
 	global $query;
@@ -320,12 +443,12 @@ function Main(){
 	ReadGenericParameters();
 	
 	
-	
+	// $connect = mysqli_connect("mysql.hostinger.es","u505969032_ramvq","joliewatt0123","u505969032_bicoy");
 	$connect = mysqli_connect("mysql.hostinger.es","u884088163_erix","L4rd_erix","u884088163_irixs");
 	$result = mysqli_query($connect,$query);
 	
 	$data = array();
-	//print $query . "\n";
+	echo $query . "\n";
 
 	while ($row = mysqli_fetch_array($result)) {
 	  $data[] = $row;
