@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to profile screen v52");
+		alert("(DEBUG)Welcome to profile screen v55");
 		
 		//globals to hide Patient/Company text
 		//FIXME:check if this is really required
@@ -503,7 +503,7 @@ var fetch = angular.module('fetch', []);
 		//returns the URL string to search company profile 
 		function CreateCompanySearchString(){
 			
-			alert("(DEBUG)CreateCompanyEditString()- starting");
+			alert("(DEBUG)CreateCompanySearchString()- starting");
 			var URL = "../engine/dBInterface.php?ActionDBToken=SelectCompany";
 
 			if(CompanyData.CompanyID2_FieldValue!=="NONE"){
@@ -533,10 +533,13 @@ var fetch = angular.module('fetch', []);
 			
 			alert("(DEBUG)CreateCompanyEditString()- starting");
 			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateCompany";
-
+			URL += "&CompanyIDToken="+URLParams.ID;
+			
+			/*	
 			if(CompanyData.CompanyID2_FieldValue!=="NONE"){
 				URL += "&CompanyIDToken="+CompanyData.CompanyID2_FieldValue;
 			}
+			*/
 
 			if(CompanyData.CompanyEmail_FieldValue!=="NONE"){
 				URL += "&EmailToken="+CompanyData.CompanyEmail_FieldValue;
@@ -545,10 +548,15 @@ var fetch = angular.module('fetch', []);
 			if(CompanyData.CompanyPhone_FieldValue!=="NONE"){
 				URL += "&PhoneToken="+CompanyData.CompanyPhone_FieldValue;
 			}	
-	
+			
+			
+			URL += "&AddressToken=Parque Industrial C. Blancos #1550";  //just for demo
+			//FIXME:for demo this is commented out	
+			/*
 			if(CompanyData.Address_FieldValue!=="NONE"){
 				URL += "&AddressToken="+CompanyData.Address_FieldValue;
 			}
+			*/
 			
 			alert("(DEBUG)CreateCompanyEditString()-ending.URL="+URL);
 			return URL;
@@ -616,7 +624,7 @@ var fetch = angular.module('fetch', []);
 					return false;			
 				}else{ 
 					//looking for forbidden chars
-					alert("(DEBUG)CheckInputField() - looking for forbidden chars");
+					//alert("(DEBUG)CheckInputField() - looking for forbidden chars");
 					for(i = 0; i < specialChars.length;i++){
 							if(temp.indexOf(specialChars[i]) > -1){
 								alert("(DEBUG)CheckInputField()-detecting invalid char="+specialChars[i]+".Returning FALSE");
@@ -638,22 +646,23 @@ var fetch = angular.module('fetch', []);
 			alert("(DEBUG)CheckPatientInputData() - starting"  );
 			
 			if(CheckInputField(PatientData.Forename_FieldValue,"text")==false){
-				alert("ERROR - Entrada invalida en Nombre");
+				//alert("ERROR - Entrada invalida en Nombre");
 				return false;
 			}else if(CheckInputField(PatientData.FirstSurname_FieldValue,"text")==false){
-				alert("ERROR - Entrada invalida en Primer Apellido");
+				//alert("ERROR - Entrada invalida en Primer Apellido");
 				return false;
 			}else if(CheckInputField(PatientData.SecondSurname_FieldValue,"text")==false){
-				alert("ERROR - Entrada invalida en Segundo Apellido");
+				//alert("ERROR - Entrada invalida en Segundo Apellido");
 				return false;
 			}else if(CheckInputField(PatientData.PatientEmail_FieldValue,"email")==false){
-				alert("ERROR - Entrada invalida en Email");
+				//alert("ERROR - Entrada invalida en Email");
 				return false;
-			}else if(CheckInputField(PatientData.PatientPhone_FieldValue,"phone")==false){
-				alert("ERROR - Entrada invalida en telefono");
+			}else if(1==10){
+			//	alert("ERROR - Entrada invalida en telefono");
+			//FIXME: script failing when checking the phone number	
 				return false;
 			}else{
-				alert("(DEBUG)CheckPatientInputData() - ending. Return TRUE"  );
+				//alert("(DEBUG)CheckPatientInputData() - ending. Return TRUE"  );
 				return true;				
 			}
 			
@@ -666,20 +675,20 @@ var fetch = angular.module('fetch', []);
 		//returns true if everything is valid, otherwise false
 		function CheckCompanyInputData(){	
 			
-			alert("(DEBUG)CheckPatientInputData() - starting"  );
+			//alert("(DEBUG)CheckPatientInputData() - starting"  );
 			
 			if(CheckInputField(CompanyData.CompanyID2_FieldValue,"text")==false){
-				alert("ERROR - Entrada invalida en ID Empresa");
+				//alert("ERROR - Entrada invalida en ID Empresa");
 				return false;
 			}else if(CheckInputField(CompanyData.CompanyEmail_FieldValue,"email")==false){
-				alert("ERROR - Entrada invalida en Nombre de Empresa");
+				//alert("ERROR - Entrada invalida en Nombre de Empresa");
 				return false;
 			}else if(1==10){
-				alert("ERROR - Entrada invalida en Telefono");
+				//alert("ERROR - Entrada invalida en Telefono");
 				//FIXME: the company phone check is causing the script to crash. No idea why. Patient phone do works.
 				return false;
 			}else{
-				alert("(DEBUG)CheckCompanyInputData() - ending. Return TRUE"  );
+				//alert("(DEBUG)CheckCompanyInputData() - ending. Return TRUE"  );
 				return true;				
 			}
 			
@@ -812,15 +821,18 @@ var fetch = angular.module('fetch', []);
 		$scope.DeletePatient = function(){
 			
 			alert("(DEBUG)DeletePatient() - starting");
-			CallPHPServerFile(CreatePatientDeleteStringByID);
+			CallPHPServerFile(CreatePatientDeleteStringByID());
 			alert("(DEBUG)DeletePatient() - executed");
 		}
 		//eof
 		
+		
+		//function to delete company. Intended to be called from HTML
+		//no return
 		$scope.DeleteCompany = function(){
-			
-			CallPHPServerFile(CreateCompanyDeleteStringByID);
-
+			alert("(DEBUG)DeleteCompany() - starting");
+			CallPHPServerFile(CreateCompanyDeleteStringByID());
+			alert("(DEBUG)DeleteCompany() - executed");
 		}
 		//eof
 		
@@ -875,7 +887,10 @@ var fetch = angular.module('fetch', []);
 		$scope.dg = function(){
 			alert("(DEBUG) Oh yeaaaahhh!(Patient)");
 			
-			CreatePatientDeleteStringByID();
+			ReadPatientFields();
+			CreatePatientInsertString();
+			//CreatePatientDeleteStringByID();
+			
 			
 			//CheckURLParameters();
 			//CallPHPServerFile(CreatePatientSearchStringByURL());
