@@ -11,7 +11,7 @@ define('DeletePatient_BasicQuery', 'DELETE FROM Patients WHERE 1');
 define('DeleteCompany_BasicQuery', 'DELETE FROM Companies WHERE 1');
 define('UpdatePatient_BasicQuery', 'UPDATE `Patients` SET ');
 define('UpdateCompany_BasicQuery', 'UPDATE `Companies` SET ');
-define('LoginUser_BasicQuery', 'SELECT `Users` ');
+define('LoginUser_BasicQuery', 'SELECT count(*) FROM `Users` WHERE 1 ');
 // TODO: define base queries for the other operations
 
 //1. GLOBAL VARS
@@ -61,7 +61,10 @@ function ReadGenericParameters(){
 		}
                 else if($ActionDB_Param=="UpdateCompany"){
 			UpdateCompanyParams(); //Updating Company UPDATE INTO Query String
-		}                  
+		}
+                else if($ActionDB_Param=="LoginUser"){
+                    LoginUserParams(); //Login Users SELECT COUNT(*) FROM `Users`
+		} 
 	}
 	if (isset($_GET['UserIDToken'])) {
             $UserID_Param=$_GET['UserIDToken'];
@@ -472,19 +475,26 @@ function UpdateCompanyParams() {   //define('UpdateCompany_BasicQuery', 'UPDATE'
 function LoginUserParams() {
 		
 	global $query;
-	$query = DeletePatient_BasicQuery;
+	$query = LoginUser_BasicQuery;
 
-	if (isset($_GET['PatientIDToken'])) {
-		$PatientID_Param=$_GET['PatientIDToken'];
+	if (isset($_GET['UserIDToken'])) {
+		$UserID_Param=$_GET['UserIDToken'];
 		
-		if($PatientID_Param!="NONE"){
-			$query .= " AND PatientID LIKE $PatientID_Param";				
+		if($UserID_Param!="NONE"){
+			$query .= " AND `UserID` = '$UserID_Param'";				
 		}
 	}
+        if (isset($_GET['HashCodeToken'])) {
+                $HashCode_Param=$_GET['HashCodeToken'];
+
+                if($HashCode_Param!="NONE"){
+                        $query .= " AND `HashCode` = '$HashCode_Param'";				
+                }
+}
 }
 function Main(){
 	
-	global $query;
+	global $query, $ActionDB_Param;
 	
        
 	ReadGenericParameters();	
@@ -494,7 +504,12 @@ function Main(){
 	$result = mysqli_query($connect,$query);
 	
 	$data = array();
-
+        if($ActionDB_Param=="LoginUser"){
+           if($result=='[{"0":"1","count(*)":"1"}]')
+               {
+                print "TRUE";
+               }
+	} 
 	while ($row = mysqli_fetch_array($result)) {
 	  $data[] = $row;
 	}
