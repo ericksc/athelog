@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to profile screen v55");
+		//alert("(DEBUG)Welcome to profile screen v55");
 		
 		//globals to hide Patient/Company text
 		//FIXME:check if this is really required
@@ -128,7 +128,7 @@ var fetch = angular.module('fetch', []);
 
 			//returns TRUE just if both params are different to Null, NONE, undefined or empty
 			result = Boolean(var1_valid*var2_valid);
-			alert("(DEBUG)CheckURLParameters(). ID_Param="+URLParams.ID+",Action_Param="+URLParams.Action+"-Returning "+result);
+			//alert("(DEBUG)CheckURLParameters(). ID_Param="+URLParams.ID+",Action_Param="+URLParams.Action+"-Returning "+result);
 			return result;
 						
 			
@@ -169,7 +169,7 @@ var fetch = angular.module('fetch', []);
 		//no return
 		function ReadPatientFields() {			
 			
-			alert("(DEBUG)ReadPatientFields() - starting");
+			//alert("(DEBUG)ReadPatientFields() - starting");
 			
 			if (typeof $scope.PatientID_Input_Model !== 'undefined' && $scope.PatientID_Input_Model !== null && $scope.PatientID_Input_Model !== "") {
 				PatientData['PatientID_FieldValue'] = $scope.PatientID_Input_Model;
@@ -264,7 +264,7 @@ var fetch = angular.module('fetch', []);
 			$debug_string +="\nDepartment_FieldValue="+PatientData['Department_FieldValue'];
 			$debug_string +="\nSite_FieldValue="+PatientData['Site_FieldValue'];
 			
-			alert("(DEBUG)Function ReadPatientFields() executed. Results:"+$debug_string); //(DEBUG)
+			//alert("(DEBUG)Function ReadPatientFields() executed. Results:"+$debug_string); //(DEBUG)
 			
 		
 		}
@@ -274,7 +274,7 @@ var fetch = angular.module('fetch', []);
 		//2. read search HTML input fields	
 		function ReadCompanyFields () {
 				
-			alert("(DEBUG)ReadCompanyFields()- starting");	
+			//alert("(DEBUG)ReadCompanyFields()- starting");	
 			
 			if (typeof $scope.CompanyID2_Input_Model !== 'undefined' && $scope.CompanyID2_Input_Model !== null && $scope.CompanyID2_Input_Model !== "") {
 				CompanyData.CompanyID2_FieldValue = $scope.CompanyID2_Input_Model; 
@@ -304,7 +304,7 @@ var fetch = angular.module('fetch', []);
 			$debug_string +="\nCompanyEmail_FieldValue="+CompanyData.CompanyEmail_FieldValue;
 			$debug_string +="\nCompanyPhone_FieldValue="+CompanyData.CompanyPhone_FieldValue;
 			$debug_string +="\nCompanyAddress_FieldValue="+CompanyData.Address_FieldValue;
-			alert("(DEBUG)ReadCompanyFields()-data="+$debug_string);
+			//alert("(DEBUG)ReadCompanyFields()-data="+$debug_string);
 			
 		}	
 		//eof
@@ -364,7 +364,7 @@ var fetch = angular.module('fetch', []);
 				URL+="&AddressToken="+PatientData.PatientAddress_FieldValue;
 			}
 			
-			alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
+			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -376,7 +376,7 @@ var fetch = angular.module('fetch', []);
 			
 			var URL = "../engine/dBInterface.php?ActionDBToken=DeletePatient";
 			URL+="&PatientIDToken="+URLParams.ID;
-			alert("(DEBUG)CreatePatientDeleteStringByID() executed. Return URL="+URL);
+			//alert("(DEBUG)CreatePatientDeleteStringByID() executed. Return URL="+URL);
 			return URL;
 			
 		}
@@ -387,7 +387,7 @@ var fetch = angular.module('fetch', []);
 			
 			var URL = "../engine/dBInterface.php?ActionDBToken=DeleteCompany";
 			URL+="&CompanyIDToken="+URLParams.ID;
-			alert("(DEBUG)CreateCompanyDeleteStringByID() executed. Return URL="+URL);
+			//alert("(DEBUG)CreateCompanyDeleteStringByID() executed. Return URL="+URL);
 			return URL;			
 	
 		}
@@ -398,7 +398,7 @@ var fetch = angular.module('fetch', []);
 		//returns the URL
 		function CreatePatientInsertString(){
 			
-			alert("(DEBUG)CreatePatientInsertString()-starting");			
+			//alert("(DEBUG)CreatePatientInsertString()-starting");			
 			var URL = "../engine/dBInterface.php?";
 			URL += "ActionDBToken=InsertPatient";
 			URL += "&PatientIDToken="+PatientData.PatientID_FieldValue;
@@ -413,7 +413,7 @@ var fetch = angular.module('fetch', []);
 			URL += "&CompanyIDToken="+PatientData.CompanyID_FieldValue;
 			URL += "&SiteToken="+PatientData.Site_FieldValue;
 						
-			alert("(DEBUG)CreatePatientInsertString()-ending.URL="+URL);
+			//alert("(DEBUG)CreatePatientInsertString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -423,7 +423,7 @@ var fetch = angular.module('fetch', []);
 		//returns the URL
 		function CreateCompanyInsertString(){
 			
-			alert("(DEBUG)CreateCompanyInsertString()-starting");			
+			//alert("(DEBUG)CreateCompanyInsertString()-starting");			
 			var URL = "../engine/dBInterface.php?";
 			URL += "ActionDBToken=InsertCompany";
 			URL += "&CompanyIDToken="+CompanyData.CompanyID2_FieldValue;
@@ -431,7 +431,7 @@ var fetch = angular.module('fetch', []);
 			URL += "&PhoneToken="+CompanyData.CompanyPhone_FieldValue;
 			URL += "&AddressToken="+CompanyData.Address_FieldValue;
 						
-			alert("(DEBUG)CreateCompanyInsertString()-ending.URL="+URL);
+			//alert("(DEBUG)CreateCompanyInsertString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -494,7 +494,7 @@ var fetch = angular.module('fetch', []);
 				URL+="&AddressToken="+PatientData.PatientAddress_FieldValue;
 			}
 			
-			alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
+			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -503,7 +503,7 @@ var fetch = angular.module('fetch', []);
 		//returns the URL string to search company profile 
 		function CreateCompanySearchString(){
 			
-			alert("(DEBUG)CreateCompanySearchString()- starting");
+			//alert("(DEBUG)CreateCompanySearchString()- starting");
 			var URL = "../engine/dBInterface.php?ActionDBToken=SelectCompany";
 
 			if(CompanyData.CompanyID2_FieldValue!=="NONE"){
@@ -522,7 +522,7 @@ var fetch = angular.module('fetch', []);
 				URL += "&AddressToken="+CompanyData.Address_FieldValue;
 			}
 			
-			alert("(DEBUG)CreateCompanySearchString()-ending.URL="+URL);
+			//alert("(DEBUG)CreateCompanySearchString()-ending.URL="+URL);
 			return URL;
 		
 		}
@@ -531,7 +531,7 @@ var fetch = angular.module('fetch', []);
 		//returns the URL string to update company profile 
 		function CreateCompanyEditString(){
 			
-			alert("(DEBUG)CreateCompanyEditString()- starting");
+			//alert("(DEBUG)CreateCompanyEditString()- starting");
 			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateCompany";
 			URL += "&CompanyIDToken="+URLParams.ID;
 			
@@ -558,7 +558,7 @@ var fetch = angular.module('fetch', []);
 			}
 			*/
 			
-			alert("(DEBUG)CreateCompanyEditString()-ending.URL="+URL);
+			//alert("(DEBUG)CreateCompanyEditString()-ending.URL="+URL);
 			return URL;
 		
 		}
@@ -571,7 +571,7 @@ var fetch = angular.module('fetch', []);
  		//forbidden characters: <>@¡!#$%^&*()_+[]{}¿?:;|'\"\\,./~`¨-=ñáéúóíàèìòùäëïöüâêîôû
 		function CheckInputField(field_value,field_type){			
 		
-			alert("(DEBUG)CheckInputField() - executing on value="+field_value+", type="+field_type);
+			//alert("(DEBUG)CheckInputField() - executing on value="+field_value+", type="+field_type);
 			
 			var specialChars = "<>@¡!#$%¬^&*()_+[]{}¿?:;|'\"\\,./~`¨-=ñáéúóíàèìòùäëïöüâêîôû";//default
 			
@@ -585,7 +585,7 @@ var fetch = angular.module('fetch', []);
 			
 			//var temp = $scope[field_value]; 
 			var temp = field_value;
-			alert("(DEBUG)CheckInputField() - looking for forbidden words="+temp);
+			//alert("(DEBUG)CheckInputField() - looking for forbidden words="+temp);
 			
 
 				//looking for fobidden words
@@ -627,11 +627,11 @@ var fetch = angular.module('fetch', []);
 					//alert("(DEBUG)CheckInputField() - looking for forbidden chars");
 					for(i = 0; i < specialChars.length;i++){
 							if(temp.indexOf(specialChars[i]) > -1){
-								alert("(DEBUG)CheckInputField()-detecting invalid char="+specialChars[i]+".Returning FALSE");
+								//alert("(DEBUG)CheckInputField()-detecting invalid char="+specialChars[i]+".Returning FALSE");
 								return false;
 							}
 					}
-					alert("(DEBUG)CheckInputField()-executed. Returning TRUE");	
+					//alert("(DEBUG)CheckInputField()-executed. Returning TRUE");	
 					return true;
 				}
 
@@ -643,7 +643,7 @@ var fetch = angular.module('fetch', []);
 		//returns true if everything is valid, otherwise false
 		function CheckPatientInputData(){	
 			
-			alert("(DEBUG)CheckPatientInputData() - starting"  );
+			//alert("(DEBUG)CheckPatientInputData() - starting"  );
 			
 			if(CheckInputField(PatientData.Forename_FieldValue,"text")==false){
 				//alert("ERROR - Entrada invalida en Nombre");
@@ -658,7 +658,7 @@ var fetch = angular.module('fetch', []);
 				//alert("ERROR - Entrada invalida en Email");
 				return false;
 			}else if(1==10){
-			//	alert("ERROR - Entrada invalida en telefono");
+			//	//alert("ERROR - Entrada invalida en telefono");
 			//FIXME: script failing when checking the phone number	
 				return false;
 			}else{
@@ -699,13 +699,13 @@ var fetch = angular.module('fetch', []);
 		//returns true if everything is valid, otherwise false
 		function CheckCompanyInputData_mock(){	
 			
-			alert("(DEBUG)CheckPatientInputData() - starting"  );
+			//alert("(DEBUG)CheckPatientInputData() - starting"  );
 			
 			if(CheckInputField(CompanyData.CompanyPhone_FieldValue,"phone")==false){
-				alert("ERROR - Entrada invalida en Telefono");
+				//alert("ERROR - Entrada invalida en Telefono");
 				return false;
 			}else{
-				alert("(DEBUG)CheckCompanyInputData() - ending. Return TRUE"  );
+				//alert("(DEBUG)CheckCompanyInputData() - ending. Return TRUE"  );
 				return true;				
 			}
 			
@@ -720,7 +720,7 @@ var fetch = angular.module('fetch', []);
 			
 			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectCompany";
 			URLstring+="&CompanyID2Token="+URLParams.ID;
-			alert("(DEBUG)CreateCompanySearchStringbyID() - Company Search String="+URLstring);
+			//alert("(DEBUG)CreateCompanySearchStringbyID() - Company Search String="+URLstring);
 			return URLstring;
 			
 		};
@@ -732,7 +732,7 @@ var fetch = angular.module('fetch', []);
 			
 			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectPatient";
 			URLstring+="&PatientIDToken="+URLParams.ID;
-			alert("(DEBUG)CreatePatientSearchString() - Patient Search String="+URLstring);
+			//alert("(DEBUG)CreatePatientSearchString() - Patient Search String="+URLstring);
 			return URLstring;
 			
 		};
@@ -742,11 +742,11 @@ var fetch = angular.module('fetch', []);
 		//intended to be called from HTML
 		$scope.SearchPatient = function(){
 			
-			alert ("(DEBUG)-SearchPatient() - starting");
+			//alert ("(DEBUG)-SearchPatient() - starting");
 			ResetPatientFieldValues();
 			ReadPatientFields();		
 			CallPHPServerFile(CreatePatientSearchString());
-			alert ("(DEBUG)-SearchPatient() - executed");			
+			//alert ("(DEBUG)-SearchPatient() - executed");			
 		}
 		//eof
 		
@@ -754,16 +754,16 @@ var fetch = angular.module('fetch', []);
 		//general function to introduce a new patient in dB	
 		$scope.CreatePatient = function() {			
 			
-			alert ("(DEBUG)-CreatePatient() - starting");
+			//alert ("(DEBUG)-CreatePatient() - starting");
 			ReadPatientFields();		
 			
 			if (CheckPatientInputData()==true){
-				alert("(DEBUG)CreatePatient()-Input data is right");
+				//alert("(DEBUG)CreatePatient()-Input data is right");
 				CallPHPServerFile(CreatePatientInsertString());
 			}else{
-				alert("ERROR - datos invalidos");				
+				//alert("ERROR - datos invalidos");				
 			}
-			alert ("(DEBUG)-CreatePatient() - executed");
+			//alert ("(DEBUG)-CreatePatient() - executed");
 		}
 		//eof	
 
@@ -771,35 +771,35 @@ var fetch = angular.module('fetch', []);
 		//intended to be called from HTML button
 		$scope.SearchCompany = function(){
 			
-			alert ("(DEBUG)-SearchCompany() - starting");
+			//alert ("(DEBUG)-SearchCompany() - starting");
 			ResetCompanyFieldValues();
 			ReadCompanyFields();		
 			CallPHPServerFile(CreateCompanySearchString());
-			alert ("(DEBUG)-SearchCompany() - executed");			
+			//alert ("(DEBUG)-SearchCompany() - executed");			
 		}
 		//eof		
 		
 		//general function to introduce a new company in dB	
 		$scope.CreateCompany = function() {			
 			
-			alert ("(DEBUG)-CreateCompany() - starting");
+			//alert ("(DEBUG)-CreateCompany() - starting");
 			
 			ReadCompanyFields();
 			
 			if (CheckCompanyInputData()==true){
-				alert("(DEBUG)CreatePatient()-Input data is right");
+				//alert("(DEBUG)CreatePatient()-Input data is right");
 				CallPHPServerFile(CreateCompanyInsertString());
 			}else{
-				alert("ERROR - datos invalidos en campos de empresa");				
+				//alert("ERROR - datos invalidos en campos de empresa");				
 			}
-			alert ("(DEBUG)-CreateCompany() - executed");
+			//alert ("(DEBUG)-CreateCompany() - executed");
 		}
 		//eof		
 
 		//function to store updated company into dB
 		$scope.EditPatient = function(){
 			
-			alert("(DEBUG) EditPatient() - starting");
+			//alert("(DEBUG) EditPatient() - starting");
 			ReadPatientFields();			
 			CallPHPServerFile(CreatePatientEditString());			
 		}
@@ -808,7 +808,7 @@ var fetch = angular.module('fetch', []);
 		//function to store updated company into dB
 		$scope.EditCompany = function(){
 			
-			alert("(DEBUG) EditCompany() - starting");
+			//alert("(DEBUG) EditCompany() - starting");
 			ReadCompanyFields();			
 			CallPHPServerFile(CreateCompanyEditString());			
 		}
@@ -820,9 +820,9 @@ var fetch = angular.module('fetch', []);
 		//no return
 		$scope.DeletePatient = function(){
 			
-			alert("(DEBUG)DeletePatient() - starting");
+			//alert("(DEBUG)DeletePatient() - starting");
 			CallPHPServerFile(CreatePatientDeleteStringByID());
-			alert("(DEBUG)DeletePatient() - executed");
+			//alert("(DEBUG)DeletePatient() - executed");
 		}
 		//eof
 		
@@ -830,9 +830,9 @@ var fetch = angular.module('fetch', []);
 		//function to delete company. Intended to be called from HTML
 		//no return
 		$scope.DeleteCompany = function(){
-			alert("(DEBUG)DeleteCompany() - starting");
+			//alert("(DEBUG)DeleteCompany() - starting");
 			CallPHPServerFile(CreateCompanyDeleteStringByID());
-			alert("(DEBUG)DeleteCompany() - executed");
+			//alert("(DEBUG)DeleteCompany() - executed");
 		}
 		//eof
 		
@@ -864,7 +864,7 @@ var fetch = angular.module('fetch', []);
 			$scope.data = data;
 			})
 			
-			alert("(DEBUG)Function CallPHPServerFile() executed"); //(DEBUG)
+			//alert("(DEBUG)Function CallPHPServerFile() executed"); //(DEBUG)
 
 		}
 		//eof
@@ -885,7 +885,7 @@ var fetch = angular.module('fetch', []);
 		
 		//debug function
 		$scope.dg = function(){
-			alert("(DEBUG) Oh yeaaaahhh!(Patient)");
+			//alert("(DEBUG) Oh yeaaaahhh!(Patient)");
 			
 			ReadPatientFields();
 			CreatePatientInsertString();
@@ -908,7 +908,7 @@ var fetch = angular.module('fetch', []);
 		
 		//debug function for company
 		$scope.dg_company = function(){
-			alert("(DEBUG) Starting Debug function(Company)");
+			//alert("(DEBUG) Starting Debug function(Company)");
 			ReadCompanyFields();
 			CreateCompanyEditString();
 			
@@ -921,7 +921,7 @@ var fetch = angular.module('fetch', []);
 			CreateCompanyInsertString();
 			*/
 			
-			alert("(DEBUG)  Ending Debug function(Company)");
+			//alert("(DEBUG)  Ending Debug function(Company)");
 
 		}
 		
@@ -936,7 +936,7 @@ var fetch = angular.module('fetch', []);
 			}else{
 				$scope.Modal_Message = "Changes weren`t detected";
 			}
-			alert("(DEBUG)UpdatePatient() is finished")
+			//alert("(DEBUG)UpdatePatient() is finished")
 			
 		}
 		//eof

@@ -22,7 +22,7 @@ $(document).ready(function(){
 	//patients save event
 	$('#save-event').on('click',function(evt){
 		//put here code to execute when SAVE button is pressed								
-		alert("(DEBUG)Modal() - Starting edit patient process");
+		//alert("(DEBUG)Modal() - Starting edit patient process");
 		angular.element(document.getElementById('PatientController')).scope().EditPatient();
 		}	
 	);
@@ -30,9 +30,9 @@ $(document).ready(function(){
 	//companies save event 
 	$('#save-event2').on('click',function(evt){
 		//put here code to execute when SAVE button is pressed								
-		alert("(DEBUG)Modal() - Starting edit company process");
+		//alert("(DEBUG)Modal() - Starting edit company process");
 		angular.element(document.getElementById('CompanyController')).scope().EditCompany();
-		alert("(DEBUG)Modal() - Save company process ended");
+		//alert("(DEBUG)Modal() - Save company process ended");
 		}	
 	);							
 							
