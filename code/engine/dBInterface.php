@@ -494,7 +494,7 @@ function Main(){
 	$result = mysqli_query($connect,$query);
 	
 	$data = array();
-	echo $query . "\n";
+	
 
 	while ($row = mysqli_fetch_array($result)) {
 	  $data[] = $row;
