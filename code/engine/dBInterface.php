@@ -10,8 +10,9 @@ define('InsertCompany_BasicQuery', 'INSERT INTO Companies');
 define('DeletePatient_BasicQuery', 'DELETE FROM Patients WHERE 1');
 define('DeleteCompany_BasicQuery', 'DELETE FROM Companies WHERE 1');
 define('UpdatePatient_BasicQuery', 'UPDATE `Patients` SET ');
+define('UpdateCompany_BasicQuery', 'UPDATE `Companies` SET ');
+define('LoginUser_BasicQuery', 'SELECT `Users` ');
 // TODO: define base queries for the other operations
-
 
 //1. GLOBAL VARS
 $ActionDB_Param="NONE";
@@ -57,7 +58,10 @@ function ReadGenericParameters(){
 		}
                 else if($ActionDB_Param=="UpdatePatient"){
 			UpdatePatientParams(); //Updating Patient UPDATE INTO Query String
-		}                
+		}
+                else if($ActionDB_Param=="UpdateCompany"){
+			UpdateCompanyParams(); //Updating Company UPDATE INTO Query String
+		}                  
 	}
 	if (isset($_GET['UserIDToken'])) {
             $UserID_Param=$_GET['UserIDToken'];
@@ -422,6 +426,48 @@ function UpdatePatientParams() {   //define('UpdatePatient_BasicQuery', 'UPDATE'
 
 }
 
+//function to Update params related to patient:
+function UpdateCompanyParams() {   //define('UpdateCompany_BasicQuery', 'UPDATE');
+		
+	global $query;
+	$query = UpdateCompany_BasicQuery;
+
+	if (isset($_GET['PhoneToken'])) {
+		$Phone_Param=$_GET['PhoneToken'];
+		
+		if($Phone_Param!="NONE"){
+			$query .= "`Phone` = '$Phone_Param', ";				
+		}
+	}
+
+	if (isset($_GET['EmailToken'])) {
+		$Email_Param=$_GET['EmailToken'];
+
+		if($Email_Param!="NONE"){
+			$query .= "`Email` = '$Email_Param', ";			
+		}
+		
+	}	
+
+	if (isset($_GET['AddressToken'])) {
+		$Address_Param=$_GET['AddressToken'];
+
+		if($Address_Param!="NONE"){
+			$query .= "`Address` = '$Address_Param' ";			
+		}
+		
+	}
+
+	if (isset($_GET['CompanyIDToken'])) {
+		$CompanyID_Param=$_GET['CompanyIDToken'];
+
+		if($CompanyID_Param!="NONE"){
+			$query .= " WHERE `CompanyID` = '$CompanyID_Param'";			
+		}
+		
+	}
+}
+
 //function to login user:
 function LoginUserParams() {
 		
@@ -440,8 +486,8 @@ function Main(){
 	
 	global $query;
 	
-	ReadGenericParameters();
-	
+       
+	ReadGenericParameters();	
 	
 	// $connect = mysqli_connect("mysql.hostinger.es","u505969032_ramvq","joliewatt0123","u505969032_bicoy");
 	$connect = mysqli_connect("mysql.hostinger.es","u884088163_erix","L4rd_erix","u884088163_irixs");
