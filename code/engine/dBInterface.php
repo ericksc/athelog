@@ -182,7 +182,7 @@ function DeletePatientParams() {
 		$PatientID_Param=$_GET['PatientIDToken'];
 		
 		if($PatientID_Param!="NONE"){
-			$query .= " AND PatientID LIKE $PatientID_Param";				
+			$query .= " AND PatientID = '$PatientID_Param'";				
 		}
 	}
 }
@@ -197,7 +197,7 @@ function DeleteCompanyParams() {
 		$CompanyID_Param=$_GET['CompanyIDToken'];
 		
 		if($CompanyID_Param!="NONE"){
-			$query .= " AND CompanyID LIKE $CompanyID_Param";				
+			$query .= " AND CompanyID = '$CompanyID_Param'";				
 		}
 	}
 }
