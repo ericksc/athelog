@@ -17,7 +17,7 @@ define('LoginUser_BasicQuery', 'SELECT `Users` ');
 //1. GLOBAL VARS
 $ActionDB_Param="NONE";
 $UserID_Param="NONE";
-$DebugFlag="TRUE";
+$DebugFlag="FALSE";
 
 //$query = "SELECT * from Patients WHERE 1"; //working
 $query = "NONE"; //working
@@ -494,7 +494,6 @@ function Main(){
 	$result = mysqli_query($connect,$query);
 	
 	$data = array();
-	
 
 	while ($row = mysqli_fetch_array($result)) {
 	  $data[] = $row;
