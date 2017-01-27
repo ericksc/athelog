@@ -43,6 +43,7 @@ var fetch = angular.module('fetch', []);
 		var URLParams = {};
 		URLParams['Action'] = "NONE";
 		URLParams['ID'] = "NONE";
+		URLParams['Message'] = "NONE";
 		
 		//to set permissions - must read from Login system
 		//FIXME:read from login system
@@ -103,7 +104,8 @@ var fetch = angular.module('fetch', []);
 			
 			//vars to read URL parameters
 			URLParams.Action=getUrlVars()["Action"];
-			URLParams.ID=getUrlVars()["ID"];			
+			URLParams.ID=getUrlVars()["ID"];
+			URLParams.Message=getUrlVars()["Message"];
 
 			var var1_valid=0;
 			var var2_valid=0;
@@ -125,6 +127,15 @@ var fetch = angular.module('fetch', []);
 			}else{				
 				var2_valid=1;
 			}
+			
+			//FIXME: add dB check before confirm this
+			if (typeof URLParams.Message === "Updated") {
+				alert("Perfil actualizado");
+				
+			}else{				
+				
+			}			
+			
 
 			//returns TRUE just if both params are different to Null, NONE, undefined or empty
 			result = Boolean(var1_valid*var2_valid);
@@ -810,7 +821,8 @@ var fetch = angular.module('fetch', []);
 			
 			//alert("(DEBUG) EditCompany() - starting");
 			ReadCompanyFields();			
-			CallPHPServerFile(CreateCompanyEditString());			
+			CallPHPServerFile(CreateCompanyEditString());
+			//window.location.replace("edit_profiles.html?Action=EditCompany&ID="+URLParams.ID+"&Message=Updated");			
 		}
 		//eof
 
