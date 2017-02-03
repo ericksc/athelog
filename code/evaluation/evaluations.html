@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<!-- <html lang="en"> -->
+<html ng-app="fetch">
+
+<style>
+#content_panel {
+
+}
+</style>
+
+<head>
+	<title>Evaluaciones</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+	<link href="style.css" rel="stylesheet" />
+    <script data-semver="1.2.13" src="http://code.angularjs.org/1.2.13/angular.js" data-require="angular.js@1.2.x"></script>
+    <script src="eval_app.js"></script>
+ 
+</head>
+
+
+<body> 
+
+<div id="EvaluationController" ng-controller="dbCtrl" >
+	
+	<div class="container">
+	  <h2>Pacientes</h2>
+	  <p>To make the tabs toggleable, add the data-toggle="tab" attribute to each link. Then add a .tab-pane class with a unique ID for every tab and wrap them inside a div element with class .tab-content.</p>
+
+	  <div class="panel panel-default">
+		<div class="panel-body" id="content_panel">
+	  <ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#Tab_Historial">Historial</a></li>
+		<li><a data-toggle="tab" href="#Tab_VarsFis">Variables<br>Fisiologicas.</a></li>
+		<li><a data-toggle="tab" href="#Tab_CompCorp">Composicion<br>Corporal</a></li>
+		<li><a data-toggle="tab" href="#Tab_Cuestionarios">Cuestionarios</a></li>
+		<li><a data-toggle="tab" href="#Tab_Individualizacion">Individualizacion</a></li>
+		<li><a data-toggle="tab" href="#Tab_Adjuntos">Archivos<br>Adjuntos</a></li>
+		<li><a data-toggle="tab" href="#Tab_Fisioterapia">Fisioterapia</a></li>
+		<li><a data-toggle="tab" href="#Tab_Nutricion">Nutricion</a></li>
+		<li><a data-toggle="tab" href="#Tab_Ayuda">Ayuda</a></li>
+	  </ul>
+	  
+	 
+
+
+	<!--  
+
+	1. TABS  (EVALUACIONES)
+	1.1.Tab de APP
+	1.2.Tab de APNP
+	1.3.Tab de AQX
+	1.4.Tab de Medicamentos
+	1.5.Tab de Lesiones
+	1.6.Tab de Variables Fisiológicas
+	1.7.Tab de Composión corporal
+	1.8.Tab de Cuestionarios
+
+	-->
+
+
+	
+	  <div class="tab-content">
+	  
+		<!-- TAB HISTORIAL -->
+		<div id="Tab_Historial" class="tab-pane active">
+		  <h3>Historial</h3>
+		  
+			<!-- Javascript code to print Date-->
+			<!--
+			<div ng-app ng-controller="Ctrl">
+				{{date | date:'yyyy-MM-dd'}}<br/>
+				<br>{{Nombre}}
+			</div>
+			
+			<div ng-app="">
+			  <div ng-controller="Ctrl">
+				  {{hi}}
+			  </div>
+			</div>
+			-->
+			
+			<!--
+			<div ng-controller="MainCtrl">
+				<p>Hello {{name}}!</p>
+			</div>
+			-->
+			
+			
+			
+			<!-- SUBMENU TABS A LA IZQUIERDA -->
+			<div class="row" style="min-height:300px;">
+				<div  class="col-sm-6">
+
+					<div class="col-xs-3">
+						<!-- required for floating -->
+						<!-- Nav tabs -->
+						
+
+									
+									<ul class="nav nav-tabs tabs-left">
+										<!--<li class="active"><a href="#home" data-toggle="tab">Home</a></li>-->
+										<li><a href="#Tab_APP" data-toggle="tab">APP</a></li>
+										<li><a href="#Tab_APNP" data-toggle="tab">APNP</a></li>
+										<li><a href="#Tab_AQX" data-toggle="tab">AQX</a></li>
+										<li><a href="#Tab_Medicamentos" data-toggle="tab">Medicamentos</a></li>
+										<li><a href="#Tab_Lesiones" data-toggle="tab">Lesiones</a></li>		
+										
+									</ul>
+
+
+
+
+							
+						
+					</div>
+					
+					<!-- SUBTABS DE ANTECEDENTES -->
+					<div class="col-xs-9">
+
+						<div class="tab-content">
+							<div class="tab-pane active" id="home">
+							
+								<h3>Home Tab</h3>
+							
+							</div>
+							
+							<div class="tab-pane" id="Tab_APP">
+								<h3>Antecedentes Patologicos</h3>
+								
+								<br><br>
+								<form>
+									<table border="1px">
+									
+										<tr>
+											<th>Antecedente</th>
+											<th>Valor Actual</th>
+											<th>Editar</th>
+
+										</tr>
+										<tr>
+											<th>Hipertension</th>
+											<td>FIXME:read dB</td>
+											<td>
+												<select name="HyprtsnSelect" class="form-control"  ng-model="Hyprtsn_Input_Model">											
+													<option value="INDEFINIDO">INDEFINIDO</option>
+													<option value="SI">SI</option>
+													<option value="NO">NO</option>
+												</select>
+											</td>
+											
+										</tr>
+										<tr>
+											<th>Diabetes</th>
+											<td>FIXME:read dB</td>
+											<td>
+												<select name="DbtsSelect" class="form-control"  ng-model="Dbts_Input_Model">
+													<option selected value="INDEFINIDO">INDEFINIDO</option>
+													<option value="SI">SI</option>
+													<option value="NO">NO</option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<th>Cardiopatias</th>
+											<td>FIXME:read dB</td>
+											<td>
+												<select name="CrdmpthySelect" class="form-control"  ng-model="Crdmpthy_Input_Model">
+													<option selected value="INDEFINIDO">INDEFINIDO</option>
+													<option value="SI">SI</option>
+													<option value="NO">NO</option>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<th>Obesidad</th>
+											<td>FIXME:read dB</td>
+											<td>
+												<select name="ObstySelect" class="form-control"  ng-model="Obsty_Input_Model">
+													<option selected value="INDEFINIDO">INDEFINIDO</option>
+													<option value="SI">SI</option>
+													<option value="NO">NO</option>
+												</select>
+											</td>
+										</tr>
+										
+									</table>							
+									
+									<br><br><button type="button">Guardar</button>
+									<br><button ng-click="dg()">Debug</button>
+								</form>
+								
+							</div>
+							
+							<div class="tab-pane" id="Tab_APNP">
+								<h3>Antecedentes No Patologicos</h3>
+								<br>Valor actual: (FIXME:leerlo de archivo o poner N/A)
+								<br><br>
+								<form>
+									<textarea ng-model="APNP_Cmmnt_Input_Model" rows="4" cols="30"></textarea>
+									<br><input type="checkbox" name="APNP_CheckBox" value="N/A">N/A
+									<br><br><button type="button">Guardar</button>
+								</form>
+								
+							</div>
+							
+							<div class="tab-pane" id="Tab_AQX">
+								<h3>Antecedentes Quirurgicos</h3>
+								
+								<br><br>Valor actual: (FIXME:leerlo de archivo o poner N/A)
+								<form>
+									<textarea ng-model="AQX_Cmmnt_Input_Model" rows="4" cols="30"></textarea>
+									<br><input type="checkbox" name="APNP_CheckBox" value="N/A">N/A
+									<br><br><button type="button">Guardar</button>
+								</form>			
+							</div>
+							
+							<div class="tab-pane" id="Tab_Medicamentos">
+								<h3>Medicamentos</h3>
+								
+								(FIXME:leerlo de archivo o poner N/A; imprimirlo en el textfield)
+								
+								<br><br>
+								<form>
+									<textarea ng-model="MED_Cmmt_Input_Model" rows="4" cols="30"></textarea>	
+									<br><button type="button">Actualizar</button>
+									<br><input type="checkbox" name="Medicamentos_chkbox" value="N/A">N/A
+									<br><br><button type="button">Guardar</button>
+								</form>
+							
+							</div>						
+
+							<div class="tab-pane" id="Tab_Lesiones">
+								<h3>Lesiones</h3>
+								
+								(FIXME:leerlo de archivo o poner N/A; imprimirlo en el textfield)
+								<br><br>							
+								
+								<form>
+									<textarea ng-model="INJ_Cmmt_Input_Model" rows="4" cols="30"></textarea>	
+									<br><button type="button">Actualizar</button>
+									<br><input type="checkbox" name="Lesiones_chkbox" value="N/A">N/A
+								</form>
+								
+							</div>
+							
+						</div>
+					</div>
+					<!-- FIN DE SUBTABS DE ANTECEDENTES -->
+					
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			<!-- FIN DE SUBMENU TABS A LA IZQUIERDA -->
+		  
+		</div>
+		<!-- FIN DE TAB DE HISTORIAL -->
+		
+		<!-- TAB DE VARIABLES FISIOLOGICAS -->
+		<div id="Tab_VarsFis" class="tab-pane fade">
+		  <h3>Variables Fisiologicas</h3>
+
+			<h4>Ultimas medicion</h4>
+			<br>FIXME:read last 5 vars
+			
+			
+			<h4>Introducir nuevos valores</h4>
+			
+			<table border="1px">
+				
+				<tr>
+					<th>Variable
+					<th>Valor
+					<th>Unidad
+					<th>¿Variable requerida?
+				</tr>
+				<tr>
+					<td>Var A</td>
+					<td><input name="A_Var_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="A_Var_Input_Model" required></td>
+					<td>mG</td>
+					<td><input type="checkbox" name="A_Var_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Var B</td>
+					<td><input name="B_Var_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="B_Var_Input_Model" required></td>
+					<td>mG</td>
+					<td><input type="checkbox" name="B_Var_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Var C</td>
+					<td><input name="C_Var_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="C_Var_Input_Model" required></td>
+					<td>Hk</td>
+					<td><input type="checkbox" name="C_Var_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Var D</td>
+					<td><input name="D_Var_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="D_Var_Input_Model" required></td>
+					<td>Hk</td>
+					<td><input type="checkbox" name="D_Var_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Var E</td>
+					<td><input name="E_Var_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="E_Var_Input_Model" required></td>
+					<td>Hk</td>
+					<td><input type="checkbox" name="E_Var_CheckBox" value="NONE">NO</td>
+				</tr>			
+			</table>
+			<br><button type="button">Actualizar</button>
+		  
+		  
+		</div>
+		<!-- FIN DE TAB DE VARIABLES FISIOLOGICAS -->
+		
+		<!-- TAB DE COMPOSICIÓN CORPORAL-->
+		<div id="Tab_CompCorp" class="tab-pane fade">
+			<h3>Composicion Corporal</h3>
+
+			<h4>Ultimas medicion</h4>
+			<br>FIXME:read last 5 vars
+			
+			
+			<h4>Introducir nuevos valores</h4>
+			
+			<table border="1px">
+				
+				<tr>
+					<th>Variable
+					<th>Valor
+					<th>Unidad
+					<th>¿Variable requerida?
+				</tr>
+				<tr>
+					<td>Peso</td>
+					<td><input name="Weight_BC_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="Weight_BC_Input_Model" required></td>
+					<td>Kg</td>
+					<td><input type="checkbox" name="Weight_BC_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Grasa corporal</td>
+					<td><input name="FatMass_BC_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="FatMass_BC_Input_Model" required></td>
+					<td>Kg</td>
+					<td><input type="checkbox" name="FatMass_BC_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Masa muscular</td>
+					<td><input name="MuscleMass_BC_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="MuscleMass_BC_Input_Model" required></td>
+					<td>Kg</td>
+					<td><input type="checkbox" name="MuscleMass_BC_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Indice Masa Corporal</td>
+					<td><input name="BMI_BC_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="BMI_BC_Input_Model" required></td>
+					<td>Kg/m2</td>
+					<td><input type="checkbox" name="BMI_BC_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>% Grasa</td>
+					<td><input name="FatPer_BC_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="FatPer_BC_Input_Model" required></td>
+					<td>%</td>
+					<td><input type="checkbox" name="FatPer_BC_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>InBody Score</td>
+					<td><input name="InBodyScore_BC_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="InBodyScore_BC_Input_Model" required></td>
+					<td>Puntos</td>
+					<td><input type="checkbox" name="InBodyScore_BC_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Metabolismo Basal</td>
+					<td><input name="BasMet_BC_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="BasMet_BC_Input_Model" required></td>
+					<td>Kcal</td>
+					<td><input type="checkbox" name="BasMet_BC_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Grasa visceral</td>
+					<td><input name="ViscFat_BC_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="ViscFat_BC_Input_Model" required></td>
+					<td>Puntos</td>
+					<td><input type="checkbox" name="ViscFat_BC_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Flexibilidad</td>
+					<td><input name="Flex_BC_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="Flex_BC_Input_Model" required></td>
+					<td>cm</td>
+					<td><input type="checkbox" name="Flex_BC_CheckBox" value="NONE">NO</td>
+				</tr>
+				<tr>
+					<td>Resistencia muscular</td>
+					<td><input name="MR_BC_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="MR_BC_Input_Model" required></td>
+					<td>???</td>
+					<td><input type="checkbox" name="MR_BC_CheckBox" value="NONE">NO</td>
+				</tr>
+				
+			</table>
+			<br><button ng-click="dg()">Debug</button>
+
+
+
+			
+		</div>
+		<!-- FIN DEL TAB DE COMPOSICIÓN CORPORAL -->	
+		
+		<!-- FIN DEL TAB DE CUESTIONARIOS-->
+		<div id="Tab_Cuestionarios" class="tab-pane">
+		
+		
+		</div>
+		<!-- FIN DEL TAB DE CUESTIONARIOS-->
+		
+		<!-- FIN DEL TAB DE INDIVIDUALIZACION-->
+		<div id="Tab_Individualizacion" class="tab-pane">
+
+		</div>
+		<!-- FIN DEL TAB DE INDIVIDUALIZACION-->
+		
+		<!-- TAB DE ADJUNTOS-->
+
+		<!-- FIN DEL TAB DE ADJUNTOS-->	
+
+		<!-- TAB DE FISIOTERAPIA-->
+		<div id="Tab_Fisioterapia" class="tab-pane">
+		  <h3>Fisioterapia</h3>
+
+		</div>
+		<!-- FIN DEL TAB DE FISIOTERAPIA-->
+
+		<!-- TAB DE NUTRICION-->
+		<div id="Tab_Nutricion" class="tab-pane">
+		  <h3>Nutricion</h3>
+		</div>
+		<!-- FIN DEL TAB DE NUTRICION-->
+		
+		<!-- FIN DEL TAB DE AYUDA-->
+		<div id="Tab_Ayuda" class="tab-pane">
+			<h3>Tips generales</h3>
+			<p>Introduzca cualquier criterio de busqueda en los campos y luego haga click sobre el boton de Busqueda </p>
+		</div>
+		<!-- FIN DEL TAB DE AYUDA-->
+		
+	  </div>
+	</div>
+
+	</div></div>
+	
+	</div><!--end of evaluation controller -->
+	
+
+</body>
+</html>
