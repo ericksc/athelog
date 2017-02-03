@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		//alert("(DEBUG)Welcome to login  screen v1.6");
+		alert("(DEBUG)Welcome to login  screen v1.7");
 		
 		var UserData = {};
 		UserData['UserID_FieldValue']="NONE";
@@ -24,7 +24,7 @@ var fetch = angular.module('fetch', []);
 
 		//-------------3. FUNCTIONS-----------------------------
 		
-		//2.1 function to reset login values
+		//3.1 function to reset login values
 		function ResetUserFieldValues(){
 			
 			UserData.UserID_FieldValue="NONE";
@@ -33,7 +33,7 @@ var fetch = angular.module('fetch', []);
 			
 		}
 		
-		//2.2 function to check parameters
+		//3.2 function to check parameters
 		//returns 1 if params are valid, if invalid:0	(invalid=>params are NULL, NONE or undefined)	
 		function CheckURLParameters(){	
 
@@ -79,20 +79,20 @@ var fetch = angular.module('fetch', []);
 			alert("(DEBUG)ReadUserFields() starting");
 			
 			if (typeof $scope.Username_Input_Model !== 'undefined' && $scope.Username_Input_Model !== null && $scope.Username_Input_Model !== "") {
-				PatientData['UserID_FieldValue'] = $scope.Username_Input_Model;
+				UserData['UserID_FieldValue'] = $scope.Username_Input_Model.toLowerCase();
 			}else{
-				PatientData['UserID_FieldValue'] = "NONE";
+				UserData['UserID_FieldValue'] = "NONE";
 			}			
 			
 			alert("(DEBUG)ReadUserFields() - reading password");
 			
 			if (typeof $scope.Password_Input_Model !== 'undefined' && $scope.Password_Input_Model !== null && $scope.Password_Input_Model !== "") {
-				PatientData['Password_FieldValue'] = $scope.Password_Input_Model;
+				UserData['Password_FieldValue'] = $scope.Password_Input_Model.toLowerCase();
 			}else{
-				PatientData['Password_FieldValue'] = "NONE";
+				UserData['Password_FieldValue'] = "NONE";
 			}				
 			
-			alert("(DEBUG)ReadUserFields() executed. Values="+PatientData.UserID_FieldValue+","+PatientData.Password_FieldValue);
+			alert("(DEBUG)ReadUserFields() executed. Values="+UserData.UserID_FieldValue+","+UserData.Password_FieldValue);
 					
 		}
 		//eof
@@ -101,11 +101,11 @@ var fetch = angular.module('fetch', []);
 		//no return
 		function CreateLoginString(){
 			
-			alert("(DEBUG)CreateLoginString()-starting");			
+			//alert("(DEBUG)CreateLoginString()-starting");			
 			var URL = "../engine/dBInterface.php?";
 			URL += "ActionDBToken=Login"; 
-			URL += "UserIDToken="+UserID_FieldValue;
-			URL += "PasswordToken"+Password_FieldValue;
+			URL += "&UserIDToken="+UserData.UserID_FieldValue;
+			URL += "&PasswordToken="+UserData.Password_FieldValue;
 			alert("(DEBUG)CreateLoginString() executed. Return URL="+URL);
 			return URL;
 			
@@ -205,17 +205,17 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 
-		//2.7 function to check Login user/pass. returns TRUE if succesfull
+		//2.7 function to send Login user/pass over server. Server returns TRUE if login was succesfull
 		//intended to be called from HTML button
-		$scope.LoginDataCheck = function(){
+		$scope.LoginRequest = function(){
 			
-			/*
-			alert ("(DEBUG)-SearchCompany() - starting");
-			ResetCompanyFieldValues();
-			ReadCompanyFields();		
-			CallPHPServerFile(CreateCompanySearchString());
-			alert ("(DEBUG)-SearchCompany() - executed");	
-			*/			
+			
+			//alert ("(DEBUG)-SearchCompany() - starting");
+			ResetUserFieldValues();
+			ReadUserFields();		
+			CallPHPServerFile(CreateLoginString());
+			//alert ("(DEBUG)-SearchCompany() - executed");	
+						
 		}
 		//eof		
 		
