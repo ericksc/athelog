@@ -1,10 +1,10 @@
 <?php
 include('session.php');
-echo "hola search_profile.php";
-echo $UserName_Param;
-echo $username;
-
+echo "\nhola search_profile.php";
+echo "\nsession user=". $_SESSION['login_user'];
 ?>
+
+
 <html ng-app="fetch">
 <!--<head> -->
 

@@ -16,10 +16,12 @@ $UserName_Param=$_GET['UserNameToken'];
 if (isset($_GET['PasswordToken'])) {
 $Password_Param=$_GET['PasswordToken'];
 }
-
+/*
 echo "hola";
 echo "$UserName_Param";
 echo "$Password_Param";
+*/
+
 if (empty($UserName_Param) || empty($Password_Param)) {
 $error = "Username or Password is invalid";
 }
@@ -40,8 +42,15 @@ $rows = mysql_num_rows($query);
  * */
  
 if (TRUE) {
-$_SESSION['login_user']=$username; // Initializing Session
-header("location: search_profiles.php"); // Redirecting To Other Page
+//$_SESSION['login_user']=$UserName_Param; // Initializing Session
+$_SESSION['login_user']="Ramirooooooo!!!";
+//header("location: search_profiles.php"); // Redirecting To Other Page
+echo "User=$UserName_Param";
+echo "\nPass=$Password_Param";
+echo "\nsession user=". $_SESSION['login_user'];
+
+
+
 } else {
 $error = "Username or Password is invalid";
 }
