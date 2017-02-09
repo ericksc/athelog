@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to users screen v1.0");
+		alert("(DEBUG)Welcome to users screen v1.1");
 		
 		//globals to hide Patient/Company text
 		//FIXME:check if this is really required
@@ -17,28 +17,18 @@ var fetch = angular.module('fetch', []);
 		$scope.ShowCompanySection = true;
 	
 		//to read values from HTML <patient> search fields
-		var PatientData = {};		
-		PatientData['PatientID_FieldValue']="NONE";//
-		PatientData['Forename_FieldValue']="NONE";//
-		PatientData['FirstSurname_FieldValue']="NONE";//
-		PatientData['SecondSurname_FieldValue']="NONE";//
-		PatientData['PatientPhone_FieldValue']="NONE";//
-		PatientData['PatientEmail_FieldValue']="NONE";//
-		PatientData['CompanyID_FieldValue']="NONE";//
-		PatientData['Site_FieldValue']="NONE";//site
-		PatientData['Department_FieldValue']="NONE";//department
-		PatientData['BirthDate_FieldValue']="NONE";
-		PatientData['JoinDate_FieldValue']="NONE";
-		PatientData['Gender_FieldValue']="NONE";
-		PatientData['PatientAddress_FieldValue']="NONE";
+		var UserData = {};		
+		UserData['UserID_FieldValue']="NONE";//
+		UserData['Forename_FieldValue']="NONE";//
+		UserData['FirstSurname_FieldValue']="NONE";//
+		UserData['SecondSurname_FieldValue']="NONE";//
+		UserData['UserPhone_FieldValue']="NONE";//
+		UserData['UserEmail_FieldValue']="NONE";//
+		UserData['CompanyID_FieldValue']="NONE";//
+		UserData['JoinDate_FieldValue']="NONE";
+		UserData['UserGroup_FieldValue']="NONE";
+		UserData['Status_FieldValue']="NONE";
 		
-		//to read values from HTML <Company> search fields
-		var CompanyData = {};		
-		CompanyData['CompanyID2_FieldValue']="NONE";//
-		CompanyData['CompanyEmail_FieldValue']="NONE";//
-		CompanyData['CompanyPhone_FieldValue']="NONE";//
-		CompanyData['Address_FieldValue']="NONE";//
-
 		//to read URL params var
 		var URLParams = {};
 		URLParams['Action'] = "NONE";
@@ -48,54 +38,25 @@ var fetch = angular.module('fetch', []);
 		//to set permissions - must read from Login system
 		//FIXME:read from login system
 		$UserID="NONE";
-		
-		//modal vars
-		$scope.Modal_Message = "NONE"; //message to display in modal
-		$scope.IsThereChanges = "FALSE"; //is there any changes in fields?
 	
-		
-		//for debug - works
-		var conn = {};
-		conn["name"] = 'Fred';
-		
-		
 	
 		//-------------2. FUNCTIONS-----------------------------
 		
-		
-		
-		
-		
-		//0.Resetting patient values read from input text fields
-		function ResetPatientFieldValues(){			
-			
-			PatientData.PatientID_FieldValue="NONE";//
-			PatientData.Forename_FieldValue="NONE";//
-			PatientData.FirstSurname_FieldValue="NONE";//
-			PatientData.SecondSurname_FieldValue="NONE";//
-			PatientData.PatientPhone_FieldValue="NONE";//
-			PatientData.PatientEmail_FieldValue="NONE";//
-			PatientData.CompanyID_FieldValue="NONE";//
-			PatientData.Site_FieldValue="NONE";
-			PatientData.Department_FieldValue="NONE";
-			PatientData.BirthDate_FieldValue="NONE";
-			PatientData.JoinDate_FieldValue="NONE";
-			PatientData.Gender_FieldValue="NONE";
-			PatientData.PatientAddress_FieldValue="NONE";			
-				
+		//0.Resetting user values read from input text fields
+		function ResetUserFieldValues(){			
+
+			UserData.UserID_FieldValue="NONE";//
+			UserData.Forename_FieldValue="NONE";//
+			UserData.FirstSurname_FieldValue="NONE";//
+			UserData.SecondSurname_FieldValue="NONE";//
+			UserData.UserPhone_FieldValue="NONE";//
+			UserData.UserEmail_FieldValue="NONE";//
+			UserData.CompanyID_FieldValue="NONE";//
+			UserData.JoinDate_FieldValue="NONE";
+			UserData.Status_FieldValue="NONE";
+			UserData.UserGroup_FieldValue="NONE";			
 		};
 		//end of resetting
-		
-		//Resetting company values read from input text fields
-		function ResetCompanyFieldValues(){
-			
-			CompanyData.CompanyID2_FieldValue="NONE";//
-			CompanyData.CompanyEmail_FieldValue="NONE";//
-			CompanyData.CompanyPhone_FieldValue="NONE";//
-			CompanyData.Address_FieldValue="NONE";//		
-		}
-		//eof
-		
 		
 		//function to check parameters
 		//returns 1 if params are valid, if invalid:0	(invalid=>params are NULL, NONE or undefined)	
@@ -146,434 +107,208 @@ var fetch = angular.module('fetch', []);
 			
 		}		
 		//eof
+
 		
-		//function to determine if there are changes in profile
-		//returns TRUE:there is one change
-		function IsThereChanges(){
-			
-			if($scope.PatientID_FieldValue !== "NONE")return true;
-			else if ($scope.Forename_FieldValue !== "NONE")return true;
-			else if ($scope.FirstSurname_FieldValue !== "NONE")return true;
-			else if ($scope.SecondSurname_FieldValue !== "NONE")return true;
-			else if ($scope.PatientEmail_FieldValue !== "NONE")return true;
-			else if ($scope.PatientPhone_FieldValue !== "NONE")return true;
-			else if ($scope.JoinDate_FieldValue !== "NONE")return true;
-			else if ($scope.Gender_FieldValue !== "NONE")return true;
-			else if ($scope.CompanyID_FieldValue !== "NONE")return true;
-			else if ($scope.Department_FieldValue !== "NONE")return true;
-			else if ($scope.Site_FieldValue !== "NONE")return true;
-			else return false;	
-			
-		}
-		//eof
-		
-	
-		
-		//1. demo  function to increase a counter in index.html
-		$scope.count = 0;
-		$scope.myFunc = function() {
-			$scope.count++;
-		};
-		
-		
-		//2. read search HTML <patient> input fields	
+		//2. read search HTML <user> input fields	
 		//no return
-		function ReadPatientFields() {			
+		function ReadUserFields() {			
 			
 			//alert("(DEBUG)ReadPatientFields() - starting");
 			
-			if (typeof $scope.PatientID_Input_Model !== 'undefined' && $scope.PatientID_Input_Model !== null && $scope.PatientID_Input_Model !== "") {
-				PatientData['PatientID_FieldValue'] = $scope.PatientID_Input_Model;
+			if (typeof $scope.UserID_Input_Model !== 'undefined' && $scope.UserID_Input_Model !== null && $scope.UserID_Input_Model !== "") {
+				UserData['UserID_FieldValue'] = $scope.UserID_Input_Model;
 			}else{
-				PatientData['PatientID_FieldValue'] = "NONE";
+				UserData['UserID_FieldValue'] = "NONE";
 			}
 			
-			
 			if (typeof $scope.Forename_Input_Model !== 'undefined' && $scope.Forename_Input_Model !== null && $scope.Forename_Input_Model !== "") {
-				PatientData['Forename_FieldValue'] = $scope.Forename_Input_Model.toLowerCase(); 				
+				UserData['Forename_FieldValue'] = $scope.Forename_Input_Model.toLowerCase(); 				
 			}else{
-				PatientData['Forename_FieldValue'] = "NONE";
+				UserData['Forename_FieldValue'] = "NONE";
 			}
 			
 			if (typeof $scope.FirstSurname_Input_Model!== 'undefined' && $scope.FirstSurname_Input_Model !== null && $scope.FirstSurname_Input_Model !== "") {
-				PatientData['FirstSurname_FieldValue']= $scope.FirstSurname_Input_Model.toLowerCase(); 
+				UserData['FirstSurname_FieldValue']= $scope.FirstSurname_Input_Model.toLowerCase(); 
 			}else{
-				PatientData['FirstSurname_FieldValue'] = "NONE";
+				UserData['FirstSurname_FieldValue'] = "NONE";
 			}
 			
 			if (typeof $scope.SecondSurname_Input_Model !== 'undefined' && $scope.SecondSurname_Input_Model !== null && $scope.SecondSurname_Input_Model !== "") {
-				PatientData['SecondSurname_FieldValue'] = $scope.SecondSurname_Input_Model.toLowerCase(); 
+				UserData['SecondSurname_FieldValue'] = $scope.SecondSurname_Input_Model.toLowerCase(); 
 			}else{
-				PatientData['SecondSurname_FieldValue'] = "NONE";
+				UserData['SecondSurname_FieldValue'] = "NONE";
 			}
 			
-			if (typeof $scope.PatientEmail_Input_Model !== 'undefined' && $scope.PatientEmail_Input_Model !== null && $scope.PatientEmail_Input_Model !== "") {
-				PatientData['PatientEmail_FieldValue'] = $scope.PatientEmail_Input_Model.toLowerCase(); 
+			if (typeof $scope.UserEmail_Input_Model !== 'undefined' && $scope.UserEmail_Input_Model !== null && $scope.UserEmail_Input_Model !== "") {
+				UserData['UserEmail_FieldValue'] = $scope.UserEmail_Input_Model.toLowerCase(); 
 			}else{
-				PatientData['PatientEmail_FieldValue'] = "NONE";
+				UserData['UserEmail_FieldValue'] = "NONE";
 			}		
 			
-			if (typeof $scope.PatientPhone_Input_Model !== 'undefined' && $scope.PatientPhone_Input_Model !== null && $scope.PatientPhone_Input_Model !== "") {
-				PatientData['PatientPhone_FieldValue'] = $scope.PatientPhone_Input_Model; 
+			if (typeof $scope.UserPhone_Input_Model !== 'undefined' && $scope.UserPhone_Input_Model !== null && $scope.UserPhone_Input_Model !== "") {
+				UserData['UserPhone_FieldValue'] = $scope.UserPhone_Input_Model; 
 			}else{
-				PatientData['PatientPhone_FieldValue'] = "NONE";
+				UserData['UserPhone_FieldValue'] = "NONE";
+			}				
+
+			if (typeof $scope.CompanyID_Input_Model !== 'undefined' && $scope.CompanyID_Input_Model !== null && $scope.CompanyID_Input_Model !== "") {
+				UserData['CompanyID_FieldValue'] = $scope.CompanyID_Input_Model.toLowerCase();  
+			}else{
+				UserData['CompanyID_FieldValue'] = "NONE";
+			}			
+			
+			if (typeof $scope.UserGroupSelect_Input_Model !== 'undefined' && $scope.UserGroupSelect_Input_Model !== null && $scope.UserGroupSelect_Input_Model !== "") {
+				UserData['UserGroup_FieldValue'] = $scope.UserGroupSelect_Input_Model.toLowerCase();  
+			}else{
+				UserData['UserGroup_FieldValue'] = "NONE";
 			}				
 			
-			if (typeof $scope.BirthDate_Input_Model !== 'undefined' && $scope.BirthDate_Input_Model !== null && $scope.BirthDate_Input_Model !== "") {
-				PatientData['BirthDate_FieldValue'] = $scope.BirthDate_Input_Model; 
+			if (typeof $scope.Status_Input_Model !== 'undefined' && $scope.Status_Input_Model !== null && $scope.Status_Input_Model !== "") {
+				UserData['Status_FieldValue'] = $scope.Status_Input_Model.toLowerCase();  
 			}else{
-				PatientData['BirthDate_FieldValue'] = "NONE";
-			}	
-
-			if (typeof $scope.JoinDate_Input_Model !== 'undefined' && $scope.JoinDate_Input_Model !== null && $scope.JoinDate_Input_Model !== "") {
-				PatientData['JoinDate_FieldValue'] = $scope.JoinDate_Input_Model; 
-			}else{
-				PatientData['JoinDate_FieldValue'] = "NONE";
-			}
-						
-			if (typeof $scope.GenderSelect_Input_Model !== 'undefined' && $scope.GenderSelect_Input_Model !== null && $scope.GenderSelect_Input_Model !== "") {
-				PatientData['Gender_FieldValue'] = $scope.GenderSelect_Input_Model; 
-			}else{
-				PatientData['Gender_FieldValue'] = "NONE";
-			}
-
-			if (typeof $scope.CompanySelect_Input_Model !== 'undefined' && $scope.CompanySelect_Input_Model !== null && $scope.CompanySelect_Input_Model !== "") {
-				PatientData['CompanyID_FieldValue'] = $scope.CompanySelect_Input_Model; 
-			}else{
-				PatientData['CompanyID_FieldValue'] = "NONE";
-			}			
-			
-			if (typeof $scope.DepartmentSelect_Input_Model !== 'undefined' && $scope.DepartmentSelect_Input_Model !== null && $scope.DepartmentSelect_Input_Model !== "") {
-				PatientData['Department_FieldValue'] = $scope.DepartmentSelect_Input_Model; 
-			}else{
-				PatientData['Department_FieldValue'] = "NONE";
-			}			
-			
-			if (typeof $scope.SiteSelect_Input_Model !== 'undefined' && $scope.SiteSelect_Input_Model !== null && $scope.SiteSelect_Input_Model !== "") {
-				PatientData['Site_FieldValue'] = $scope.SiteSelect_Input_Model; 
-			}else{
-				PatientData['Site_FieldValue'] = "NONE";
-			}
-
-			if (typeof $scope.PatientAddress_Input_Model !== 'undefined' && $scope.PatientAddress_Input_Model !== null && $scope.PatientAddress_Input_Model !== "") {
-				PatientData['PatientAddress_FieldValue'] = $scope.PatientAddress_Input_Model; 
-			}else{
-				PatientData['PatientAddress_FieldValue'] = "NONE";
-			}
+				UserData['Status_FieldValue'] = "NONE";
+			}				
 			
 			
-			$debug_string = "\nPatientID_FieldValue="+PatientData['PatientID_FieldValue'];
-			$debug_string +="\nForename_FieldValue="+PatientData['Forename_FieldValue'];
-			$debug_string +="\nFirstSurname_FieldValue="+PatientData['FirstSurname_FieldValue'];
-			$debug_string +="\nSecondSurname_FieldValue="+PatientData['SecondSurname_FieldValue'];
-			$debug_string +="\nPatientEmail_FieldValue="+PatientData['PatientEmail_FieldValue'];
-			$debug_string +="\nPatientPhone_FieldValue="+PatientData['PatientPhone_FieldValue'];
-			$debug_string +="\nBirthDate_FieldValue="+PatientData['BirthDate_FieldValue'];
-			$debug_string +="\nJoinDate_FieldValue="+PatientData['JoinDate_FieldValue'];
-			$debug_string +="\nGender_FieldValue="+PatientData['Gender_FieldValue'];
-			$debug_string +="\nCompanyID_FieldValue="+PatientData['CompanyID_FieldValue'];
-			$debug_string +="\nDepartment_FieldValue="+PatientData['Department_FieldValue'];
-			$debug_string +="\nSite_FieldValue="+PatientData['Site_FieldValue'];
+			$debug_string = "\nUserID_FieldValue="+UserData['UserID_FieldValue'];
+			$debug_string +="\nForename_FieldValue="+UserData['Forename_FieldValue'];
+			$debug_string +="\nFirstSurname_FieldValue="+UserData['FirstSurname_FieldValue'];
+			$debug_string +="\nSecondSurname_FieldValue="+UserData['SecondSurname_FieldValue'];
+			$debug_string +="\nUserEmail_FieldValue="+UserData['UserEmail_FieldValue'];
+			$debug_string +="\nUserPhone_FieldValue="+UserData['UserPhone_FieldValue'];
+			$debug_string +="\nCompanyID_FieldValue="+UserData['CompanyID_FieldValue'];
+			$debug_string +="\nUserGroup_FieldValue="+UserData['UserGroup_FieldValue'];			
+			$debug_string +="\nStatus_FieldValue="+UserData['Status_FieldValue'];		
 			
-			//alert("(DEBUG)Function ReadPatientFields() executed. Results:"+$debug_string); //(DEBUG)
+			alert("(DEBUG)Function ReadUserFields() executed. Results:"+$debug_string); //(DEBUG)
 			
 		
 		}
 		//end of function
 		
-	
-		//2. read search HTML input fields	
-		function ReadCompanyFields () {
-				
-			//alert("(DEBUG)ReadCompanyFields()- starting");	
-			
-			if (typeof $scope.CompanyID2_Input_Model !== 'undefined' && $scope.CompanyID2_Input_Model !== null && $scope.CompanyID2_Input_Model !== "") {
-				CompanyData.CompanyID2_FieldValue = $scope.CompanyID2_Input_Model; 
-			}else{
-				CompanyData.CompanyID2_FieldValue = "NONE";
-			}
-			
-			if (typeof $scope.CompanyEmail_Input_Model !== 'undefined' && $scope.CompanyEmail_Input_Model !== null && $scope.CompanyEmail_Input_Model !== "") {
-				CompanyData.CompanyEmail_FieldValue = $scope.CompanyEmail_Input_Model; 
-			}else{
-				CompanyData.CompanyEmail_FieldValue = "NONE";
-			}
-
-			if (typeof $scope.CompanyPhone_Input_Model !== 'undefined' && $scope.CompanyPhone_Input_Model !== null && $scope.CompanyPhone_Input_Model !== "") {
-				CompanyData.CompanyPhone_FieldValue = $scope.CompanyPhone_Input_Model; 
-			}else{
-				CompanyData.CompanyPhone_FieldValue = "NONE";
-			}
-			
-			if (typeof $scope.CompanyAddress_Input_Model !== 'undefined' && $scope.CompanyAddress_Input_Model !== null && $scope.CompanyAddress_Input_Model !== "") {
-				CompanyData.Address_FieldValue = $scope.CompanyAddress_Input_Model; 
-			}else{
-				CompanyData.Address_FieldValue = "NONE";
-			}			
-						
-			$debug_string = "\nCompanyID2_FieldValue="+CompanyData.CompanyID2_FieldValue;
-			$debug_string +="\nCompanyEmail_FieldValue="+CompanyData.CompanyEmail_FieldValue;
-			$debug_string +="\nCompanyPhone_FieldValue="+CompanyData.CompanyPhone_FieldValue;
-			$debug_string +="\nCompanyAddress_FieldValue="+CompanyData.Address_FieldValue;
-			//alert("(DEBUG)ReadCompanyFields()-data="+$debug_string);
-			
-		}	
-		//eof
 		
-		//function to return patient search string, based on patient inout fields
-		function CreatePatientSearchString(){
+		//function to return user search string, based on patient inout fields
+		function CreateUserSearchString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=SelectPatient";
+			var URL = "../engine/dBInterface.php?ActionDBToken=SelectUser";
 		
-			if(PatientData.PatientID_FieldValue !=="NONE"){
-				URL+="&PatientIDToken="+PatientData.PatientID_FieldValue;
+			if(UserData.UserID_FieldValue !=="NONE"){
+				URL+="&UserIDToken="+UserData.UserID_FieldValue;
 			}
 
-			if(PatientData.Forename_FieldValue !=="NONE"){
-				URL+="&ForenameToken="+PatientData.Forename_FieldValue;
+			if(UserData.Forename_FieldValue !=="NONE"){
+				URL+="&ForenameToken="+UserData.Forename_FieldValue;
 			}
 
-			if(PatientData.FirstSurname_FieldValue !=="NONE"){
-				URL+="&FirstSurnameToken="+PatientData.FirstSurname_FieldValue;
+			if(UserData.FirstSurname_FieldValue !=="NONE"){
+				URL+="&FirstSurnameToken="+UserData.FirstSurname_FieldValue;
 			}
 
-			if(PatientData.SecondSurname_FieldValue !=="NONE"){
-				URL+="&SecondSurnameToken="+PatientData.SecondSurname_FieldValue;
+			if(UserData.SecondSurname_FieldValue !=="NONE"){
+				URL+="&SecondSurnameToken="+UserData.SecondSurname_FieldValue;
 			}
 
-			if(PatientData.PatientPhone_FieldValue !=="NONE"){
-				URL+="&PhoneToken="+PatientData.PatientPhone_FieldValue;
+			if(UserData.UserPhone_FieldValue !=="NONE"){
+				URL+="&PhoneToken="+UserData.UserPhone_FieldValue;
 			}
 
-			if(PatientData.PatientEmail_FieldValue !=="NONE"){
-				URL+="&EmailToken="+PatientData.PatientEmail_FieldValue;
+			if(UserData.UserEmail_FieldValue !=="NONE"){
+				URL+="&EmailToken="+UserData.PatientEmail_FieldValue;
 			}
 
-			if(PatientData.CompanyID_FieldValue !=="NONE"){
-				URL+="&CompanyIDToken="+PatientData.CompanyID_FieldValue;
-			}
-
-			if(PatientData.Site_FieldValue !=="NONE"){
-				URL+="&SiteToken="+PatientData.Site_FieldValue;
-				
-			}
-
-			
-			if(PatientData.Department_FieldValue !=="NONE"){
-				URL+="&DepartmentToken="+PatientData.Department_FieldValue;
-			}
-
-			if(PatientData.BirthDate_FieldValue !=="NONE"){
-				URL+="&BirthDateToken="+PatientData.BirthDate_FieldValue;
-			}
-
-			if(PatientData.Gender_FieldValue !=="NONE"){
-				URL+="&GenderToken="+PatientData.Gender_FieldValue;
+			if(UserData.CompanyID_FieldValue !=="NONE"){
+				URL+="&CompanyIDToken="+UserData.CompanyID_FieldValue;
 			}
 			
-			if(PatientData.PatientAddress_FieldValue !=="NONE"){
-				URL+="&AddressToken="+PatientData.PatientAddress_FieldValue;
+			if(UserData.Status_FieldValue !=="NONE"){
+				URL+="&StatusToken="+UserData.Status_FieldValue;
 			}
 			
-			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
+			alert("(DEBUG)CreateUserSearchString()-ending.URL="+URL);
 			return URL;
 			
 		}
 		//eof
-		
 		
 		//function to return string to delete patient, by patient ID (taken from URL)
-		function CreatePatientDeleteStringByID(){
+		function CreateUserDeleteStringByID(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=DeletePatient";
-			URL+="&PatientIDToken="+URLParams.ID;
-			//alert("(DEBUG)CreatePatientDeleteStringByID() executed. Return URL="+URL);
+			var URL = "../engine/dBInterface.php?ActionDBToken=DeleteUser";
+			URL+="&UserIDToken="+URLParams.ID;
+			//alert("(DEBUG)CreateUserDeleteStringByID() executed. Return URL="+URL);
 			return URL;
 			
 		}
 		//eof
-
-		//function to return string to delete company, by company ID (taken from URL)
-		function CreateCompanyDeleteStringByID(){
-			
-			var URL = "../engine/dBInterface.php?ActionDBToken=DeleteCompany";
-			URL+="&CompanyIDToken="+URLParams.ID;
-			//alert("(DEBUG)CreateCompanyDeleteStringByID() executed. Return URL="+URL);
-			return URL;			
-	
-		}
-		//eof
-		
 
 		//function to generate URL string to insert patient into dB
 		//returns the URL
-		function CreatePatientInsertString(){
+		function CreateUserInsertString(){
 			
-			//alert("(DEBUG)CreatePatientInsertString()-starting");			
+			//alert("(DEBUG)CreateUserInsertString()-starting");			
 			var URL = "../engine/dBInterface.php?";
-			URL += "ActionDBToken=InsertPatient";
-			URL += "&PatientIDToken="+PatientData.PatientID_FieldValue;
-			URL += "&ForenameToken="+PatientData.Forename_FieldValue;
-			URL += "&FirstSurnameToken="+PatientData.FirstSurname_FieldValue;
-			URL += "&SecondSurnameToken="+PatientData.SecondSurname_FieldValue;
-			URL += "&EmailToken="+PatientData.PatientEmail_FieldValue;
-			URL += "&PhoneToken="+PatientData.PatientPhone_FieldValue;
-			URL += "&GenderToken="+PatientData.Gender_FieldValue;
-			URL += "&BirthDateToken="+PatientData.BirthDate_FieldValue;
-			URL += "&AddressToken="+PatientData.PatientAddress_FieldValue;
-			URL += "&CompanyIDToken="+PatientData.CompanyID_FieldValue;
-			URL += "&SiteToken="+PatientData.Site_FieldValue;
+			URL += "ActionDBToken=InsertUser";
+			URL += "&UserIDToken="+UserData.UserID_FieldValue;
+			URL += "&ForenameToken="+UserData.Forename_FieldValue;
+			URL += "&FirstSurnameToken="+UserData.FirstSurname_FieldValue;
+			URL += "&SecondSurnameToken="+UserData.SecondSurname_FieldValue;
+			URL += "&EmailToken="+UserData.UserEmail_FieldValue;
+			URL += "&PhoneToken="+UserData.UserPhone_FieldValue;
+			URL += "&CompanyIDToken="+UserData.CompanyID_FieldValue;
+			URL += "&UserGroupToken="+UserData.UserGroup_FieldValue;
+			URL += "&StatusToken="+UserData.Status_FieldValue;
 						
-			//alert("(DEBUG)CreatePatientInsertString()-ending.URL="+URL);
+			//alert("(DEBUG)CreateUserInsertString()-ending.URL="+URL);
 			return URL;
 			
 		}
 		//eof
 		
-		//function to return URL string to insert company into dB
-		//returns the URL
-		function CreateCompanyInsertString(){
+		//function to return the URL string to update user profile data
+		//it uses URLParams.ID global to select user
+		function CreateUserEditString(){
 			
-			//alert("(DEBUG)CreateCompanyInsertString()-starting");			
-			var URL = "../engine/dBInterface.php?";
-			URL += "ActionDBToken=InsertCompany";
-			URL += "&CompanyIDToken="+CompanyData.CompanyID2_FieldValue;
-			URL += "&EmailToken="+CompanyData.CompanyEmail_FieldValue;
-			URL += "&PhoneToken="+CompanyData.CompanyPhone_FieldValue;
-			URL += "&AddressToken="+CompanyData.Address_FieldValue;
-						
-			//alert("(DEBUG)CreateCompanyInsertString()-ending.URL="+URL);
-			return URL;
-			
-		}
-		//eof
-		
-		//function to return the URL string to update patient profile data
-		//it uses URLParams.ID global to select patient
-		function CreatePatientEditString(){
-			
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdatePatient";
-			URL+="&PatientIDToken="+URLParams.ID;
+			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateEdit";
+			URL+="&UserIDToken="+URLParams.ID;
 
-			if(PatientData.Forename_FieldValue !=="NONE"){
-				URL+="&ForenameToken="+PatientData.Forename_FieldValue;
+			if(UserData.Forename_FieldValue !=="NONE"){
+				URL+="&ForenameToken="+UserData.Forename_FieldValue;
 			}
 
-			if(PatientData.FirstSurname_FieldValue !=="NONE"){
-				URL+="&FirstSurnameToken="+PatientData.FirstSurname_FieldValue;
+			if(UserData.FirstSurname_FieldValue !=="NONE"){
+				URL+="&FirstSurnameToken="+UserData.FirstSurname_FieldValue;
 			}
 
-			if(PatientData.SecondSurname_FieldValue !=="NONE"){
-				URL+="&SecondSurnameToken="+PatientData.SecondSurname_FieldValue;
+			if(UserData.SecondSurname_FieldValue !=="NONE"){
+				URL+="&SecondSurnameToken="+UserData.SecondSurname_FieldValue;
 			}
 
-			if(PatientData.PatientPhone_FieldValue !=="NONE"){
-				URL+="&PhoneToken="+PatientData.PatientPhone_FieldValue;
+			if(UserData.UserPhone_FieldValue !=="NONE"){
+				URL+="&PhoneToken="+UserData.UserPhone_FieldValue;
 			}
 
-			if(PatientData.PatientEmail_FieldValue !=="NONE"){
-				URL+="&EmailToken="+PatientData.PatientEmail_FieldValue;
+			if(UserData.UserEmail_FieldValue !=="NONE"){
+				URL+="&EmailToken="+UserData.UserEmail_FieldValue;
 			}
 
-			if(PatientData.CompanyID_FieldValue !=="NONE"){
-				URL+="&CompanyIDToken="+PatientData.CompanyID_FieldValue;
+			if(UserData.CompanyID_FieldValue !=="NONE"){
+				URL+="&CompanyIDToken="+UserData.CompanyID_FieldValue;
 			}
 
-			
-			URL+="&SiteToken=Site1";//for demo
-			
-			//FIXME:commented out for demo	
-			/*			
-			if(PatientData.Site_FieldValue !=="NONE"){
-				URL+="&SiteToken="+PatientData.Site_FieldValue;
+			if(UserData.UserGroup !=="NONE"){
+				URL+="&UserGroupToken="+UserData.UserGroup;
 			}			
-			*/
-
-			if(PatientData.Department_FieldValue !=="NONE"){
-				URL+="&DepartmentToken="+PatientData.Department_FieldValue;
-			}
-
-			if(PatientData.BirthDate_FieldValue !=="NONE"){
-				URL+="&BirthDateToken="+PatientData.BirthDate_FieldValue;
-			}
-
-			if(PatientData.Gender_FieldValue !=="NONE"){
-				URL+="&GenderToken="+PatientData.Gender_FieldValue;
-			}
 			
-			if(PatientData.PatientAddress_FieldValue !=="NONE"){
-				URL+="&AddressToken="+PatientData.PatientAddress_FieldValue;
-			}
-			
+			if(UserData.Status !=="NONE"){
+				URL+="&StatusToken="+UserData.Status;
+			}			
+
 			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
 			return URL;
 			
 		}
 		//eof
 
-		//returns the URL string to search company profile 
-		function CreateCompanySearchString(){
-			
-			//alert("(DEBUG)CreateCompanySearchString()- starting");
-			var URL = "../engine/dBInterface.php?ActionDBToken=SelectCompany";
-
-			if(CompanyData.CompanyID2_FieldValue!=="NONE"){
-				URL += "&CompanyID2Token="+CompanyData.CompanyID2_FieldValue;
-			}
-
-			if(CompanyData.CompanyEmail_FieldValue!=="NONE"){
-				URL += "&CompanyEmailToken="+CompanyData.CompanyEmail_FieldValue;
-			}			
-			
-			if(CompanyData.CompanyPhone_FieldValue!=="NONE"){
-				URL += "&CompanyPhoneToken="+CompanyData.CompanyPhone_FieldValue;
-			}	
-	
-			if(CompanyData.Address_FieldValue!=="NONE"){
-				URL += "&AddressToken="+CompanyData.Address_FieldValue;
-			}
-			
-			//alert("(DEBUG)CreateCompanySearchString()-ending.URL="+URL);
-			return URL;
-		
-		}
-		//eof
-		
-		//returns the URL string to update company profile 
-		function CreateCompanyEditString(){
-			
-			//alert("(DEBUG)CreateCompanyEditString()- starting");
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateCompany";
-			URL += "&CompanyIDToken="+URLParams.ID;
-			
-			/*	
-			if(CompanyData.CompanyID2_FieldValue!=="NONE"){
-				URL += "&CompanyIDToken="+CompanyData.CompanyID2_FieldValue;
-			}
-			*/
-
-			if(CompanyData.CompanyEmail_FieldValue!=="NONE"){
-				URL += "&EmailToken="+CompanyData.CompanyEmail_FieldValue;
-			}			
-			
-			if(CompanyData.CompanyPhone_FieldValue!=="NONE"){
-				URL += "&PhoneToken="+CompanyData.CompanyPhone_FieldValue;
-			}	
-			
-			
-			URL += "&AddressToken=Parque Industrial C. Blancos #1550";  //just for demo
-			//FIXME:for demo this is commented out	
-			/*
-			if(CompanyData.Address_FieldValue!=="NONE"){
-				URL += "&AddressToken="+CompanyData.Address_FieldValue;
-			}
-			*/
-			
-			//alert("(DEBUG)CreateCompanyEditString()-ending.URL="+URL);
-			return URL;
-		
-		}
-		//eof
 	
 	
 		//validating input field to prevent the user to enter invalid words or chars
@@ -649,7 +384,7 @@ var fetch = angular.module('fetch', []);
 		} 
 		//eof
 
-		
+		//FIXME: convert for user
 		//function to validate patient input data in HTML fields
 		//returns true if everything is valid, otherwise false
 		function CheckPatientInputData(){	
@@ -680,70 +415,14 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 
-
-		
-		//function to validate company input data in HTML fields
-		//returns true if everything is valid, otherwise false
-		function CheckCompanyInputData(){	
 			
-			//alert("(DEBUG)CheckPatientInputData() - starting"  );
-			
-			if(CheckInputField(CompanyData.CompanyID2_FieldValue,"text")==false){
-				//alert("ERROR - Entrada invalida en ID Empresa");
-				return false;
-			}else if(CheckInputField(CompanyData.CompanyEmail_FieldValue,"email")==false){
-				//alert("ERROR - Entrada invalida en Nombre de Empresa");
-				return false;
-			}else if(1==10){
-				//alert("ERROR - Entrada invalida en Telefono");
-				//FIXME: the company phone check is causing the script to crash. No idea why. Patient phone do works.
-				return false;
-			}else{
-				//alert("(DEBUG)CheckCompanyInputData() - ending. Return TRUE"  );
-				return true;				
-			}
-			
-		}
-		//eof
-
-		//function to validate company input data in HTML fields
-		//returns true if everything is valid, otherwise false
-		function CheckCompanyInputData_mock(){	
-			
-			//alert("(DEBUG)CheckPatientInputData() - starting"  );
-			
-			if(CheckInputField(CompanyData.CompanyPhone_FieldValue,"phone")==false){
-				//alert("ERROR - Entrada invalida en Telefono");
-				return false;
-			}else{
-				//alert("(DEBUG)CheckCompanyInputData() - ending. Return TRUE"  );
-				return true;				
-			}
-			
-		}
-		//eof
-
-		
-
-		//2. Create <Company> Search string, by ID arg (taken from URL "ID" arg)
+		//2. Create <user> Search string, by ID arg (taken from URL "ID" arg)
 		// returns URL string
-		function CreateCompanySearchStringByID () {
+		function CreateUserSearchStringByID () {
 			
-			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectCompany";
-			URLstring+="&CompanyID2Token="+URLParams.ID;
-			//alert("(DEBUG)CreateCompanySearchStringbyID() - Company Search String="+URLstring);
-			return URLstring;
-			
-		};
-		//end of function		
-	
-		//2. Create <patient> Search string, by ID arg (taken from URL "ID" arg)
-		// returns URL string
-		function CreatePatientSearchStringByID () {
-			
-			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectPatient";
-			URLstring+="&PatientIDToken="+URLParams.ID;
-			//alert("(DEBUG)CreatePatientSearchString() - Patient Search String="+URLstring);
+			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectUser";
+			URLstring+="&UserIDToken="+URLParams.ID;
+			//alert("(DEBUG)CreateUserSearchStringByID() - User Search String="+URLstring);
 			return URLstring;
 			
 		};
@@ -751,17 +430,17 @@ var fetch = angular.module('fetch', []);
 		
 		//function to search patient by ID, Surname, Forename, Company, etc
 		//intended to be called from HTML
-		$scope.SearchPatient = function(){
+		$scope.SearchUser = function(){
 			
 			//alert ("(DEBUG)-SearchPatient() - starting");
-			ResetPatientFieldValues();
-			ReadPatientFields();		
-			CallPHPServerFile(CreatePatientSearchString());
+			ResetUserFieldValues();
+			ReadUserFields();		
+			CallPHPServerFile(CreateUserSearchString());
 			//alert ("(DEBUG)-SearchPatient() - executed");			
 		}
 		//eof
 		
-		
+		//FIXME: convert to user
 		//general function to introduce a new patient in dB	
 		$scope.CreatePatient = function() {			
 			
@@ -778,35 +457,7 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof	
 
-		//function to search company by ID, Surname, Forename, Company, etc
-		//intended to be called from HTML button
-		$scope.SearchCompany = function(){
-			
-			//alert ("(DEBUG)-SearchCompany() - starting");
-			ResetCompanyFieldValues();
-			ReadCompanyFields();		
-			CallPHPServerFile(CreateCompanySearchString());
-			//alert ("(DEBUG)-SearchCompany() - executed");			
-		}
-		//eof		
-		
-		//general function to introduce a new company in dB	
-		$scope.CreateCompany = function() {			
-			
-			//alert ("(DEBUG)-CreateCompany() - starting");
-			
-			ReadCompanyFields();
-			
-			if (CheckCompanyInputData()==true){
-				//alert("(DEBUG)CreatePatient()-Input data is right");
-				CallPHPServerFile(CreateCompanyInsertString());
-			}else{
-				//alert("ERROR - datos invalidos en campos de empresa");				
-			}
-			//alert ("(DEBUG)-CreateCompany() - executed");
-		}
-		//eof		
-
+		//FIXME: convert to user 	
 		//function to store updated company into dB
 		$scope.EditPatient = function(){
 			
@@ -816,18 +467,7 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 		
-		//function to store updated company into dB
-		$scope.EditCompany = function(){
-			
-			//alert("(DEBUG) EditCompany() - starting");
-			ReadCompanyFields();			
-			CallPHPServerFile(CreateCompanyEditString());
-			//window.location.replace("edit_profiles.html?Action=EditCompany&ID="+URLParams.ID+"&Message=Updated");			
-		}
-		//eof
-
-
-		
+		//FIXME: convert to user
 		//function to delete patient. Intended to be called from HTML page
 		//no return
 		$scope.DeletePatient = function(){
@@ -838,16 +478,7 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 		
-		
-		//function to delete company. Intended to be called from HTML
-		//no return
-		$scope.DeleteCompany = function(){
-			//alert("(DEBUG)DeleteCompany() - starting");
-			CallPHPServerFile(CreateCompanyDeleteStringByID());
-			//alert("(DEBUG)DeleteCompany() - executed");
-		}
-		//eof
-		
+	
 
 		/*5. Function to read vars from URL string
 		intended to get "Action" and "ID" for patients and companies
@@ -881,6 +512,7 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 		
+				//FIXME: convert to user
 		//8. Function to check if Patient has been succesfully created into database
 		//returns TRUE if patient do exists
 		function CheckIfPatientExists(){
@@ -894,6 +526,7 @@ var fetch = angular.module('fetch', []);
 		$scope.Init = function(Type) {
 			Main(Type);			
 		}
+		
 		
 		//debug function
 		$scope.dg = function(){
@@ -937,22 +570,8 @@ var fetch = angular.module('fetch', []);
 
 		}
 		
-		//function to save patient changes 
-		//FIXME: is this required?
-		$scope.UpdatePatient = function(){
-			
-			$scope.ReadPatientFields();
-			
-			if(IsThereChanges()==true){
-				$scope.Modal_Message = "Changes were detected";
-			}else{
-				$scope.Modal_Message = "Changes weren`t detected";
-			}
-			//alert("(DEBUG)UpdatePatient() is finished")
-			
-		}
-		//eof
-		
+
+		//FIXME: convert to user
 		//9. MAIN function to execute scripts
 		// Arg Type="Patient" or "Company". Its set by HTML controller tag
 		// return true if succesfully executed
