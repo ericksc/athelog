@@ -223,6 +223,10 @@ var fetch = angular.module('fetch', []);
 			if(UserData.Status_FieldValue !=="NONE"){
 				URL+="&StatusToken="+UserData.Status_FieldValue;
 			}
+
+			if(UserData.UserGroup_FieldValue !=="NONE"){
+				URL+="&UserGroupToken="+UserData.UserGroup_FieldValue;
+			}
 			
 			alert("(DEBUG)CreateUserSearchString()-ending.URL="+URL);
 			return URL;
