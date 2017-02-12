@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to users screen v1.1");
+		alert("(DEBUG)Welcome to users screen v1.25");
 		
 		//globals to hide Patient/Company text
 		//FIXME:check if this is really required
@@ -100,7 +100,7 @@ var fetch = angular.module('fetch', []);
 
 			//returns TRUE just if both params are different to Null, NONE, undefined or empty
 			result = Boolean(var1_valid*var2_valid);
-			//alert("(DEBUG)CheckURLParameters(). ID_Param="+URLParams.ID+",Action_Param="+URLParams.Action+"-Returning "+result);
+			alert("(DEBUG)CheckURLParameters(). ID_Param="+URLParams.ID+",Action_Param="+URLParams.Action+"-Returning "+result);
 			return result;
 						
 			
@@ -586,22 +586,12 @@ var fetch = angular.module('fetch', []);
 			//check parameters
 			if(CheckURLParameters()==true){
 				
-				if(Type=='Patient' && URLParams.Action=="EditPatient"){
+				if(Type=='User' && URLParams.Action=="EditUser"){
 					
-					CallPHPServerFile(CreatePatientSearchStringByID());
+					CallPHPServerFile(CreateUserSearchStringByID());
 					return true;
 				}
-				else if (Type=='Company' && URLParams.Action=="EditCompany"){
-					
-					CallPHPServerFile(CreateCompanySearchStringByID());
-					return true;
-				}
-				else{
-					//ActionParam is undefined
-					//alert("(DEBUG)Main - Finishing Main without search");
-					return false;
-				}
-				
+		
 				
 				
 			}else{
