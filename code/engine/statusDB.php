@@ -1,5 +1,6 @@
 <?php
 include("conexionDB.php");
+include("getURLparameters.php");
 
 define('DBversion','SELECT VERSION( )');
 $query = "NONE";
@@ -33,9 +34,26 @@ ConexionDBResult_PrintArray($query);
 
 print_r(ConexionDB_rawdata($query));
 
+$temp = getGETarray();
+
+print_r($temp);
+
 
 }
 
-ReadGenericParameters();
+/*
+printGETarray();
+print "hola\n";
+parsingGETarray();
+*/
+
+$temp = getGETarray();
+print_r($temp);
+
+$string1 = getQuerystatement("PatientIDToken");
+print $string1;
+
+
+//ReadGenericParameters();
 ?>
 
