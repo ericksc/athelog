@@ -37,6 +37,22 @@ function printGETarray(){
         print_r($_GET);
     }
 }
+
+function getGETarray($printingconsole=FALSE){
+    if (!checkGETempty()) {
+        if ($printingconsole) {print_r($_GET);}
+        return $_GET;
+    }
+    else{
+        if ($printingconsole) {print "_GET array is empty";}
+        return array();
+    }
+}
+
+function getQuerystatement($input){
+    preg_match("/(.*)(Token)/", $input, $output_array);
+    return $output_array[1];
+}
 function parsingGETarray(){
     global $action, $where_conditions, $from_table, $set_value, $into_table, $update_table;
     $URLparameter_array = array();
