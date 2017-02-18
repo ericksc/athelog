@@ -1,5 +1,5 @@
 <?php
-
+include("conexionDB.php");
 //0. CONST
 
 //base queries
@@ -493,27 +493,9 @@ function LoginUserParams() {
 }
 }
 function Main(){
-	
-	global $query, $ActionDB_Param;
-	
-       
-	ReadGenericParameters();	
-	
-	// $connect = mysqli_connect("mysql.hostinger.es","u505969032_ramvq","joliewatt0123","u505969032_bicoy");
-	$connect = mysqli_connect("mysql.hostinger.es","u884088163_erix","L4rd_erix","u884088163_irixs");
-	$result = mysqli_query($connect,$query);
-	
-	$data = array();
-        if($ActionDB_Param=="LoginUser"){
-           if($result=='[{"0":"1","count(*)":"1"}]')
-               {
-                print "TRUE";
-               }
-	} 
-	while ($row = mysqli_fetch_array($result)) {
-	  $data[] = $row;
-	}
-    print json_encode($data);
+    global $query, $ActionDB_Param;
+    ReadGenericParameters();
+    ConexionDB($query);	
 }
 //eof
 

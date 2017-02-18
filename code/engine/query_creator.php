@@ -6,7 +6,11 @@
  * and open the template in the editor.
  */
 
-function ReadCompanyParams() { print "en update patient" ;   }
+function ReadCompanyParams($array_input) { 
+    print "inside readcompanyparams";
+    print_r($array_input);   
+    
+}
 function ReadPatientParams() {  print "en update patient" ;  }
 function DeletePatientParams() {  }
 function DeleteCompanyParams() {  }
