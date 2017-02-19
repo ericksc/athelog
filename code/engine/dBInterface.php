@@ -12,6 +12,7 @@ define('DeleteCompany_BasicQuery', 'DELETE FROM Companies WHERE 1');
 define('UpdatePatient_BasicQuery', 'UPDATE `Patients` SET ');
 define('UpdateCompany_BasicQuery', 'UPDATE `Companies` SET ');
 define('LoginUser_BasicQuery', 'SELECT count(*) FROM `Users` WHERE 1 ');
+define('SelectUser_BasicQuery', 'SELECT * FROM Users WHERE 1');
 // TODO: define base queries for the other operations
 
 //1. GLOBAL VARS
@@ -58,6 +59,12 @@ function ReadGenericParameters(){
 		}
                 else if($ActionDB_Param=="UpdatePatient"){
 			UpdatePatientParams(); //Updating Patient UPDATE INTO Query String
+			
+		}else if($ActionDB_Param=="SelectUser"){
+			ReadUserParams(); //Creating Patient DELETE INTO Query String
+		}	
+		else if($ActionDB_Param=="NotifyUser"){
+			ReadUserNotificationParams(); //Creating Patient DELETE INTO Query String
 		}
                 else if($ActionDB_Param=="UpdateCompany"){
 			UpdateCompanyParams(); //Updating Company UPDATE INTO Query String
@@ -492,10 +499,165 @@ function LoginUserParams() {
                 }
 }
 }
+//eof
+
+//function to read notifications params
+function ReadUserNotificationParams(){
+	
+	
+	$MailDestination = "rvargas@athelog.net";//FIXME:read this CONST file
+	$MailHeaders = "From:Bicoyed"."\r\n";//FIXME:read this CONST file
+	$MailHeaders .= "CC:ramirovq@gmail.com";//FIXME:read this CONST file
+
+	
+	$Password="DummyPassword"; //FIXME:read this from dB
+	$Username="DummyName";//FIXME:read this from dB
+	$Type_Param="";	
+	$MailSubject = "";
+	$MailText = "Estimado(a) ";
+	
+	if (isset($_GET['UserIDToken'])) {
+		$UserID_Param=$_GET['UserIDToken'];
+		
+		if($UserID_Param!="NONE"){
+
+			if (isset($_GET['TypeToken'])) {
+				$Type_Param=$_GET['TypeToken'];	
+			}	
+		
+		
+			$MailText .= $UserID_Param .",";
+			
+			if($Type_Param=="UserAccountCreated"){
+				$MailSubject = "Bicoyed: Bienvenido al programa de salud";
+				$MailText .= "\nBicoyed le saluda y le da la bienvenida al programa de salud. Sus datos de acceso al programa son los siguientes:";
+				$MailText .= "\nUsuario=".$Username;
+				$MailText .= "\nClave=".$Password;
+				$MailText .= "\n\nLe rogamos dar la debida protección a sus datos. Por favor no comparta su usuario ni clave, y haga click en el botón de Salida para finalizar cada sesión.";
+				$MailText .= "\nGracias. Atentamente,\n-el equipo Bicoyed";
+				$MailText .= "\n\nNota: Este correo es generado automáticamente, así que no es posible responder a él. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";	
+			
+			}else if($Type_Param=="UserProfileDataChanged"){
+				
+				$MailSubject = "Bicoyed: Su perfil ha sido modificado";
+				$MailText .= "\nSus datos de perfil de usuario han sido modificados. Para ver los cambios por favor ingrese al portal web y diríjase a la sección Mi Cuenta.";
+				$MailText .= "\n\nGracias. Atentamente,\n-el equipo Bicoyed";
+				$MailText .= "\n\nNota: Este correo es generado automáticamente, así que no es posible responder a él. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";
+			
+			}else if($Type_Param=="UserAccessDataChanged"){
+				
+				$MailSubject = "Bicoyed: Sus datos de acceso al programa";
+				$MailText .= "\nSus datos de acceso al programa son los siguientes:";
+				$MailText .= "\nUsuario=".$Username;
+				$MailText .= "\nClave=".$Password;				
+				$MailText .= "\n\nGracias. Atentamente,\n-el equipo Bicoyed";
+				$MailText .= "\n\nNota: Este correo es generado automáticamente, así que no es posible responder a él. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";
+	
+			}else{
+				echo "\nMail NOT sent - Type invalid";
+				return -1; //Type is unknown
+			}
+			
+		}else{
+			echo "\nMail NOT sent - UserID si NONE";
+			return -1.1; //UserID is NONE			
+		}	
+				
+	}else{
+			echo "\nMail NOT sent - UserID invalid";
+			return -2; //UserID is unknown				
+	}
+
+	mail($MailDestination,$MailSubject,$MailText,$MailHeaders);
+	echo "\nMail sent";
+	return 0; //succesfully executed
+	
+}
+//eof
+
+
+
+
 function Main(){
     global $query, $ActionDB_Param;
     ReadGenericParameters();
     ConexionDB($query);	
+}
+//eof
+
+//FIXME: TODO: enable function to select users
+//as a reference, old function:
+//function to Read User data
+function ReadUserParams() {
+	
+	
+	
+	global $query;
+	$query = SelectUser_BasicQuery;
+
+	if (isset($_GET['UserIDToken'])) {
+		$UserID_Param=$_GET['UserIDToken'];
+		
+		if($UserID_Param!="NONE"){
+			$query .= " AND UserID LIKE $UserID_Param";				
+		}
+	}
+
+	if (isset($_GET['ForenameToken'])) {
+		$Forename_Param=$_GET['ForenameToken'];
+
+		if($Forename_Param!="NONE"){
+			$query .= " AND Forename LIKE '$Forename_Param'";				
+		}
+		
+	}	
+
+	if (isset($_GET['FirstSurnameToken'])) {
+		$FirstSurname_Param=$_GET['FirstSurnameToken'];
+		
+		if($FirstSurname_Param!="NONE"){
+			$query .= " AND FirstSurname LIKE '$FirstSurname_Param'";				
+		}
+		
+	}	
+
+	if (isset($_GET['SecondSurnameToken'])) {
+		$SecondSurname_Param=$_GET['SecondSurnameToken'];
+		
+		if($SecondSurname_Param!="NONE"){
+			$query .= " AND SecondSurname LIKE '$SecondSurname_Param'";				
+		}	
+		
+	}
+
+	if (isset($_GET['EmailToken'])) {
+		$Email_Param=$_GET['EmailToken'];
+		
+		if($Email_Param!="NONE"){
+			$query .= " AND Email LIKE '$Email_Param'";				
+		}		
+				
+	}	
+
+	if (isset($_GET['CompanyIDToken'])) {
+		$Company_Param=$_GET['CompanyIDToken'];
+		
+		if($Company_Param!="NONE"){
+			$query .= " AND CompanyID LIKE '$Company_Param'";				
+		}	
+		
+	}		
+
+	if (isset($_GET['UserGroupToken'])) {
+		$UserGroup_Param=$_GET['UserGroupToken'];
+		
+		if($UserGroup_Param!="NONE"){
+			$query .= " AND UserGroup LIKE '$UserGroup_Param'";				
+		}	
+		
+	}		
+	
+		
 }
 //eof
 
