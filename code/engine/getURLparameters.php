@@ -101,49 +101,6 @@ function getquerycomponents_array($array){
     return $URLparameter;
 }
 
-function set_key_value($array)
-{
-        $output = ""; 
-        $firstRun = true; 
-        foreach($array as $key=>$val) { 
-            if(!$firstRun) { 
-                $output .= ","; 
-            } else { 
-                $firstRun = false; 
-            } 
-            $output .= "`" . $key . "`" . " = ". "'" .$val . "'";     
-    } 
-return $output;
-} 
 
-function insert_key_value($array)
-{
-        $output = ""; 
-        $firstRun = true; 
-        foreach($array as $key=>$val) { 
-            if(!$firstRun) { 
-                $output .= ","; 
-            } else { 
-                $firstRun = false; 
-            } 
-            $output .= "'" .$val . "'";     
-    } 
-return $output;
-} 
-
-function set_key_value_like($array)
-{
-        $output = ""; 
-        $firstRun = true; 
-        foreach($array as $key=>$val) { 
-            if(!$firstRun) { 
-                $output .= ","; 
-            } else { 
-                $firstRun = false; 
-            } 
-            $output .= "`" . $key . "`" . " LIKE ". "'" .$val . "'";     
-    } 
-return $output;
-} 
 
 ?>
