@@ -533,16 +533,16 @@ function ReadUserNotificationParams(){
 				$MailText .= "\nBicoyed le saluda y le da la bienvenida al programa de salud. Sus datos de acceso al programa son los siguientes:";
 				$MailText .= "\nUsuario=".$Username;
 				$MailText .= "\nClave=".$Password;
-				$MailText .= "\n\nLe rogamos dar la debida protección a sus datos. Por favor no comparta su usuario ni clave, y haga click en el botón de Salida para finalizar cada sesión.";
+				$MailText .= "\n\nLe rogamos dar la debida protecciï¿½n a sus datos. Por favor no comparta su usuario ni clave, y haga click en el botï¿½n de Salida para finalizar cada sesiï¿½n.";
 				$MailText .= "\nGracias. Atentamente,\n-el equipo Bicoyed";
-				$MailText .= "\n\nNota: Este correo es generado automáticamente, así que no es posible responder a él. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";	
+				$MailText .= "\n\nNota: Este correo es generado automï¿½ticamente, asï¿½ que no es posible responder a ï¿½l. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";	
 			
 			}else if($Type_Param=="UserProfileDataChanged"){
 				
 				$MailSubject = "Bicoyed: Su perfil ha sido modificado";
-				$MailText .= "\nSus datos de perfil de usuario han sido modificados. Para ver los cambios por favor ingrese al portal web y diríjase a la sección Mi Cuenta.";
+				$MailText .= "\nSus datos de perfil de usuario han sido modificados. Para ver los cambios por favor ingrese al portal web y dirï¿½jase a la secciï¿½n Mi Cuenta.";
 				$MailText .= "\n\nGracias. Atentamente,\n-el equipo Bicoyed";
-				$MailText .= "\n\nNota: Este correo es generado automáticamente, así que no es posible responder a él. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";
+				$MailText .= "\n\nNota: Este correo es generado automï¿½ticamente, asï¿½ que no es posible responder a ï¿½l. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";
 			
 			}else if($Type_Param=="UserAccessDataChanged"){
 				
@@ -551,7 +551,7 @@ function ReadUserNotificationParams(){
 				$MailText .= "\nUsuario=".$Username;
 				$MailText .= "\nClave=".$Password;				
 				$MailText .= "\n\nGracias. Atentamente,\n-el equipo Bicoyed";
-				$MailText .= "\n\nNota: Este correo es generado automáticamente, así que no es posible responder a él. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";
+				$MailText .= "\n\nNota: Este correo es generado automï¿½ticamente, asï¿½ que no es posible responder a ï¿½l. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";
 	
 			}else{
 				echo "\nMail NOT sent - Type invalid";

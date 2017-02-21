@@ -1,15 +1,29 @@
 <?php
+include("DBArrayQuery.php");
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 function ReadCompanyParams($array_input) { 
     print "inside readcompanyparams";
-    print_r($array_input);   
+    print_r($array_input);
+    print "\n";
+    global $DBtables;
     
+    $query = "SELECT * FROM " . $DBtables['company'] . " WHERE ";
+    
+    $output = ""; 
+    $firstRun = true; 
+    foreach($array_input as $key=>$val) { 
+        if(!$firstRun) { 
+            $output .= " AND "; 
+        } else { 
+            $firstRun = false; 
+        } 
+        $output .= "`" . $key . "`" . " LIKE ". "'" .$val . "'";     
+    } 
+    $query .= $output;
+    print $query;
+    //AND PatientID LIKE $PatientID_Param";
+            //'SELECT * from Companies WHERE 1';
 }
 function ReadPatientParams() {  print "en update patient" ;  }
 function DeletePatientParams() {  }
