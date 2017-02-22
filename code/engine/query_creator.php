@@ -23,8 +23,27 @@ function ReadUsersParams($array_input) {
 }
 function DeletePatientParams() {  }
 function DeleteCompanyParams() {  }
-function InsertPatientParams() {  }
-function InsertCompanyParams() {  }
+function InsertPatientParams($array_input) { 
+    global $DBtables;
+    $query = "INSERT INTO " . $DBtables['patients'] . "(" . set_key_list(untoken_array($array_input)) . ")";
+    $query .= "VALUES" . "(" . insert_key_value($array_input) .  ")";
+    print $query;
+    ConexionDB_JSON($query);        
+}
+function InsertCompanyParams($array_input) { 
+    global $DBtables;
+    $query = "INSERT INTO " . $DBtables['company'] . "(" . set_key_list(untoken_array($array_input)) . ")";
+    $query .= "VALUES" . "(" . insert_key_value($array_input) .  ")";
+    print $query;
+    ConexionDB_JSON($query);  
+}
+function InsertUsersParams($array_input) { 
+    global $DBtables;
+    $query = "INSERT INTO " . $DBtables['users'] . "(" . set_key_list(untoken_array($array_input)) . ")";
+    $query .= "VALUES" . "(" . insert_key_value($array_input) .  ")";
+    print $query;
+    ConexionDB_JSON($query);  
+}
 function UpdatePatientParams() {  }
 function UpdateCompanyParams() {  print "en update patient" ;}
 function LoginUserParams() {      }
@@ -52,6 +71,20 @@ function where_like_value($array)
     return $output;
 }
 
+function where_equal_value($array)
+{
+    $output = ""; 
+    $firstRun = true; 
+    foreach($array as $key=>$val) { 
+        if(!$firstRun) { 
+            $output .= " AND "; 
+        } else { 
+            $firstRun = false; 
+        } 
+        $output .= "`" . $key . "`" . " = ". "'" .$val . "'";     
+    } 
+    return $output;
+}
 function set_key_value($array)
 {
         $output = ""; 
@@ -67,6 +100,20 @@ function set_key_value($array)
 return $output;
 } 
 
+function set_key_list($array)
+{
+        $output = ""; 
+        $firstRun = true; 
+        foreach($array as $key=>$val) { 
+            if(!$firstRun) { 
+                $output .= ","; 
+            } else { 
+                $firstRun = false; 
+            } 
+            $output .= "`" . $key . "`";     
+    } 
+return $output;
+}
 function insert_key_value($array)
 {
         $output = ""; 
