@@ -115,7 +115,7 @@ var fetch = angular.module('fetch', []);
 		//no return
 		function ReadUserFields() {			
 			
-			//alert("(DEBUG)ReadPatientFields() - starting");
+			//alert("(DEBUG)ReadUserFields() - starting");
 			
 			//FIXME:add SHA2 enconding
 			if (typeof $scope.Password_Input_Model !== 'undefined' && $scope.Password_Input_Model !== null && $scope.Password_Input_Model !== "") {
@@ -155,15 +155,15 @@ var fetch = angular.module('fetch', []);
 			}
 			
 			if (typeof $scope.UserEmail_Input_Model !== 'undefined' && $scope.UserEmail_Input_Model !== null && $scope.UserEmail_Input_Model !== "") {
-				UserData['UserEmail_FieldValue'] = $scope.UserEmail_Input_Model.toLowerCase(); 
+				UserData['Email_FieldValue'] = $scope.UserEmail_Input_Model.toLowerCase(); 
 			}else{
-				UserData['UserEmail_FieldValue'] = "NONE";
+				UserData['Email_FieldValue'] = "NONE";
 			}		
 			
 			if (typeof $scope.UserPhone_Input_Model !== 'undefined' && $scope.UserPhone_Input_Model !== null && $scope.UserPhone_Input_Model !== "") {
-				UserData['UserPhone_FieldValue'] = $scope.UserPhone_Input_Model; 
+				UserData['Phone_FieldValue'] = $scope.UserPhone_Input_Model; 
 			}else{
-				UserData['UserPhone_FieldValue'] = "NONE";
+				UserData['Phone_FieldValue'] = "NONE";
 			}				
 
 			if (typeof $scope.CompanyID_Input_Model !== 'undefined' && $scope.CompanyID_Input_Model !== null && $scope.CompanyID_Input_Model !== "") {
@@ -190,8 +190,8 @@ var fetch = angular.module('fetch', []);
 			$debug_string +="\nMiddleName_FieldValue="+UserData['MiddleName_FieldValue'];
 			$debug_string +="\nFirstSurname_FieldValue="+UserData['FirstSurname_FieldValue'];
 			$debug_string +="\nSecondSurname_FieldValue="+UserData['SecondSurname_FieldValue'];
-			$debug_string +="\nUserEmail_FieldValue="+UserData['Email_FieldValue'];
-			$debug_string +="\nUserPhone_FieldValue="+UserData['Phone_FieldValue'];
+			$debug_string +="\nEmail_FieldValue="+UserData['Email_FieldValue'];
+			$debug_string +="\nPhone_FieldValue="+UserData['Phone_FieldValue'];
 			$debug_string +="\nCompanyID_FieldValue="+UserData['CompanyID_FieldValue'];
 			$debug_string +="\nUserGroup_FieldValue="+UserData['UserGroup_FieldValue'];			
 			$debug_string +="\nStatus_FieldValue="+UserData['Status_FieldValue'];		
@@ -271,19 +271,19 @@ var fetch = angular.module('fetch', []);
 			
 			//alert("(DEBUG)CreateUserInsertString()-starting");			
 			var URL = "../engine/dBInterface.php?";
-			URL += "ActionDBToken=InsertUser";
-			URL += "&PassHash_Token="+UserData.PassHash_FieldValue;
+			URL += "ActionDBToken=InsertUser";			
 			URL += "&UserID_Token="+UserData.UserID_FieldValue;
 			URL += "&Forename_Token="+UserData.Forename_FieldValue;
+			URL += "&MiddleName_Token="+UserData.MiddleName_FieldValue;
 			URL += "&FirstSurname_Token="+UserData.FirstSurname_FieldValue;
 			URL += "&SecondSurname_Token="+UserData.SecondSurname_FieldValue;
 			URL += "&Email_Token="+UserData.UserEmail_FieldValue;
 			URL += "&Phone_Token="+UserData.UserPhone_FieldValue;
 			URL += "&CompanyID_Token="+UserData.CompanyID_FieldValue;
 			URL += "&UserGroup_Token="+UserData.UserGroup_FieldValue;
-			URL += "&Status_Token="+UserData.Status_FieldValue;
-						
-			//alert("(DEBUG)CreateUserInsertString()-ending.URL="+URL);
+			URL += "&PassHash_Token="+UserData.PassHash_FieldValue;
+			
+			alert("(DEBUG)CreateUserInsertString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -417,23 +417,26 @@ var fetch = angular.module('fetch', []);
 		} 
 		//eof
 
-		//FIXME: convert for user
+		//FIXME: add password check
 		//function to validate patient input data in HTML fields
 		//returns true if everything is valid, otherwise false
-		function CheckPatientInputData(){	
+		function CheckUserInputData(){	
 			
-			//alert("(DEBUG)CheckPatientInputData() - starting"  );
+			//alert("(DEBUG)CheckUserInputData() - starting"  );
 			
-			if(CheckInputField(PatientData.Forename_FieldValue,"text")==false){
+			if(CheckInputField(UserData.Forename_FieldValue,"text")==false){
 				//alert("ERROR - Entrada invalida en Nombre");
 				return false;
-			}else if(CheckInputField(PatientData.FirstSurname_FieldValue,"text")==false){
+			}else if(CheckInputField(UserData.MiddleName_FieldValue,"text")==false){
+				//alert("ERROR - Entrada invalida en Segundo Nombre");
+				return false;
+			}else if(CheckInputField(UserData.FirstSurname_FieldValue,"text")==false){
 				//alert("ERROR - Entrada invalida en Primer Apellido");
 				return false;
-			}else if(CheckInputField(PatientData.SecondSurname_FieldValue,"text")==false){
+			}else if(CheckInputField(UserData.SecondSurname_FieldValue,"text")==false){
 				//alert("ERROR - Entrada invalida en Segundo Apellido");
 				return false;
-			}else if(CheckInputField(PatientData.PatientEmail_FieldValue,"email")==false){
+			}else if(CheckInputField(UserData.Email_FieldValue,"email")==false){
 				//alert("ERROR - Entrada invalida en Email");
 				return false;
 			}else if(1==10){
@@ -441,7 +444,7 @@ var fetch = angular.module('fetch', []);
 			//FIXME: script failing when checking the phone number	
 				return false;
 			}else{
-				//alert("(DEBUG)CheckPatientInputData() - ending. Return TRUE"  );
+				//alert("(DEBUG)CheckUserInputData() - ending. Return TRUE"  );
 				return true;				
 			}
 			
@@ -473,20 +476,19 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 		
-		//FIXME: convert to user
 		//general function to introduce a new patient in dB	
-		$scope.CreatePatient = function() {			
+		$scope.CreateUser = function() {			
 			
-			//alert ("(DEBUG)-CreatePatient() - starting");
-			ReadPatientFields();		
+			//alert ("(DEBUG)-CreateUser() - starting");
+			ReadUserFields();		
 			
-			if (CheckPatientInputData()==true){
+			if (CheckUserInputData()==true){
 				//alert("(DEBUG)CreatePatient()-Input data is right");
-				CalldBEngine(CreatePatientInsertString(),"data");
+				CalldBEngine(CreateUserInsertString(),"data");
 			}else{
 				//alert("ERROR - datos invalidos");				
 			}
-			//alert ("(DEBUG)-CreatePatient() - executed");
+			//alert ("(DEBUG)-CreateUser() - executed");
 		}
 		//eof	
 
