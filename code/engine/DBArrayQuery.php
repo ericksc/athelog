@@ -8,7 +8,7 @@
 
 $DBtables = array(
     'company' => 'Companies',
-    'moto' => 'verde',
+    'patients' => 'Patients',
     'avion' => 'amarillo'
 );
 

@@ -15,9 +15,8 @@ $update_table = "";
 $array_parameters = array();
 
 $queryfunctions = array(
-  'ReadCompanyquery' => function($array_parameters) {
-        ReadCompanyParams($array_parameters);
-   }
+  'SelectCompany' => function($array_parameters) { ReadCompanyParams($array_parameters);},
+  'SelectPatient' => function($array_parameters) { ReadPatientParams($array_parameters);}
 );
 
 function callActionFunctions($action, $parameter)

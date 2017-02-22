@@ -57,7 +57,8 @@ print $string1;
 
 
 $array_parameters = getquerycomponents_array(getGETarray());
-callActionFunctions('ReadCompanyquery', $array_parameters);
+$action = getquery_action(getGETarray());
+callActionFunctions($action, $array_parameters);
 //$queryfunctions['ReadCompanyquery'];
 
 //ReadGenericParameters();

@@ -9,7 +9,12 @@ function ReadCompanyParams($array_input) {
     ConexionDB_JSON($query);
 
 }
-function ReadPatientParams() {  print "en update patient" ;  }
+function ReadPatientParams($array_input) {  
+    global $DBtables;
+    $query = "SELECT * FROM " . $DBtables['patients'] . " WHERE ";
+    $query .= where_like_value(untoken_array($array_input));
+    ConexionDB_JSON($query);    
+}
 function DeletePatientParams() {  }
 function DeleteCompanyParams() {  }
 function InsertPatientParams() {  }
@@ -21,7 +26,6 @@ function LoginUserParams() {      }
 function untoken_array($array){
     $output = array();
     foreach($array as $key=>$val) { 
-
             $output[getQuerystatement($key)] =  $val;
     } 
     return $output;
