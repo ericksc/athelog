@@ -235,9 +235,9 @@ article {
 							</tr>	
 
 							<tr>
-								<td>Empresa</td><td><input id="CompanyID_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="CompanyID_Input_Model"></td>														
-							
-							
+								<td>Empresa</td>
+								<td><select ng-model="CompanyID_Input_Model" ng-options="item as item.CompanyID for item in CompanyList"></select></td>														
+
 							</tr>						
 							
 							<tr>
@@ -281,6 +281,7 @@ article {
 									<th>Primer Apellido</th>
 									<th>Segundo Apellido</th>
 									<th>Email</th>
+									<th>Empresa</th>
 									<th>Privilegios</th>
 									<th>Status</th>
 									<th>Acciones</th>
@@ -293,6 +294,7 @@ article {
 									<td>{{users.FirstSurname}}</td>
 									<td>{{users.SecondSurname}}</td>
 									<td>{{users.Email}}</td>
+									<td>{{users.CompanyID}}</td>
 									<td>{{users.UserGroup}}</td>
 									<td>{{users.Status}}</td>
 									<td>
@@ -302,30 +304,7 @@ article {
 								</tr>
 							</tbody>
 						</table>
-						
-						<!--for CompanyList testing-->
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th>Company</th>
 
-								</tr>
-							</thead>
-							<tbody>
-								<tr ng-repeat="CompanyID in CompanyList | filter:searchFilter">
-									<td>{{CompanyID.CompanyID}}</td>
-								</tr>
-							</tbody>
-						</table>						
-						
-						<select ng-model="CompanyList_" ng-options="item.CompanyID for item in CompanyList track by item">
-						</select>
-						
-						
-						
-						
-						
-						
 						
 					</div><!--------- End of Search results ------->				
 					
