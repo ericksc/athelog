@@ -167,7 +167,7 @@ var fetch = angular.module('fetch', []);
 			}				
 
 			if (typeof $scope.CompanyID_Input_Model !== 'undefined' && $scope.CompanyID_Input_Model !== null && $scope.CompanyID_Input_Model !== "") {
-				UserData['CompanyID_FieldValue'] = $scope.CompanyID_Input_Model.toLowerCase();  
+				UserData['CompanyID_FieldValue'] = $scope.CompanyID_Input_Model.CompanyID;  
 			}else{
 				UserData['CompanyID_FieldValue'] = "NONE";
 			}			
@@ -469,7 +469,6 @@ var fetch = angular.module('fetch', []);
 			ResetUserFieldValues();
 			ReadUserFields();		
 			CalldBEngine(CreateUserSearchString(),"data");
-			//CalldBEngine("../engine/dBInterface.php?ActionDBToken=ListCompany","CompanyList");//FIXME: delete
 			//alert ("(DEBUG)-SearchPatient() - executed");			
 		}
 		//eof
@@ -538,7 +537,8 @@ var fetch = angular.module('fetch', []);
 			.success(function(data){
 				
 			if(OutputType=="CompanyList"){	
-				$scope.CompanyList = data;
+				$scope.CompanyList = data; //companyID list from mySQL
+				$scope.CompanyList.push("");//empty options
 			}else if(OutputType=="data"){
 				$scope.data=data;
 			}
