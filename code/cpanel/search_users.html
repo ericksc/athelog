@@ -201,7 +201,7 @@ article {
 			  <h3>Busqueda por usuario</h3>
 		  
 				<!-- controller for patient search -->
-				<div ng-controller="dbCtrl">
+				<div ng-controller="dbCtrl" ng-init="Init('User')">
 		  
 					<form>
 					
@@ -213,6 +213,11 @@ article {
 							<tr>
 								<td>Nombre</td><td><input id="Forename_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="Forename_Input_Model"></td>														
 							</tr>
+
+							<tr>
+								<td>Segundo Nombre</td><td><input id="MiddleName_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="MiddleName_Input_Model"></td>														
+							</tr>							
+							
 							<tr>
 								<td>Primer Apellido</td><td><input id="FirstSurname_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="FirstSurname_Input_Model"></td>														
 							</tr>						
@@ -231,8 +236,10 @@ article {
 
 							<tr>
 								<td>Empresa</td><td><input id="CompanyID_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="CompanyID_Input_Model"></td>														
-							</tr>
-
+							
+							
+							</tr>						
+							
 							<tr>
 								<td>Status</td><td><input id="Status_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="Status_Input_Model"></td>														
 							</tr>
@@ -295,6 +302,31 @@ article {
 								</tr>
 							</tbody>
 						</table>
+						
+						<!--for CompanyList testing-->
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th>Company</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="CompanyID in CompanyList | filter:searchFilter">
+									<td>{{CompanyID.CompanyID}}</td>
+								</tr>
+							</tbody>
+						</table>						
+						
+						<select ng-model="CompanyList_" ng-options="item.CompanyID for item in CompanyList track by item">
+						</select>
+						
+						
+						
+						
+						
+						
+						
 					</div><!--------- End of Search results ------->				
 					
 				</div><!-- ------- End of Search patient controller -->

@@ -9,25 +9,25 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to users screen v1.25");
+		alert("(DEBUG)Welcome to users screen v1.39");
 		
-		//globals to hide Patient/Company text
-		//FIXME:check if this is really required
-		$scope.ShowPatientSection = true;
-		$scope.ShowCompanySection = true;
-	
+		//scope vars
+				
 		//to read values from HTML <patient> search fields
 		var UserData = {};		
 		UserData['UserID_FieldValue']="NONE";//
+		UserData['PassHash_FieldValue']="NONE";//
 		UserData['Forename_FieldValue']="NONE";//
+		UserData['MiddleName_FieldValue']="NONE";//
 		UserData['FirstSurname_FieldValue']="NONE";//
 		UserData['SecondSurname_FieldValue']="NONE";//
-		UserData['UserPhone_FieldValue']="NONE";//
-		UserData['UserEmail_FieldValue']="NONE";//
+		UserData['Phone_FieldValue']="NONE";//
+		UserData['Email_FieldValue']="NONE";//
 		UserData['CompanyID_FieldValue']="NONE";//
 		UserData['JoinDate_FieldValue']="NONE";
 		UserData['UserGroup_FieldValue']="NONE";
 		UserData['Status_FieldValue']="NONE";
+		
 		
 		//to read URL params var
 		var URLParams = {};
@@ -37,24 +37,26 @@ var fetch = angular.module('fetch', []);
 		
 		//to set permissions - must read from Login system
 		//FIXME:read from login system
-		$UserID="NONE";
-	
-	
+		var UserSession={};
+		UserSession['UserID']="NONE";
+			
 		//-------------2. FUNCTIONS-----------------------------
 		
 		//0.Resetting user values read from input text fields
 		function ResetUserFieldValues(){			
 
 			UserData.UserID_FieldValue="NONE";//
+			UserData.PassHash_FieldValue="NONE";//
 			UserData.Forename_FieldValue="NONE";//
+			UserData.MiddleName_FieldValue="NONE";//
 			UserData.FirstSurname_FieldValue="NONE";//
 			UserData.SecondSurname_FieldValue="NONE";//
-			UserData.UserPhone_FieldValue="NONE";//
-			UserData.UserEmail_FieldValue="NONE";//
+			UserData.Phone_FieldValue="NONE";//
+			UserData.Email_FieldValue="NONE";//
 			UserData.CompanyID_FieldValue="NONE";//
 			UserData.JoinDate_FieldValue="NONE";
-			UserData.Status_FieldValue="NONE";
-			UserData.UserGroup_FieldValue="NONE";			
+			UserData.UserGroup_FieldValue="NONE";
+			UserData.Status_FieldValue="NONE";			
 		};
 		//end of resetting
 		
@@ -115,6 +117,13 @@ var fetch = angular.module('fetch', []);
 			
 			//alert("(DEBUG)ReadPatientFields() - starting");
 			
+			//FIXME:add SHA2 enconding
+			if (typeof $scope.Password_Input_Model !== 'undefined' && $scope.Password_Input_Model !== null && $scope.Password_Input_Model !== "") {
+				UserData['PassHash_FieldValue'] = $scope.Password_Input_Model;
+			}else{
+				UserData['PassHash_FieldValue'] = "NONE";
+			}
+			
 			if (typeof $scope.UserID_Input_Model !== 'undefined' && $scope.UserID_Input_Model !== null && $scope.UserID_Input_Model !== "") {
 				UserData['UserID_FieldValue'] = $scope.UserID_Input_Model;
 			}else{
@@ -125,6 +134,12 @@ var fetch = angular.module('fetch', []);
 				UserData['Forename_FieldValue'] = $scope.Forename_Input_Model.toLowerCase(); 				
 			}else{
 				UserData['Forename_FieldValue'] = "NONE";
+			}
+
+			if (typeof $scope.MiddleName_Input_Model !== 'undefined' && $scope.MiddleName_Input_Model !== null && $scope.MiddleName_Input_Model !== "") {
+				UserData['MiddleName_FieldValue'] = $scope.MiddleName_Input_Model.toLowerCase(); 				
+			}else{
+				UserData['MiddleName_FieldValue'] = "NONE";
 			}
 			
 			if (typeof $scope.FirstSurname_Input_Model!== 'undefined' && $scope.FirstSurname_Input_Model !== null && $scope.FirstSurname_Input_Model !== "") {
@@ -169,13 +184,14 @@ var fetch = angular.module('fetch', []);
 				UserData['Status_FieldValue'] = "NONE";
 			}				
 			
-			
+			$debug_string = "\PassHash="+UserData['PassHash_FieldValue'];
 			$debug_string = "\nUserID_FieldValue="+UserData['UserID_FieldValue'];
 			$debug_string +="\nForename_FieldValue="+UserData['Forename_FieldValue'];
+			$debug_string +="\nMiddleName_FieldValue="+UserData['MiddleName_FieldValue'];
 			$debug_string +="\nFirstSurname_FieldValue="+UserData['FirstSurname_FieldValue'];
 			$debug_string +="\nSecondSurname_FieldValue="+UserData['SecondSurname_FieldValue'];
-			$debug_string +="\nUserEmail_FieldValue="+UserData['UserEmail_FieldValue'];
-			$debug_string +="\nUserPhone_FieldValue="+UserData['UserPhone_FieldValue'];
+			$debug_string +="\nUserEmail_FieldValue="+UserData['Email_FieldValue'];
+			$debug_string +="\nUserPhone_FieldValue="+UserData['Phone_FieldValue'];
 			$debug_string +="\nCompanyID_FieldValue="+UserData['CompanyID_FieldValue'];
 			$debug_string +="\nUserGroup_FieldValue="+UserData['UserGroup_FieldValue'];			
 			$debug_string +="\nStatus_FieldValue="+UserData['Status_FieldValue'];		
@@ -193,39 +209,43 @@ var fetch = angular.module('fetch', []);
 			var URL = "../engine/dBInterface.php?ActionDBToken=SelectUser";
 		
 			if(UserData.UserID_FieldValue !=="NONE"){
-				URL+="&UserIDToken="+UserData.UserID_FieldValue;
+				URL+="&UserID_Token="+UserData.UserID_FieldValue;
 			}
 
 			if(UserData.Forename_FieldValue !=="NONE"){
-				URL+="&ForenameToken="+UserData.Forename_FieldValue;
+				URL+="&Forename_Token="+UserData.Forename_FieldValue;
 			}
 
+			if(UserData.MiddleName_FieldValue !=="NONE"){
+				URL+="&MiddleName_Token="+UserData.Forename_FieldValue;
+			}			
+			
 			if(UserData.FirstSurname_FieldValue !=="NONE"){
-				URL+="&FirstSurnameToken="+UserData.FirstSurname_FieldValue;
+				URL+="&FirstSurname_Token="+UserData.FirstSurname_FieldValue;
 			}
 
 			if(UserData.SecondSurname_FieldValue !=="NONE"){
-				URL+="&SecondSurnameToken="+UserData.SecondSurname_FieldValue;
+				URL+="&SecondSurname_Token="+UserData.SecondSurname_FieldValue;
 			}
 
-			if(UserData.UserPhone_FieldValue !=="NONE"){
-				URL+="&PhoneToken="+UserData.UserPhone_FieldValue;
+			if(UserData.Phone_FieldValue !=="NONE"){
+				URL+="&Phone_Token="+UserData.UserPhone_FieldValue;
 			}
 
-			if(UserData.UserEmail_FieldValue !=="NONE"){
-				URL+="&EmailToken="+UserData.PatientEmail_FieldValue;
+			if(UserData.Email_FieldValue !=="NONE"){
+				URL+="&Email_Token="+UserData.PatientEmail_FieldValue;
 			}
 
 			if(UserData.CompanyID_FieldValue !=="NONE"){
-				URL+="&CompanyIDToken="+UserData.CompanyID_FieldValue;
+				URL+="&CompanyID_Token="+UserData.CompanyID_FieldValue;
 			}
 			
 			if(UserData.Status_FieldValue !=="NONE"){
-				URL+="&StatusToken="+UserData.Status_FieldValue;
+				URL+="&Status_Token="+UserData.Status_FieldValue;
 			}
 
 			if(UserData.UserGroup_FieldValue !=="NONE"){
-				URL+="&UserGroupToken="+UserData.UserGroup_FieldValue;
+				URL+="&UserGroup_Token="+UserData.UserGroup_FieldValue;
 			}
 			
 			alert("(DEBUG)CreateUserSearchString()-ending.URL="+URL);
@@ -238,7 +258,7 @@ var fetch = angular.module('fetch', []);
 		function CreateUserDeleteStringByID(){
 			
 			var URL = "../engine/dBInterface.php?ActionDBToken=DeleteUser";
-			URL+="&UserIDToken="+URLParams.ID;
+			URL+="&UserID_Token="+URLParams.ID;
 			//alert("(DEBUG)CreateUserDeleteStringByID() executed. Return URL="+URL);
 			return URL;
 			
@@ -252,15 +272,16 @@ var fetch = angular.module('fetch', []);
 			//alert("(DEBUG)CreateUserInsertString()-starting");			
 			var URL = "../engine/dBInterface.php?";
 			URL += "ActionDBToken=InsertUser";
-			URL += "&UserIDToken="+UserData.UserID_FieldValue;
-			URL += "&ForenameToken="+UserData.Forename_FieldValue;
-			URL += "&FirstSurnameToken="+UserData.FirstSurname_FieldValue;
-			URL += "&SecondSurnameToken="+UserData.SecondSurname_FieldValue;
-			URL += "&EmailToken="+UserData.UserEmail_FieldValue;
-			URL += "&PhoneToken="+UserData.UserPhone_FieldValue;
-			URL += "&CompanyIDToken="+UserData.CompanyID_FieldValue;
-			URL += "&UserGroupToken="+UserData.UserGroup_FieldValue;
-			URL += "&StatusToken="+UserData.Status_FieldValue;
+			URL += "&PassHash_Token="+UserData.PassHash_FieldValue;
+			URL += "&UserID_Token="+UserData.UserID_FieldValue;
+			URL += "&Forename_Token="+UserData.Forename_FieldValue;
+			URL += "&FirstSurname_Token="+UserData.FirstSurname_FieldValue;
+			URL += "&SecondSurname_Token="+UserData.SecondSurname_FieldValue;
+			URL += "&Email_Token="+UserData.UserEmail_FieldValue;
+			URL += "&Phone_Token="+UserData.UserPhone_FieldValue;
+			URL += "&CompanyID_Token="+UserData.CompanyID_FieldValue;
+			URL += "&UserGroup_Token="+UserData.UserGroup_FieldValue;
+			URL += "&Status_Token="+UserData.Status_FieldValue;
 						
 			//alert("(DEBUG)CreateUserInsertString()-ending.URL="+URL);
 			return URL;
@@ -273,38 +294,46 @@ var fetch = angular.module('fetch', []);
 		function CreateUserEditString(){
 			
 			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateEdit";
-			URL+="&UserIDToken="+URLParams.ID;
-
+			URL+="&UserID_Token="+URLParams.ID;
+			
+			if(UserData.PassHash_FieldValue !=="NONE"){
+				URL+="&Forename_Token="+UserData.PassHash_FieldValue;
+			}
+			
 			if(UserData.Forename_FieldValue !=="NONE"){
-				URL+="&ForenameToken="+UserData.Forename_FieldValue;
+				URL+="&Forename_Token="+UserData.Forename_FieldValue;
 			}
 
+			if(UserData.MiddleName_FieldValue !=="NONE"){
+				URL+="&MiddleName_Token="+UserData.MiddleName_FieldValue;
+			}
+			
 			if(UserData.FirstSurname_FieldValue !=="NONE"){
-				URL+="&FirstSurnameToken="+UserData.FirstSurname_FieldValue;
+				URL+="&FirstSurname_Token="+UserData.FirstSurname_FieldValue;
 			}
 
 			if(UserData.SecondSurname_FieldValue !=="NONE"){
-				URL+="&SecondSurnameToken="+UserData.SecondSurname_FieldValue;
+				URL+="&SecondSurname:Token="+UserData.SecondSurname_FieldValue;
 			}
 
 			if(UserData.UserPhone_FieldValue !=="NONE"){
-				URL+="&PhoneToken="+UserData.UserPhone_FieldValue;
+				URL+="&Phone_Token="+UserData.UserPhone_FieldValue;
 			}
 
 			if(UserData.UserEmail_FieldValue !=="NONE"){
-				URL+="&EmailToken="+UserData.UserEmail_FieldValue;
+				URL+="&Email_Token="+UserData.UserEmail_FieldValue;
 			}
 
 			if(UserData.CompanyID_FieldValue !=="NONE"){
-				URL+="&CompanyIDToken="+UserData.CompanyID_FieldValue;
+				URL+="&CompanyID_Token="+UserData.CompanyID_FieldValue;
 			}
 
 			if(UserData.UserGroup !=="NONE"){
-				URL+="&UserGroupToken="+UserData.UserGroup;
+				URL+="&UserGroup_Token="+UserData.UserGroup;
 			}			
 			
 			if(UserData.Status !=="NONE"){
-				URL+="&StatusToken="+UserData.Status;
+				URL+="&Status_Token="+UserData.Status;
 			}			
 
 			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
@@ -425,7 +454,7 @@ var fetch = angular.module('fetch', []);
 		function CreateUserSearchStringByID () {
 			
 			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectUser";
-			URLstring+="&UserIDToken="+URLParams.ID;
+			URLstring+="&UserID_Token="+URLParams.ID;
 			//alert("(DEBUG)CreateUserSearchStringByID() - User Search String="+URLstring);
 			return URLstring;
 			
@@ -439,7 +468,8 @@ var fetch = angular.module('fetch', []);
 			//alert ("(DEBUG)-SearchPatient() - starting");
 			ResetUserFieldValues();
 			ReadUserFields();		
-			CallPHPServerFile(CreateUserSearchString());
+			CalldBEngine(CreateUserSearchString(),"data");
+			//CalldBEngine("../engine/dBInterface.php?ActionDBToken=ListCompany","CompanyList");//FIXME: delete
 			//alert ("(DEBUG)-SearchPatient() - executed");			
 		}
 		//eof
@@ -453,7 +483,7 @@ var fetch = angular.module('fetch', []);
 			
 			if (CheckPatientInputData()==true){
 				//alert("(DEBUG)CreatePatient()-Input data is right");
-				CallPHPServerFile(CreatePatientInsertString());
+				CalldBEngine(CreatePatientInsertString(),"data");
 			}else{
 				//alert("ERROR - datos invalidos");				
 			}
@@ -467,7 +497,7 @@ var fetch = angular.module('fetch', []);
 			
 			//alert("(DEBUG) EditPatient() - starting");
 			ReadPatientFields();			
-			CallPHPServerFile(CreatePatientEditString());			
+			CalldBEngine(CreatePatientEditString(),"data");			
 		}
 		//eof
 		
@@ -477,7 +507,7 @@ var fetch = angular.module('fetch', []);
 		$scope.DeletePatient = function(){
 			
 			//alert("(DEBUG)DeletePatient() - starting");
-			CallPHPServerFile(CreatePatientDeleteStringByID());
+			CalldBEngine(CreatePatientDeleteStringByID(),"data");
 			//alert("(DEBUG)DeletePatient() - executed");
 		}
 		//eof
@@ -498,25 +528,30 @@ var fetch = angular.module('fetch', []);
 			
 		}
 		
-
-		
-		//7. Function to call php server file, in $address
+		//7.3 Function to call php server file, in $address
 		//FIXME: add the .error part
-		function CallPHPServerFile(URLstring) {			
+		function CalldBEngine(URLstring,OutputType) {			
 			
 			
 			//alert("(DEBUG)Function CallPHPServerFile() calling"); //(DEBUG)			
 			$http.get(URLstring)
 			.success(function(data){
-			$scope.data = data;
+				
+			if(OutputType=="CompanyList"){	
+				$scope.CompanyList = data;
+			}else if(OutputType=="data"){
+				$scope.data=data;
+			}
+			
 			})
 			
-			//alert("(DEBUG)Function CallPHPServerFile() executed"); //(DEBUG)
+			//alert("(DEBUG)Function CalldBEngine() executed on URL="+URLstring); //(DEBUG)
 
 		}
-		//eof
+		//eof		
+
 		
-				//FIXME: convert to user
+		//FIXME: convert to user
 		//8. Function to check if Patient has been succesfully created into database
 		//returns TRUE if patient do exists
 		function CheckIfPatientExists(){
@@ -525,6 +560,17 @@ var fetch = angular.module('fetch', []);
 			return true;
 		}
 		//eof
+		
+		
+		//function to read from dB all company list
+		function ReadCompanyList(){
+			
+			var URL = "../engine/dBInterface.php?ActionDBToken=ListCompany";
+			CalldBEngine(URL,"CompanyList");
+						
+		}
+		//eof
+		
 		
 		//8. Init Function to call Main with parameter Type
 		$scope.Init = function(Type) {
@@ -536,8 +582,10 @@ var fetch = angular.module('fetch', []);
 		$scope.dg = function(){
 			//alert("(DEBUG) Oh yeaaaahhh!(Patient)");
 			
-			ReadPatientFields();
-			CreatePatientInsertString();
+			//CallPHPServerFile2();
+			
+			//ReadPatientFields();
+			//CreatePatientInsertString();
 			//CreatePatientDeleteStringByID();
 			
 			
@@ -583,19 +631,20 @@ var fetch = angular.module('fetch', []);
 			
 			//alert("(DEBUG)Main()-starting with Type="+Type);
 			
+			CalldBEngine("../engine/dBInterface.php?ActionDBToken=ListCompany","CompanyList");
+			
 			//check parameters
 			if(CheckURLParameters()==true){
 				
 				if(Type=='User' && URLParams.Action=="EditUser"){
 					
-					CallPHPServerFile(CreateUserSearchStringByID());
+					CalldBEngine(CreateUserSearchStringByID(),"data");
 					return true;
 				}
-		
-				
 				
 			}else{
 				//failed the URL args validation
+				//FIXME: redirect to other default address
 				return false;
 			}
 					

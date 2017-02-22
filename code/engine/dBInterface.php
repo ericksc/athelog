@@ -1,24 +1,21 @@
 <?php
-include("conexionDB.php");
+
 //0. CONST
 
 //base queries
 define('SelectPatient_BasicQuery', 'SELECT * from Patients WHERE 1');
 define('SelectCompany_BasicQuery', 'SELECT * from Companies WHERE 1');
+define('SelectCompanyList_BasicQuery', 'SELECT CompanyID from Companies WHERE 1');
 define('InsertPatient_BasicQuery', 'INSERT INTO Patients');
-define('InsertCompany_BasicQuery', 'INSERT INTO Companies');
 define('DeletePatient_BasicQuery', 'DELETE FROM Patients WHERE 1');
 define('DeleteCompany_BasicQuery', 'DELETE FROM Companies WHERE 1');
-define('UpdatePatient_BasicQuery', 'UPDATE `Patients` SET ');
-define('UpdateCompany_BasicQuery', 'UPDATE `Companies` SET ');
-define('LoginUser_BasicQuery', 'SELECT count(*) FROM `Users` WHERE 1 ');
 define('SelectUser_BasicQuery', 'SELECT * FROM Users WHERE 1');
 // TODO: define base queries for the other operations
+
 
 //1. GLOBAL VARS
 $ActionDB_Param="NONE";
 $UserID_Param="NONE";
-$DebugFlag="FALSE";
 
 //$query = "SELECT * from Patients WHERE 1"; //working
 $query = "NONE"; //working
@@ -33,7 +30,7 @@ $query = "NONE"; //working
 //capture URL params $ActionDB_Param and $UserID_Param
 function ReadGenericParameters(){
 	
-	global $ActionDB_Param, $UserID_Param, $DebugFlag;
+	global $ActionDB_Param, $UserID_Param;
 	
 	
 	if (isset($_GET['ActionDBToken'])) {
@@ -45,6 +42,9 @@ function ReadGenericParameters(){
 		else if($ActionDB_Param=="SelectCompany"){
 			ReadCompanyParams(); //Creating Company Select Query String
 		}
+		else if($ActionDB_Param=="ListCompany"){
+			ReadCompanyListParams(); //Creating Company List Select Query String
+		}		
 		else if($ActionDB_Param=="InsertPatient"){
 			InsertPatientParams(); //Creating Patient INSERT INTO Query String
 		}
@@ -53,28 +53,21 @@ function ReadGenericParameters(){
 		}
 		else if($ActionDB_Param=="DeleteCompany"){
 			DeleteCompanyParams(); //Creating Patient DELETE INTO Query String
-		}
-                else if($ActionDB_Param=="InsertCompany"){
-			InsertCompanyParams(); //Creating Patient INSERT INTO Query String
-		}
-                else if($ActionDB_Param=="UpdatePatient"){
-			UpdatePatientParams(); //Updating Patient UPDATE INTO Query String
-			
-		}else if($ActionDB_Param=="SelectUser"){
+		}	
+		else if($ActionDB_Param=="SelectUser"){
 			ReadUserParams(); //Creating Patient DELETE INTO Query String
 		}	
 		else if($ActionDB_Param=="NotifyUser"){
 			ReadUserNotificationParams(); //Creating Patient DELETE INTO Query String
-		}
-                else if($ActionDB_Param=="UpdateCompany"){
-			UpdateCompanyParams(); //Updating Company UPDATE INTO Query String
-		}
-                else if($ActionDB_Param=="LoginUser"){
-                    LoginUserParams(); //Login Users SELECT COUNT(*) FROM `Users`
-		} 
+		}		
+		
+	
 	}
+
+	
+	
 	if (isset($_GET['UserIDToken'])) {
-            $UserID_Param=$_GET['UserIDToken'];
+		$UserID_Param=$_GET['UserIDToken'];
 	}
 
 	if($DebugFlag=="TRUE"){	
@@ -83,6 +76,168 @@ function ReadGenericParameters(){
 
 }
 //eof
+
+
+//function to read notifications params
+function ReadUserNotificationParams(){
+	
+	
+	$MailDestination = "rvargas@athelog.net";//FIXME:read this CONST file
+	$MailHeaders = "From:Bicoyed"."\r\n";//FIXME:read this CONST file
+	$MailHeaders .= "CC:ramirovq@gmail.com";//FIXME:read this CONST file
+
+	
+	$Password="DummyPassword"; //FIXME:read this from dB
+	$Username="DummyName";//FIXME:read this from dB
+	$Type_Param="";	
+	$MailSubject = "";
+	$MailText = "Estimado(a) ";
+	
+	if (isset($_GET['UserIDToken'])) {
+		$UserID_Param=$_GET['UserIDToken'];
+		
+		if($UserID_Param!="NONE"){
+
+			if (isset($_GET['TypeToken'])) {
+				$Type_Param=$_GET['TypeToken'];	
+			}	
+		
+		
+			$MailText .= $UserID_Param .",";
+			
+			if($Type_Param=="UserAccountCreated"){
+				$MailSubject = "Bicoyed: Bienvenido al programa de salud";
+				$MailText .= "\nBicoyed le saluda y le da la bienvenida al programa de salud. Sus datos de acceso al programa son los siguientes:";
+				$MailText .= "\nUsuario=".$Username;
+				$MailText .= "\nClave=".$Password;
+				$MailText .= "\n\nLe rogamos dar la debida protección a sus datos. Por favor no comparta su usuario ni clave, y haga click en el botón de Salida para finalizar cada sesión.";
+				$MailText .= "\nGracias. Atentamente,\n-el equipo Bicoyed";
+				$MailText .= "\n\nNota: Este correo es generado automáticamente, así que no es posible responder a él. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";	
+			
+			}else if($Type_Param=="UserProfileDataChanged"){
+				
+				$MailSubject = "Bicoyed: Su perfil ha sido modificado";
+				$MailText .= "\nSus datos de perfil de usuario han sido modificados. Para ver los cambios por favor ingrese al portal web y diríjase a la sección Mi Cuenta.";
+				$MailText .= "\n\nGracias. Atentamente,\n-el equipo Bicoyed";
+				$MailText .= "\n\nNota: Este correo es generado automáticamente, así que no es posible responder a él. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";
+			
+			}else if($Type_Param=="UserAccessDataChanged"){
+				
+				$MailSubject = "Bicoyed: Sus datos de acceso al programa";
+				$MailText .= "\nSus datos de acceso al programa son los siguientes:";
+				$MailText .= "\nUsuario=".$Username;
+				$MailText .= "\nClave=".$Password;				
+				$MailText .= "\n\nGracias. Atentamente,\n-el equipo Bicoyed";
+				$MailText .= "\n\nNota: Este correo es generado automáticamente, así que no es posible responder a él. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";
+	
+			}else{
+				echo "\nMail NOT sent - Type invalid";
+				return -1; //Type is unknown
+			}
+			
+		}else{
+			echo "\nMail NOT sent - UserID si NONE";
+			return -1.1; //UserID is NONE			
+		}	
+				
+	}else{
+			echo "\nMail NOT sent - UserID invalid";
+			return -2; //UserID is unknown				
+	}
+
+	mail($MailDestination,$MailSubject,$MailText,$MailHeaders);
+	echo "\nMail sent";
+	return 0; //succesfully executed
+	
+}
+//eof
+
+
+
+
+
+//function to Read User data
+function ReadUserParams() {
+	
+	
+	
+	global $query;
+	$query = SelectUser_BasicQuery;
+
+	if (isset($_GET['UserID_Token'])) {
+		$UserID_Param=$_GET['UserID_Token'];
+		
+		if($UserID_Param!="NONE"){
+			$query .= " AND UserID LIKE $UserID_Param";				
+		}
+	}
+
+	if (isset($_GET['Forename_Token'])) {
+		$Forename_Param=$_GET['Forename_Token'];
+
+		if($Forename_Param!="NONE"){
+			$query .= " AND Forename LIKE '$Forename_Param'";				
+		}
+		
+	}	
+
+	if (isset($_GET['FirstSurname_Token'])) {
+		$FirstSurname_Param=$_GET['FirstSurname_Token'];
+		
+		if($FirstSurname_Param!="NONE"){
+			$query .= " AND FirstSurname LIKE '$FirstSurname_Param'";				
+		}
+		
+	}	
+
+	if (isset($_GET['SecondSurname_Token'])) {
+		$SecondSurname_Param=$_GET['SecondSurname_Token'];
+		
+		if($SecondSurname_Param!="NONE"){
+			$query .= " AND SecondSurname LIKE '$SecondSurname_Param'";				
+		}	
+		
+	}
+
+	if (isset($_GET['Email_Token'])) {
+		$Email_Param=$_GET['Email_Token'];
+		
+		if($Email_Param!="NONE"){
+			$query .= " AND Email LIKE '$Email_Param'";				
+		}		
+				
+	}	
+
+	if (isset($_GET['CompanyID_Token'])) {
+		$Company_Param=$_GET['CompanyID_Token'];
+		
+		if($Company_Param!="NONE"){
+			$query .= " AND CompanyID LIKE '$Company_Param'";				
+		}	
+		
+	}		
+
+	if (isset($_GET['UserGroup_Token'])) {
+		$UserGroup_Param=$_GET['UserGroup_Token'];
+		
+		if($UserGroup_Param!="NONE"){
+			$query .= " AND UserGroup LIKE '$UserGroup_Param'";				
+		}	
+		
+	}		
+
+	if (isset($_GET['Status_Token'])) {
+		$Status_Param=$_GET['Status_Token'];
+		
+		if($Status_Param!="NONE"){
+			$query .= " AND Status LIKE '$Status_Param'";				
+		}	
+		
+	}		
+		
+}
+//eof
+
 
 //function to Read Company Params
 function ReadCompanyParams() {
@@ -119,7 +274,15 @@ function ReadCompanyParams() {
 }
 //end of function to Read Company Params
 
+//function to List Company Params
+function ReadCompanyListParams() {
 
+	global $query;
+	$query = SelectCompanyList_BasicQuery;
+
+}	
+//eof
+	
 //function to read params related to patient:
 function ReadPatientParams() {
 		
@@ -192,7 +355,7 @@ function DeletePatientParams() {
 		$PatientID_Param=$_GET['PatientIDToken'];
 		
 		if($PatientID_Param!="NONE"){
-			$query .= " AND PatientID = '$PatientID_Param'";				
+			$query .= " AND PatientID LIKE $PatientID_Param";				
 		}
 	}
 }
@@ -207,11 +370,10 @@ function DeleteCompanyParams() {
 		$CompanyID_Param=$_GET['CompanyIDToken'];
 		
 		if($CompanyID_Param!="NONE"){
-			$query .= " AND CompanyID = '$CompanyID_Param'";				
+			$query .= " AND CompanyID LIKE $CompanyID_Param";				
 		}
 	}
 }
-
 //function to insert params related to patient:
 function InsertPatientParams() {   //define('InsertPatient_BasicQuery', 'INSERT INTO');
 		
@@ -279,385 +441,34 @@ function InsertPatientParams() {   //define('InsertPatient_BasicQuery', 'INSERT 
 
 
 }
-//function to insert params related to Company:
-function InsertCompanyParams() {   //define('InsertCompany_BasicQuery', 'INSERT INTO');
-		
-	global $query;
-	$query = InsertCompany_BasicQuery;
-	$ColumnList = " (CompanyID,Phone,Email,Address)";
-	$query .= $ColumnList;
-	$ValuesList = " VALUES (";
-
-	if (isset($_GET['CompanyIDToken'])) {
-		$CompanyID_Param=$_GET['CompanyIDToken'];
-		
-		if($CompanyID_Param!="NONE"){
-			$ValuesList .= "'$CompanyID_Param',";				
-		}
-	}
-
-	if (isset($_GET['PhoneToken'])) {
-		$Phone_Param=$_GET['PhoneToken'];
-
-		if($Phone_Param!="NONE"){
-			$ValuesList .= "'$Phone_Param',";				
-		}
-		
-	}	
-
-	if (isset($_GET['EmailToken'])) {
-		$Email_Param=$_GET['EmailToken'];
-		
-		if($Email_Param!="NONE"){
-			$ValuesList .= "'$Email_Param',";				
-		}
-		
-	}	
-
-	if (isset($_GET['AddressToken'])) {
-		$Address_Param=$_GET['AddressToken'];
-		
-		if($Address_Param!="NONE"){
-			$ValuesList .= "'$Address_Param')";				
-		}	
-		
-	}
-	$query .= $ValuesList;
-
-
-}
 // TODO: add other function definitions for the sql operations. Starting with single insert
 //eof
-//
-//function to Update params related to patient:
-function UpdatePatientParams() {   //define('UpdatePatient_BasicQuery', 'UPDATE');
-		
-	global $query;
-	$query = UpdatePatient_BasicQuery;
-
-	if (isset($_GET['ForenameToken'])) {
-		$Forename_Param=$_GET['ForenameToken'];
-		
-		if($Forename_Param!="NONE"){
-			$query .= "`Forename` = '$Forename_Param', ";				
-		}
-	}
-
-	if (isset($_GET['FirstSurnameToken'])) {
-		$FirstSurname_Param=$_GET['FirstSurnameToken'];
-
-		if($FirstSurname_Param!="NONE"){
-			$query .= "`FirstSurname` = '$FirstSurname_Param', ";			
-		}
-		
-	}	
-
-	if (isset($_GET['SecondSurnameToken'])) {
-		$SecondSurname_Param=$_GET['SecondSurnameToken'];
-
-		if($SecondSurname_Param!="NONE"){
-			$query .= "`SecondSurname` = '$SecondSurname_Param', ";			
-		}
-		
-	}
-
-	if (isset($_GET['EmailToken'])) {
-		$Email_Param=$_GET['EmailToken'];
-
-		if($Email_Param!="NONE"){
-			$query .= "`Email` = '$Email_Param', ";			
-		}
-		
-	}	
-
-	if (isset($_GET['PhoneToken'])) {
-		$Phone_Param=$_GET['PhoneToken'];
-
-		if($Phone_Param!="NONE"){
-			$query .= "`Phone` = '$Phone_Param', ";			
-		}
-		
-	}
-	
-	if (isset($_GET['BirthDateToken'])) {
-		$BirthDate_Param=$_GET['BirthDateToken'];
-
-		if($BirthDate_Param!="NONE"){
-			$query .= "`BirthDate` = '$BirthDate_Param', ";			
-		}
-		
-	}
-		
-	if (isset($_GET['GenderToken'])) {
-		$Gender_Param=$_GET['GenderToken'];
-
-		if($Gender_Param!="NONE"){
-			$query .= "`Gender` = '$Gender_Param', ";			
-		}
-		
-	}
-	
-	if (isset($_GET['AddressToken'])) {
-		$Address_Param=$_GET['AddressToken'];
-
-		if($Address_Param!="NONE"){
-			$query .= "`Address` = '$Address_Param', ";			
-		}
-		
-	}
-	
-	if (isset($_GET['DepartmentToken'])) {
-		$Department_Param=$_GET['DepartmentToken'];
-
-		if($Department_Param!="NONE"){
-			$query .= "`Department` = '$Department_Param', ";			
-		}
-		
-	}
-	
-	if (isset($_GET['SiteToken'])) {
-		$Site_Param=$_GET['SiteToken'];
-
-		if($Site_Param!="NONE"){
-			$query .= "`Site` = '$Site_Param' ";			
-		}
-		
-	}					
-
-	if (isset($_GET['PatientIDToken'])) {
-		$PatientID_Param=$_GET['PatientIDToken'];
-
-		if($PatientID_Param!="NONE"){
-			$query .= " WHERE `PatientID` = '$PatientID_Param'";			
-		}
-		
-	}	
 
 
-}
-
-//function to Update params related to patient:
-function UpdateCompanyParams() {   //define('UpdateCompany_BasicQuery', 'UPDATE');
-		
-	global $query;
-	$query = UpdateCompany_BasicQuery;
-
-	if (isset($_GET['PhoneToken'])) {
-		$Phone_Param=$_GET['PhoneToken'];
-		
-		if($Phone_Param!="NONE"){
-			$query .= "`Phone` = '$Phone_Param', ";				
-		}
-	}
-
-	if (isset($_GET['EmailToken'])) {
-		$Email_Param=$_GET['EmailToken'];
-
-		if($Email_Param!="NONE"){
-			$query .= "`Email` = '$Email_Param', ";			
-		}
-		
-	}	
-
-	if (isset($_GET['AddressToken'])) {
-		$Address_Param=$_GET['AddressToken'];
-
-		if($Address_Param!="NONE"){
-			$query .= "`Address` = '$Address_Param' ";			
-		}
-		
-	}
-
-	if (isset($_GET['CompanyIDToken'])) {
-		$CompanyID_Param=$_GET['CompanyIDToken'];
-
-		if($CompanyID_Param!="NONE"){
-			$query .= " WHERE `CompanyID` = '$CompanyID_Param'";			
-		}
-		
-	}
-}
-
-//function to login user:
-function LoginUserParams() {
-		
-	global $query;
-	$query = LoginUser_BasicQuery;
-
-	if (isset($_GET['UserIDToken'])) {
-		$UserID_Param=$_GET['UserIDToken'];
-		
-		if($UserID_Param!="NONE"){
-			$query .= " AND `UserID` = '$UserID_Param'";				
-		}
-	}
-        if (isset($_GET['HashCodeToken'])) {
-                $HashCode_Param=$_GET['HashCodeToken'];
-
-                if($HashCode_Param!="NONE"){
-                        $query .= " AND `HashCode` = '$HashCode_Param'";				
-                }
-}
-}
-//eof
-
-//function to read notifications params
-function ReadUserNotificationParams(){
-	
-	
-	$MailDestination = "rvargas@athelog.net";//FIXME:read this CONST file
-	$MailHeaders = "From:Bicoyed"."\r\n";//FIXME:read this CONST file
-	$MailHeaders .= "CC:ramirovq@gmail.com";//FIXME:read this CONST file
-
-	
-	$Password="DummyPassword"; //FIXME:read this from dB
-	$Username="DummyName";//FIXME:read this from dB
-	$Type_Param="";	
-	$MailSubject = "";
-	$MailText = "Estimado(a) ";
-	
-	if (isset($_GET['UserIDToken'])) {
-		$UserID_Param=$_GET['UserIDToken'];
-		
-		if($UserID_Param!="NONE"){
-
-			if (isset($_GET['TypeToken'])) {
-				$Type_Param=$_GET['TypeToken'];	
-			}	
-		
-		
-			$MailText .= $UserID_Param .",";
-			
-			if($Type_Param=="UserAccountCreated"){
-				$MailSubject = "Bicoyed: Bienvenido al programa de salud";
-				$MailText .= "\nBicoyed le saluda y le da la bienvenida al programa de salud. Sus datos de acceso al programa son los siguientes:";
-				$MailText .= "\nUsuario=".$Username;
-				$MailText .= "\nClave=".$Password;
-				$MailText .= "\n\nLe rogamos dar la debida protecci�n a sus datos. Por favor no comparta su usuario ni clave, y haga click en el bot�n de Salida para finalizar cada sesi�n.";
-				$MailText .= "\nGracias. Atentamente,\n-el equipo Bicoyed";
-				$MailText .= "\n\nNota: Este correo es generado autom�ticamente, as� que no es posible responder a �l. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";	
-			
-			}else if($Type_Param=="UserProfileDataChanged"){
-				
-				$MailSubject = "Bicoyed: Su perfil ha sido modificado";
-				$MailText .= "\nSus datos de perfil de usuario han sido modificados. Para ver los cambios por favor ingrese al portal web y dir�jase a la secci�n Mi Cuenta.";
-				$MailText .= "\n\nGracias. Atentamente,\n-el equipo Bicoyed";
-				$MailText .= "\n\nNota: Este correo es generado autom�ticamente, as� que no es posible responder a �l. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";
-			
-			}else if($Type_Param=="UserAccessDataChanged"){
-				
-				$MailSubject = "Bicoyed: Sus datos de acceso al programa";
-				$MailText .= "\nSus datos de acceso al programa son los siguientes:";
-				$MailText .= "\nUsuario=".$Username;
-				$MailText .= "\nClave=".$Password;				
-				$MailText .= "\n\nGracias. Atentamente,\n-el equipo Bicoyed";
-				$MailText .= "\n\nNota: Este correo es generado autom�ticamente, as� que no es posible responder a �l. En caso de tener preguntas, le invitamos a enviarlas a: dummy@soporte.com";
-	
-			}else{
-				echo "\nMail NOT sent - Type invalid";
-				return -1; //Type is unknown
-			}
-			
-		}else{
-			echo "\nMail NOT sent - UserID si NONE";
-			return -1.1; //UserID is NONE			
-		}	
-				
-	}else{
-			echo "\nMail NOT sent - UserID invalid";
-			return -2; //UserID is unknown				
-	}
-
-	mail($MailDestination,$MailSubject,$MailText,$MailHeaders);
-	echo "\nMail sent";
-	return 0; //succesfully executed
-	
-}
-//eof
 
 
 
 
 function Main(){
-    global $query, $ActionDB_Param;
-    ReadGenericParameters();
-    ConexionDB($query);	
-}
-//eof
-
-//FIXME: TODO: enable function to select users
-//as a reference, old function:
-//function to Read User data
-function ReadUserParams() {
 	
-	
+	//echo "\nExecuting Main";
 	
 	global $query;
-	$query = SelectUser_BasicQuery;
-
-	if (isset($_GET['UserIDToken'])) {
-		$UserID_Param=$_GET['UserIDToken'];
-		
-		if($UserID_Param!="NONE"){
-			$query .= " AND UserID LIKE $UserID_Param";				
-		}
-	}
-
-	if (isset($_GET['ForenameToken'])) {
-		$Forename_Param=$_GET['ForenameToken'];
-
-		if($Forename_Param!="NONE"){
-			$query .= " AND Forename LIKE '$Forename_Param'";				
-		}
-		
-	}	
-
-	if (isset($_GET['FirstSurnameToken'])) {
-		$FirstSurname_Param=$_GET['FirstSurnameToken'];
-		
-		if($FirstSurname_Param!="NONE"){
-			$query .= " AND FirstSurname LIKE '$FirstSurname_Param'";				
-		}
-		
-	}	
-
-	if (isset($_GET['SecondSurnameToken'])) {
-		$SecondSurname_Param=$_GET['SecondSurnameToken'];
-		
-		if($SecondSurname_Param!="NONE"){
-			$query .= " AND SecondSurname LIKE '$SecondSurname_Param'";				
-		}	
-		
-	}
-
-	if (isset($_GET['EmailToken'])) {
-		$Email_Param=$_GET['EmailToken'];
-		
-		if($Email_Param!="NONE"){
-			$query .= " AND Email LIKE '$Email_Param'";				
-		}		
-				
-	}	
-
-	if (isset($_GET['CompanyIDToken'])) {
-		$Company_Param=$_GET['CompanyIDToken'];
-		
-		if($Company_Param!="NONE"){
-			$query .= " AND CompanyID LIKE '$Company_Param'";				
-		}	
-		
-	}		
-
-	if (isset($_GET['UserGroupToken'])) {
-		$UserGroup_Param=$_GET['UserGroupToken'];
-		
-		if($UserGroup_Param!="NONE"){
-			$query .= " AND UserGroup LIKE '$UserGroup_Param'";				
-		}	
-		
-	}		
 	
-		
+	ReadGenericParameters();
+	
+	
+	$connect = mysqli_connect("mysql.hostinger.es","u505969032_ramvq","joliewatt0123","u505969032_bicoy");
+	//$connect = mysqli_connect("mysql.hostinger.es","u884088163_erix","L4rd_erix","u884088163_irixs");
+	$result = mysqli_query($connect,$query);
+	
+	$data = array();
+	//print $query . "\n";
+
+	while ($row = mysqli_fetch_array($result)) {
+	  $data[] = $row;
+	}
+    print json_encode($data);
 }
 //eof
 
