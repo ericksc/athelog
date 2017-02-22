@@ -15,6 +15,12 @@ function ReadPatientParams($array_input) {
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);    
 }
+function ReadUsersParams($array_input) {  
+    global $DBtables;
+    $query = "SELECT * FROM " . $DBtables['users'] . " WHERE ";
+    $query .= where_like_value(untoken_array($array_input));
+    ConexionDB_JSON($query);    
+}
 function DeletePatientParams() {  }
 function DeleteCompanyParams() {  }
 function InsertPatientParams() {  }

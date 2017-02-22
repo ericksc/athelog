@@ -9,7 +9,7 @@
 $DBtables = array(
     'company' => 'Companies',
     'patients' => 'Patients',
-    'avion' => 'amarillo'
+    'users' => 'Users'
 );
 
 ?>

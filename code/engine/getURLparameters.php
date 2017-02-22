@@ -16,6 +16,7 @@ $array_parameters = array();
 
 $queryfunctions = array(
   'SelectCompany' => function($array_parameters) { ReadCompanyParams($array_parameters);},
+  'SelectUser' => function($array_parameters) { ReadUsersParams($array_parameters);},          
   'SelectPatient' => function($array_parameters) { ReadPatientParams($array_parameters);}
 );
 
