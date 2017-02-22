@@ -1,6 +1,6 @@
 <?php
 include("DBArrayQuery.php");
-
+//include("getURLparameters.php");
 
 function ReadCompanyParams($array_input) { 
     print "inside readcompanyparams";
@@ -12,7 +12,7 @@ function ReadCompanyParams($array_input) {
     
     $output = ""; 
     $firstRun = true; 
-    foreach($array_input as $key=>$val) { 
+    foreach(untoken_array($array_input) as $key=>$val) { 
         if(!$firstRun) { 
             $output .= " AND "; 
         } else { 
@@ -34,6 +34,14 @@ function UpdatePatientParams() {  }
 function UpdateCompanyParams() {  print "en update patient" ;}
 function LoginUserParams() {      }
 
+function untoken_array($array){
+    $output = array();
+    foreach($array as $key=>$val) { 
+
+            $output[getQuerystatement($key)] =  $val;
+    } 
+    return $output;
+}
 
 function set_key_value($array)
 {
