@@ -1,29 +1,13 @@
 <?php
 include("DBArrayQuery.php");
-//include("getURLparameters.php");
+//include("conexionDB.php");
 
 function ReadCompanyParams($array_input) { 
-    print "inside readcompanyparams";
-    print_r($array_input);
-    print "\n";
     global $DBtables;
-    
     $query = "SELECT * FROM " . $DBtables['company'] . " WHERE ";
-    
-    $output = ""; 
-    $firstRun = true; 
-    foreach(untoken_array($array_input) as $key=>$val) { 
-        if(!$firstRun) { 
-            $output .= " AND "; 
-        } else { 
-            $firstRun = false; 
-        } 
-        $output .= "`" . $key . "`" . " LIKE ". "'" .$val . "'";     
-    } 
-    $query .= $output;
-    print $query;
-    //AND PatientID LIKE $PatientID_Param";
-            //'SELECT * from Companies WHERE 1';
+    $query .= where_like_value(untoken_array($array_input));
+    ConexionDB_JSON($query);
+
 }
 function ReadPatientParams() {  print "en update patient" ;  }
 function DeletePatientParams() {  }
@@ -39,6 +23,21 @@ function untoken_array($array){
     foreach($array as $key=>$val) { 
 
             $output[getQuerystatement($key)] =  $val;
+    } 
+    return $output;
+}
+
+function where_like_value($array)
+{
+    $output = ""; 
+    $firstRun = true; 
+    foreach($array as $key=>$val) { 
+        if(!$firstRun) { 
+            $output .= " AND "; 
+        } else { 
+            $firstRun = false; 
+        } 
+        $output .= "`" . $key . "`" . " LIKE ". "'" .$val . "'";     
     } 
     return $output;
 }
