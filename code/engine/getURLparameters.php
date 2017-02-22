@@ -64,7 +64,12 @@ function getGETarray($printingconsole=FALSE){
 
 function getQuerystatement($input){
     preg_match("/(.*)(Token)/", $input, $output_array);
+    if (!empty($output_array)) {
     return $output_array[1];
+    }else
+    {
+    return $input;
+    }
 }
 function parsingGETarray(){
     global $action, $where_conditions, $from_table, $set_value, $into_table, $update_table;
