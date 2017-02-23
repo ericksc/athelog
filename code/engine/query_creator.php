@@ -21,8 +21,18 @@ function ReadUsersParams($array_input) {
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);    
 }
-function DeletePatientParams() {  }
-function DeleteCompanyParams() {  }
+function DeletePatientParams($array_input) {
+    global $DBtables;
+    $query = "DELETE FROM " . $DBtables['patients'] . " WHERE ";
+    $query .= where_equal_value(get_array_element_by_key($array_input), 'PatientID');
+    ConexionDB_JSON($query);     
+}
+function DeleteCompanyParams($array_input) { 
+    global $DBtables;
+    $query = "DELETE FROM " . $DBtables['company'] . " WHERE ";
+    $query .= where_equal_value(get_array_element_by_key($array_input), 'CompanyID');
+    ConexionDB_JSON($query); 
+}
 function InsertPatientParams($array_input) { 
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['patients'] . "(" . set_key_list(untoken_array($array_input)) . ")";
@@ -129,6 +139,12 @@ function insert_key_value($array)
 return $output;
 } 
 
+function get_array_element_by_key($array, $key)
+{
+        $output = array(); 
+        $output[$key] = $array[$key];
+return $output;
+} 
 function set_key_value_like($array)
 {
         $output = ""; 
