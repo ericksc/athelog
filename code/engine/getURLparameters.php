@@ -20,6 +20,8 @@ $queryfunctions = array(
   'SelectPatient' => function($array_parameters) { ReadPatientParams($array_parameters);},
   'InsertUser'    => function($array_parameters) { InsertUsersParams($array_parameters);},          
   'InsertCompany' => function($array_parameters) { InsertCompanyParams($array_parameters);},
+  'DeletePatient' => function($array_parameters) { DeletePatientParams($array_parameters);},          
+  'DeleteCompany' => function($array_parameters) { DeleteCompanyParams($array_parameters);},
   'InsertPatient' => function($array_parameters) { InsertPatientParams($array_parameters);}
 );
 
