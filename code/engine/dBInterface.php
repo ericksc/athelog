@@ -1,5 +1,6 @@
 <?php
-
+include("conexionDB.php");
+include("getURLparameters.php");
 //0. CONST
 
 //base queries
@@ -475,13 +476,11 @@ function Main(){
 //END OF FUNCT DEF
 
 
-
-
-
-
 //--3. Executing script
-Main();
+//Main();
 
-
+$array_parameters = getquerycomponents_array(getGETarray());
+$action = getquery_action(getGETarray());
+callActionFunctions($action, $array_parameters);
 
 ?>
