@@ -7,13 +7,22 @@ function ReadCompanyParams($array_input) {
     $query = "SELECT * FROM " . $DBtables['company'] . " WHERE ";
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);
-
 }
 function ReadPatientParams($array_input) {  
     global $DBtables;
     $query = "SELECT * FROM " . $DBtables['patients'] . " WHERE ";
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);    
+}
+function getCheckparams($array_input, $tablename, $label, $enableJSON=FALSE) {  
+    global $DBtables;
+    $query = "SELECT CASE WHEN COUNT( * ) >0 THEN  'TRUE' ELSE  'FALSE' END AS  '" . $label ."' FROM  " . $DBtables[$tablename] . " WHERE ";
+    $query .= where_equal_value(untoken_array($array_input));
+    $result = ConexionDB_rawdata($query);
+    if($enableJSON) {
+        print json_encode($result);
+       }
+    return $result;
 }
 function ReadEvaluationConstParams($array_input) {  
     global $DBtables;
@@ -55,7 +64,7 @@ function InsertCompanyParams($array_input) {
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['company'] . "(" . set_key_list(untoken_array($array_input)) . ")";
     $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
-     ConexionDB_JSON($query);  
+    ConexionDB_JSON($query);  
 }
 function InsertUsersParams($array_input) { 
     global $DBtables;
