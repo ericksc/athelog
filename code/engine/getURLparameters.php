@@ -24,6 +24,12 @@ $queryfunctions = array(
   'DeleteCompany' => function($array_parameters) { DeleteCompanyParams($array_parameters);},
   'UpdatePatient' => function($array_parameters) { UpdatePatientParams($array_parameters);},
   'UpdateCompany' => function($array_parameters) { UpdateCompanyParams($array_parameters);},
+  'SelectAPP' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'SelectAPNP' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'SelectAQX' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'SelectMED' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'SelectINJ' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'SelectBodyComp' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
   'InsertPatient' => function($array_parameters) { InsertPatientParams($array_parameters);}
 );
 
