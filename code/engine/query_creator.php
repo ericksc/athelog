@@ -54,8 +54,24 @@ function InsertUsersParams($array_input) {
     print $query;
     ConexionDB_JSON($query);  
 }
-function UpdatePatientParams() {  }
-function UpdateCompanyParams() {  print "en update patient" ;}
+function UpdatePatientParams($array_input) { 
+    global $DBtables;
+    $wherecondition = get_array_element_by_key($array_input, 'PatientIDToken');
+    unset($array_input['PatientIDToken']);
+    $query = "UPDATE " . $DBtables['patients'] . " SET " . set_key_value(untoken_array($array_input));
+    $query .= " WHERE "  . where_equal_value(untoken_array($wherecondition)) ;
+    print $query;
+    ConexionDB_JSON($query);
+}
+function UpdateCompanyParams($array_input) { 
+    global $DBtables;
+    $wherecondition = get_array_element_by_key($array_input, 'CompanyIDToken');
+    unset($array_input['CompanyIDToken']);
+    $query = "UPDATE " . $DBtables['company'] . " SET " . set_key_value(untoken_array($array_input));
+    $query .= " WHERE "  . where_equal_value(untoken_array($wherecondition)) ;
+    print $query;
+    ConexionDB_JSON($query);
+}
 function LoginUserParams() {      }
 
 function untoken_array($array){
