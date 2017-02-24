@@ -27,37 +27,40 @@ function ReadUsersParams($array_input) {
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);    
 }
+function DeleteUsersParams($array_input) {
+    global $DBtables;
+    $query = "DELETE FROM " . $DBtables['users'] . " WHERE ";
+    $query .= where_equal_value(untoken_array(get_array_element_by_key($array_input), 'UserIDToken'));
+    ConexionDB_JSON($query);     
+}
 function DeletePatientParams($array_input) {
     global $DBtables;
     $query = "DELETE FROM " . $DBtables['patients'] . " WHERE ";
-    $query .= where_equal_value(get_array_element_by_key($array_input), 'PatientID');
+    $query .= where_equal_value(untoken_array(get_array_element_by_key($array_input), 'PatientIDToken'));
     ConexionDB_JSON($query);     
 }
 function DeleteCompanyParams($array_input) { 
     global $DBtables;
     $query = "DELETE FROM " . $DBtables['company'] . " WHERE ";
-    $query .= where_equal_value(get_array_element_by_key($array_input), 'CompanyID');
+    $query .= where_equal_value(untoken_array(get_array_element_by_key($array_input), 'CompanyIDToken'));
     ConexionDB_JSON($query); 
 }
 function InsertPatientParams($array_input) { 
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['patients'] . "(" . set_key_list(untoken_array($array_input)) . ")";
-    $query .= "VALUES" . "(" . insert_key_value($array_input) .  ")";
-    print $query;
+    $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
     ConexionDB_JSON($query);        
 }
 function InsertCompanyParams($array_input) { 
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['company'] . "(" . set_key_list(untoken_array($array_input)) . ")";
-    $query .= "VALUES" . "(" . insert_key_value($array_input) .  ")";
-    print $query;
-    ConexionDB_JSON($query);  
+    $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
+     ConexionDB_JSON($query);  
 }
 function InsertUsersParams($array_input) { 
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['users'] . "(" . set_key_list(untoken_array($array_input)) . ")";
-    $query .= "VALUES" . "(" . insert_key_value($array_input) .  ")";
-    print $query;
+    $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
     ConexionDB_JSON($query);  
 }
 function UpdatePatientParams($array_input) { 
@@ -66,7 +69,6 @@ function UpdatePatientParams($array_input) {
     unset($array_input['PatientIDToken']);
     $query = "UPDATE " . $DBtables['patients'] . " SET " . set_key_value(untoken_array($array_input));
     $query .= " WHERE "  . where_equal_value(untoken_array($wherecondition)) ;
-    print $query;
     ConexionDB_JSON($query);
 }
 function UpdateCompanyParams($array_input) { 
@@ -76,6 +78,14 @@ function UpdateCompanyParams($array_input) {
     $query = "UPDATE " . $DBtables['company'] . " SET " . set_key_value(untoken_array($array_input));
     $query .= " WHERE "  . where_equal_value(untoken_array($wherecondition)) ;
     print $query;
+    ConexionDB_JSON($query);
+}
+function UpdateUsersParams($array_input) { 
+    global $DBtables;
+    $wherecondition = get_array_element_by_key($array_input, 'UserIDToken');
+    unset($array_input['UserIDToken']);
+    $query = "UPDATE " . $DBtables['users'] . " SET " . set_key_value(untoken_array($array_input));
+    $query .= " WHERE "  . where_equal_value(untoken_array($wherecondition)) ;
     ConexionDB_JSON($query);
 }
 function LoginUserParams() {      }
