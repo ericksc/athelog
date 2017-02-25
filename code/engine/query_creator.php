@@ -60,6 +60,21 @@ function InsertPatientParams($array_input) {
     $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
     ConexionDB_JSON($query);        
 }
+function InsertGenericParams($array_input, $tablename) { 
+    global $DBtables;
+    $query = "INSERT INTO " . $DBtables[$tablename] . "(" . set_key_list(untoken_array($array_input)) . ")";
+    $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
+    ConexionDB_JSON($query);        
+}
+function InsertParams($array_input, $tablename){
+    $result_check = getCheckparams($array_input, $tablename, 'EXIST', FALSE);
+    if ($result_check[0]['EXIST'] == 'FALSE') {
+        InsertGenericParams($array_input, $tablename);
+        $result_validation = getCheckparams($array_input, $tablename, 'VALIDATE', TRUE);
+    } else {
+        print json_encode($result_check);
+    }
+}
 function InsertCompanyParams($array_input) { 
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['company'] . "(" . set_key_list(untoken_array($array_input)) . ")";

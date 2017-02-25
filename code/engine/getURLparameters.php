@@ -32,6 +32,7 @@ $queryfunctions = array(
   'SelectMED' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
   'SelectINJ' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
   'SelectBodyComp' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'dummytest' => function($array_parameters) { InsertParams($array_parameters, 'users');},
   'InsertPatient' => function($array_parameters) { InsertPatientParams($array_parameters);}
 );
 

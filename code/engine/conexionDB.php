@@ -16,10 +16,12 @@ function ConexionDB($query){
 function ConexionDB_JSON($query){
     $result = ConexionDB($query);
     $data = array();
+    if (is_bool($result) == FALSE){
 	while ($row = mysqli_fetch_array($result)) {
 	  $data[] = $row;
 	}
-    print json_encode($data);
+        print json_encode($data);
+        }
 }
 
 function ConexionDB_rawdata($query){
