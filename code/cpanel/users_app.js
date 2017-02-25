@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to users screen v1.39");
+		alert("(DEBUG)Welcome to users screen v1.46");
 		
 		//scope vars
 				
@@ -115,7 +115,7 @@ var fetch = angular.module('fetch', []);
 		//no return
 		function ReadUserFields() {			
 			
-			//alert("(DEBUG)ReadUserFields() - starting");
+			alert("(DEBUG)ReadUserFields() - starting");
 			
 			//FIXME:add SHA2 enconding
 			if (typeof $scope.Password_Input_Model !== 'undefined' && $scope.Password_Input_Model !== null && $scope.Password_Input_Model !== "") {
@@ -173,13 +173,13 @@ var fetch = angular.module('fetch', []);
 			}			
 			
 			if (typeof $scope.UserGroupSelect_Input_Model !== 'undefined' && $scope.UserGroupSelect_Input_Model !== null && $scope.UserGroupSelect_Input_Model !== "") {
-				UserData['UserGroup_FieldValue'] = $scope.UserGroupSelect_Input_Model.toLowerCase();  
+				UserData['UserGroup_FieldValue'] = $scope.UserGroupSelect_Input_Model;
 			}else{
 				UserData['UserGroup_FieldValue'] = "NONE";
 			}				
 			
-			if (typeof $scope.Status_Input_Model !== 'undefined' && $scope.Status_Input_Model !== null && $scope.Status_Input_Model !== "") {
-				UserData['Status_FieldValue'] = $scope.Status_Input_Model.toLowerCase();  
+			if (typeof $scope.StatusSelect_Input_Model !== 'undefined' && $scope.StatusSelect_Input_Model !== null && $scope.StatusSelect_Input_Model !== "") {
+				UserData['Status_FieldValue'] = $scope.StatusSelect_Input_Model;  
 			}else{
 				UserData['Status_FieldValue'] = "NONE";
 			}				
@@ -229,7 +229,7 @@ var fetch = angular.module('fetch', []);
 			}
 
 			if(UserData.Phone_FieldValue !=="NONE"){
-				URL+="&Phone_Token="+UserData.UserPhone_FieldValue;
+				URL+="&Phone_Token="+UserData.Phone_FieldValue;
 			}
 
 			if(UserData.Email_FieldValue !=="NONE"){
@@ -293,12 +293,8 @@ var fetch = angular.module('fetch', []);
 		//it uses URLParams.ID global to select user
 		function CreateUserEditString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateEdit";
+			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateUser";
 			URL+="&UserID_Token="+URLParams.ID;
-			
-			if(UserData.PassHash_FieldValue !=="NONE"){
-				URL+="&Forename_Token="+UserData.PassHash_FieldValue;
-			}
 			
 			if(UserData.Forename_FieldValue !=="NONE"){
 				URL+="&Forename_Token="+UserData.Forename_FieldValue;
@@ -313,15 +309,15 @@ var fetch = angular.module('fetch', []);
 			}
 
 			if(UserData.SecondSurname_FieldValue !=="NONE"){
-				URL+="&SecondSurname:Token="+UserData.SecondSurname_FieldValue;
+				URL+="&SecondSurname_Token="+UserData.SecondSurname_FieldValue;
 			}
 
 			if(UserData.UserPhone_FieldValue !=="NONE"){
-				URL+="&Phone_Token="+UserData.UserPhone_FieldValue;
+				URL+="&Phone_Token="+UserData.Phone_FieldValue;
 			}
 
-			if(UserData.UserEmail_FieldValue !=="NONE"){
-				URL+="&Email_Token="+UserData.UserEmail_FieldValue;
+			if(UserData.Email_FieldValue !=="NONE"){
+				URL+="&Email_Token="+UserData.Email_FieldValue;
 			}
 
 			if(UserData.CompanyID_FieldValue !=="NONE"){
@@ -329,14 +325,14 @@ var fetch = angular.module('fetch', []);
 			}
 
 			if(UserData.UserGroup !=="NONE"){
-				URL+="&UserGroup_Token="+UserData.UserGroup;
+				URL+="&UserGroup_Token="+UserData.UserGroup_FieldValue;
 			}			
 			
 			if(UserData.Status !=="NONE"){
-				URL+="&Status_Token="+UserData.Status;
+				URL+="&Status_Token="+UserData.Status_FieldValue;
 			}			
 
-			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
+			alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -492,13 +488,13 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof	
 
-		//FIXME: convert to user 	
+	
 		//function to store updated company into dB
-		$scope.EditPatient = function(){
+		$scope.EditUser = function(){
 			
 			//alert("(DEBUG) EditPatient() - starting");
-			ReadPatientFields();			
-			CalldBEngine(CreatePatientEditString(),"data");			
+			ReadUserFields();			
+			CalldBEngine(CreateUserEditString(),"data");			
 		}
 		//eof
 		
