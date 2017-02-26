@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to users screen v1.46");
+		alert("(DEBUG)Welcome to users screen v1.51");
 		
 		//scope vars
 				
@@ -115,7 +115,7 @@ var fetch = angular.module('fetch', []);
 		//no return
 		function ReadUserFields() {			
 			
-			alert("(DEBUG)ReadUserFields() - starting");
+			//alert("(DEBUG)ReadUserFields() - starting");
 			
 			//FIXME:add SHA2 enconding
 			if (typeof $scope.Password_Input_Model !== 'undefined' && $scope.Password_Input_Model !== null && $scope.Password_Input_Model !== "") {
@@ -458,7 +458,18 @@ var fetch = angular.module('fetch', []);
 			return URLstring;
 			
 		};
-		//end of function	
+		//end of function
+
+		//function to create user pass generation url
+		function CreateUserPWDString(){
+			
+			var URL="../engine/dBInterface.php?ActionDBToken=SetUserPWD";
+			URL+="&UserID="+URLParams.ID;
+			return URL;
+			
+		}
+		//eof
+			
 		
 		//function to search patient by ID, Surname, Forename, Company, etc
 		//intended to be called from HTML
@@ -509,7 +520,15 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 		
-	
+		//function to generate user password
+		
+		$scope.GeneratePassword= function(){
+			
+			//FIXME: add content
+			
+		}
+		
+		//eof
 
 		/*5. Function to read vars from URL string
 		intended to get "Action" and "ID" for patients and companies
@@ -656,4 +675,4 @@ var fetch = angular.module('fetch', []);
 	//Main('Patient');
 	
 	
-	}]);
+}]);
