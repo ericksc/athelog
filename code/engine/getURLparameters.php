@@ -15,9 +15,25 @@ $update_table = "";
 $array_parameters = array();
 
 $queryfunctions = array(
-  'ReadCompanyquery' => function($array_parameters) {
-        ReadCompanyParams($array_parameters);
-   }
+  'SelectCompany' => function($array_parameters) { ReadCompanyParams($array_parameters);},
+  'SelectUser'    => function($array_parameters) { ReadUsersParams($array_parameters);},          
+  'SelectPatient' => function($array_parameters) { ReadPatientParams($array_parameters);},
+  'InsertUser'    => function($array_parameters) { InsertUsersParams($array_parameters);},          
+  'DeleteUser'    => function($array_parameters) { DeleteUsersParams($array_parameters);},  
+  'UpdateUser'    => function($array_parameters) { UpdateUsersParams($array_parameters);},  
+  'InsertCompany' => function($array_parameters) { InsertCompanyParams($array_parameters);},
+  'DeletePatient' => function($array_parameters) { DeletePatientParams($array_parameters);},          
+  'DeleteCompany' => function($array_parameters) { DeleteCompanyParams($array_parameters);},
+  'UpdatePatient' => function($array_parameters) { UpdatePatientParams($array_parameters);},
+  'UpdateCompany' => function($array_parameters) { UpdateCompanyParams($array_parameters);},
+  'SelectAPP' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'SelectAPNP' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'SelectAQX' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'SelectMED' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'SelectINJ' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'SelectBodyComp' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
+  'dummytest' => function($array_parameters) { InsertParams($array_parameters, 'users');},
+  'InsertPatient' => function($array_parameters) { InsertPatientParams($array_parameters);}
 );
 
 function callActionFunctions($action, $parameter)

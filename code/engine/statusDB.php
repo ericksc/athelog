@@ -54,13 +54,11 @@ $string1 = getQuerystatement("PatientIDToken");
 print $string1;
 */
 
-print "hola erick\n";
+
 
 $array_parameters = getquerycomponents_array(getGETarray());
-
-print_r($array_parameters);
-
-callActionFunctions('ReadCompanyquery', $array_parameters);
+$action = getquery_action(getGETarray());
+callActionFunctions($action, $array_parameters);
 //$queryfunctions['ReadCompanyquery'];
 
 //ReadGenericParameters();

@@ -8,8 +8,9 @@
 
 $DBtables = array(
     'company' => 'Companies',
-    'moto' => 'verde',
-    'avion' => 'amarillo'
+    'patients' => 'Patients',
+    'evaluationconts' => 'EvaluationConst',
+    'users' => 'Users'
 );
 
 ?>
