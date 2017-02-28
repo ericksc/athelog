@@ -50,7 +50,7 @@ parsingGETarray();
 $temp = getGETarray();
 print_r($temp);
 
-$string1 = getQuerystatement("PatientIDToken");
+$string1 = getQuerystatement("PatientID_Token");
 print $string1;
 */
 

@@ -26,15 +26,15 @@ function LoginUserParams() {
 	global $query;
 	$query = LoginUser_BasicQuery;
 
-	if (isset($_GET['UserIDToken'])) {
-		$UserID_Param=$_GET['UserIDToken'];
+	if (isset($_GET['UserID_Token'])) {
+		$UserID_Param=$_GET['UserID_Token'];
 		
 		if($UserID_Param!="NONE"){
 			$query .= " AND `UserID` = '$UserID_Param'";				
 		}
 	}
-        if (isset($_GET['HashCodeToken'])) {
-                $HashCode_Param=$_GET['HashCodeToken'];
+        if (isset($_GET['HashCode_Token'])) {
+                $HashCode_Param=$_GET['HashCode_Token'];
 
                 if($HashCode_Param!="NONE"){
                         $query .= " AND `HashCode` = '$HashCode_Param'";				

@@ -8,13 +8,13 @@ $Password_Param="NONE";
 session_start(); // Starting Session
 $error=''; // Variable To Store Error Message
 
-if (isset($_GET['UserNameToken'])) {
-$UserName_Param=$_GET['UserNameToken']; 
+if (isset($_GET['UserName_Token'])) {
+$UserName_Param=$_GET['UserName_Token']; 
 }
 
 
-if (isset($_GET['PasswordToken'])) {
-$Password_Param=$_GET['PasswordToken'];
+if (isset($_GET['Password_Token'])) {
+$Password_Param=$_GET['Password_Token'];
 }
 /*
 echo "hola";

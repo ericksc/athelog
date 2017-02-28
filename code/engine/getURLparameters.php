@@ -79,7 +79,7 @@ function getGETarray($printingconsole=FALSE){
 }
 
 function getQuerystatement($input){
-    preg_match("/(.*)(Token)/", $input, $output_array);
+    preg_match("/(.*)(_Token)/", $input, $output_array);
     if (!empty($output_array)) {
     return $output_array[1];
     }else
