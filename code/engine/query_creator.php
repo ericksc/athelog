@@ -7,16 +7,16 @@ function ReadCompanyListParams($array_input) {
     $query = "SELECT CompanyID FROM " . $DBtables['company'] . " WHERE 1";
     ConexionDB_JSON($query);
 }
-function InsertUserPWDParams ($array_input) { 
+function UpdateUserPWDParams ($array_input) { 
     global $DBtables;
     $bytes = random_bytes(15);
     $hex   = bin2hex($bytes);
     $HASHvar = hash("sha256", $hex);
-    echo "Variable randon:" .  $hex;
-    echo "\nHASH value:" .  $HASHvar;
-    #$query = "INSERT INTO " . $DBtables['users'] . "(" . set_key_list(untoken_array($array_input)) . ")";
-    #$query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
-    #ConexionDB_JSON($query);  
+    $query = "UPDATE " . $DBtables['users'] . " SET PassHash = '" . $HASHvar  . "' ";
+$query .= "WHERE UserID = '" . get_array_element_by_key($array_input, 'UserID_Token')['UserID_Token'] . "'";  
+    
+print $query;
+    ConexionDB_JSON($query);  
 }
 function ReadCompanyParams($array_input) { 
     global $DBtables;
