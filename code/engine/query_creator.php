@@ -13,9 +13,7 @@ function UpdateUserPWDParams ($array_input) {
     $hex   = bin2hex($bytes);
     $HASHvar = hash("sha256", $hex);
     $query = "UPDATE " . $DBtables['users'] . " SET PassHash = '" . $HASHvar  . "' ";
-$query .= "WHERE UserID = '" . get_array_element_by_key($array_input, 'UserID_Token')['UserID_Token'] . "'";  
-    
-print $query;
+    $query .= "WHERE UserID = '" . get_array_element_by_key($array_input, 'UserID_Token')['UserID_Token'] . "'";  
     ConexionDB_JSON($query);  
 }
 function ReadCompanyParams($array_input) { 
@@ -74,6 +72,29 @@ function InsertPatientParams($array_input) {
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['patients'] . "(" . set_key_list(untoken_array($array_input)) . ")";
     $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
+    ConexionDB_JSON($query);        
+}
+function InsertEvaluationConstParams($array_input) { 
+    global $DBtables;
+    $first_array = get_array_element_by_key_pull(untoken_array($array_input), 'PatientID');
+    unset($array_input['PatientID_Token']);
+    $second_array = get_array_element_by_key_pull(untoken_array($array_input), 'ModifierID');
+    unset($array_input['ModifierID_Token']);
+    $pivot_array = array_merge($first_array, $second_array);
+    print_r($array_input);
+    foreach($array_input as $key=>$val) { 
+        if(!$firstRun) { 
+            $output .= ","; 
+        } else { 
+            $firstRun = false; 
+        } 
+        $output .=  "'" .$val . "'";     
+    } 
+    $list = set_value_list($pivot_array) . $output;
+    print $list;
+    $query = "INSERT INTO " . $DBtables['evaluationconts'] . "(" . set_key_list($pivot_array). ",Test, Value" . ")";
+    $query .= "VALUES" . $output;
+    print $query;
     ConexionDB_JSON($query);        
 }
 function InsertGenericParams($array_input, $tablename) { 
@@ -196,6 +217,20 @@ function set_key_list($array)
     } 
 return $output;
 }
+function set_value_list($array)
+{
+        $output = ""; 
+        $firstRun = true; 
+        foreach($array as $key=>$val) { 
+            if(!$firstRun) { 
+                $output .= ","; 
+            } else { 
+                $firstRun = false; 
+            } 
+            $output .= "'" . $key . "'";     
+    } 
+return $output;
+}
 function insert_key_value($array)
 {
         $output = ""; 
@@ -215,6 +250,13 @@ function get_array_element_by_key($array, $key)
 {
         $output = array(); 
         $output[$key] = $array[$key];
+return $output;
+}
+function get_array_element_by_key_pull(&$array, $key)
+{
+        $output = array(); 
+        $output[$key] = $array[$key];
+        unset($array[$key]);
 return $output;
 } 
 function set_key_value_like($array)
