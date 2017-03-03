@@ -35,7 +35,7 @@ $queryfunctions = array(
   'SelectINJ' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
   'SelectBodyComp' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
   'dummytest' => function($array_parameters) { InsertParams($array_parameters, 'users');},
-  'dummytest1' => function($array_parameters) { InsertEvaluationConstParams($array_parameters);},
+  'InsertHistoryTest' => function($array_parameters) { InsertEvaluationHistoryParams($array_parameters);},
   'InsertPatient' => function($array_parameters) { InsertPatientParams($array_parameters);}
 );
 

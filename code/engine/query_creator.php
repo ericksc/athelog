@@ -74,7 +74,7 @@ function InsertPatientParams($array_input) {
     $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
     ConexionDB_JSON($query);        
 }
-function InsertEvaluationConstParams($array_input) { 
+function InsertEvaluationHistoryParams($array_input) { 
     global $DBtables;
     $first_array = get_array_element_by_key_pull(untoken_array($array_input), 'PatientID');
     unset($array_input['PatientID_Token']);
