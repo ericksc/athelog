@@ -81,20 +81,18 @@ function InsertEvaluationConstParams($array_input) {
     $second_array = get_array_element_by_key_pull(untoken_array($array_input), 'ModifierID');
     unset($array_input['ModifierID_Token']);
     $pivot_array = array_merge($first_array, $second_array);
-    print_r($array_input);
-    foreach($array_input as $key=>$val) { 
+    $output = ""; 
+    $firstRun = true;
+    foreach(untoken_array($array_input) as $key=>$val) { 
         if(!$firstRun) { 
             $output .= ","; 
         } else { 
             $firstRun = false; 
         } 
-        $output .=  "'" .$val . "'";     
+        $output .= "(" . set_value_list($pivot_array) . ",'" .$key . "'," . "'" .$val . "')";     
     } 
-    $list = set_value_list($pivot_array) . $output;
-    print $list;
-    $query = "INSERT INTO " . $DBtables['evaluationconts'] . "(" . set_key_list($pivot_array). ",Test, Value" . ")";
+    $query = "INSERT INTO " . $DBtables['evaluationhistory'] . "(" . set_key_list($pivot_array). ",Test, Value" . ")";
     $query .= "VALUES" . $output;
-    print $query;
     ConexionDB_JSON($query);        
 }
 function InsertGenericParams($array_input, $tablename) { 
@@ -227,7 +225,7 @@ function set_value_list($array)
             } else { 
                 $firstRun = false; 
             } 
-            $output .= "'" . $key . "'";     
+            $output .= "'" . $val . "'";     
     } 
 return $output;
 }

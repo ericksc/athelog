@@ -10,6 +10,7 @@ $DBtables = array(
     'company' => 'Companies',
     'patients' => 'Patients',
     'evaluationconts' => 'EvaluationConst',
+    'evaluationhistory' => 'EvaluationHistory',
     'users' => 'Users'
 );
 
