@@ -3,7 +3,7 @@ var fetch = angular.module('fetch', []);
 	fetch.controller('dbCtrl', ['$scope', '$http', function ($scope, $http) {
 		
 		
-		alert("Executing Eval_APP controller v1.0");
+		alert("Executing Eval_APP controller v1.41");
 		
 		//------------1. USER CONST -----------------------
 		var GeneralGlobals ={};
@@ -15,62 +15,90 @@ var fetch = angular.module('fetch', []);
 		//2.1 to store evaluation data from APP (Antecedentes PAtologicos)
 		//tested ok
 		var APPData={};
-		APPData['Hypertension']="INDEFINIDO";
-		APPData['Diabetes ']="INDEFINIDO";
-		APPData['Cardiomyopathy']="INDEFINIDO";
-		APPData['Obesity']="INDEFINIDO";
+		APPData['Hypertension']="NONE";
+		APPData['Diabetes']="NONE";
+		APPData['Cardiomyopathy']="NONE";
+		APPData['Obesity']="NONE";
+                APPData['Dyslipidemia']="NONE";
+                APPData['Sedentarism']="NONE";
+                APPData['Depression']="NONE";
+                APPData['Alcohol']="NONE";
+                APPData['Tobacco']="NONE";
+                APPData['Cmmnt']="NONE";
 		
 		//2.2 to store APNP Data (Antecedentes Mo Patologicos)
 		var APNPData={};
-		APNPData['Comment']="NONE";
+		APNPData['Cmmnt']="NONE";
 		
 		//2.3 to store AQX (Antecedentes Quirurgicos)
 		var AQXData={};
-		AQXData['Comment']="NONE";
+		AQXData['Cmmnt']="NONE";
 		
 		//2.4 to store Medicines (Medicamentos)
 		var MEDData={};
-		MEDData['Comment']="NONE";
+		MEDData['Cmmnt']="NONE";
 		
 		//2.5 to store Injuries (Lesiones)
 		var INJData={};
-		INJData['Comment']="NONE";
+		INJData['Cmmnt']="NONE";
 		
 		//2.6 to store Physiological Variables (Variables Fisiologicas)
-		var PhysioVarsData={};
-		//FIXME:add data here - ask Adrian
-		
+		var PVData={};
+		PVData['HeartFreq']=0;
+                PVData['BldPrssr']=0;
+                PVData['Glycemia']=0;
+                PVData['SO2']=0;
+                PVData['WaistCirc']=0;
+                PVData['VO2Max']=0;
+                PVData['Cmmnt']="NONE";
+                PVData['OtherVarName']="";
+                PVData['OtherVarValue']=0;
+                
 		//2.7 to store Corporal Composition variables (variables de composicion corporal)
 		var BodyCompData={};
-		BodyCompData['Weight']="NONE";
-		BodyCompData['FatMass']="NONE";
-		BodyCompData['MuscleMass']="NONE";
-		BodyCompData['BMI']="NONE";
-		BodyCompData['FatPer']="NONE";
-		BodyCompData['InBodyScore']="NONE";
-		BodyCompData['BasMet']="NONE";
-		BodyCompData['ViscFat']="NONE";
-		BodyCompData['Flex']="NONE";
-		BodyCompData['MR']="NONE";
+		BodyCompData['Weight']=0;
+                BodyCompData['TargetWeight']=0;
+		BodyCompData['FatMass']=0;
+		BodyCompData['MuscleMass']=0;
+		BodyCompData['BMI']=0;
+		BodyCompData['FatPer']=0;
+		BodyCompData['InBodyScore']=0;
+		BodyCompData['BasMet']=0;
+		BodyCompData['ViscFat']=0;
+		BodyCompData['Flex']=0;
+		BodyCompData['MR']=0;
+                BodyCompData['Repetitions']=0;
+                BodyCompData['HydrtnLvl']=0;
+                BodyCompData['FatCntrl']=0;
+                BodyCompData['MuscleCntrl']=0; 
+                BodyCompData['OtherVarName']="";
+                BodyCompData['OtherVarValue']=0;
+                BodyCompData['Cmmnt']="NONE";
 
-		BodyCompData['Weight_Required']="YES";
-		BodyCompData['FatMass_Required']="YES";
-		BodyCompData['MuscleMass_Required']="YES";
-		BodyCompData['BMI_Required']="YES";
-		BodyCompData['FatPer_Required']="YES";
-		BodyCompData['InBodyScore_Required']="YES";
-		BodyCompData['BasMet_Required']="YES";
-		BodyCompData['ViscFat_Required']="YES";
-		BodyCompData['Flex_Required']="YES";
-		BodyCompData['MR_Required']="YES";
-		
-		//2.8 to store URL vars
+                //2.8 to Store Questionnaires text area
+                var QuestData={};
+                QuestData['Cmmnt']="NONE";
+                
+                //2.9 Indidividualization data
+                var IndData={};
+                IndData['Cmmnt']="NONE";
+                
+                //3.0 Nutrition Data
+                var NtrtnData={};
+                NtrtnData['Cmmnt']="NONE";
+                
+                //3.1 Physiotherapy Data
+                var PhysThrpyData={};
+                PhysThrpyData['Cmmnt']="NONE";
+                
+		//2. to store URL vars
 		var URLParams={};
 		URLParams['Action']="NONE";//expected: "InsertEval"(to create new eval), "EditVal"(to edit existent eval), "DeleteVal" 
 		URLParams['ID']="NONE";//expected: PatientID
-		URLParams['Row_ID']="NONE";//used to edit one eval file, selected previously by RowID
+		URLParams['RowID']="NONE";//used to edit one eval file, selected previously by RowID
 		URLParams['Message']="NONE";
-			
+
+               
 		//--------------END OF VARS ----------------------------
 	
 	
@@ -78,74 +106,117 @@ var fetch = angular.module('fetch', []);
 		
 		
 		//3.1 Resetting APP Field Values. no return
-		//tested ok
-		function ResetAPPFieldValues(){			
-			
-			APPData['Hypertension']="INDEFINIDO";
-			APPData['Diabetes ']="INDEFINIDO";
-			APPData['Cardiomyopathy']="INDEFINIDO";
-			APPData['Obesity']="INDEFINIDO";
-	
+                
+		function ResetAPPFieldValues(){
+                    
+                    APPData['Hypertension']="NONE";
+                    APPData['Diabetes']="NONE";
+                    APPData['Cardiomyopathy']="NONE";
+                    APPData['Obesity']="NONE";
+                    APPData['Dyslipidemia']="NONE";
+                    APPData['Sedentarism']="NONE";
+                    APPData['Depression']="NONE";
+                    APPData['Alcohol']="NONE";
+                    APPData['Tobacco']="NONE";
+                    APPData['Cmmnt']="NONE";
+                       
 		}
 		//end of function
 		
+                
 		//3.2 Reseting ANPN Field values. No return		
 		function ResetAPNPFieldValues(){
-			
-			APNPData['Comment']="NONE";			
-			
+                    APNPData['Cmmnt']="NONE";	
+
 		}
 		//eof
 		
 		//3.3 Resetting AQX Field Values
 		function ResetAQXFieldValues(){
-			
-			AQXData['Comment']="NONE";
-			
+                    AQXData['Cmmnt']="NONE";	
+
 		}
 		//eof
 		
+                
 		//3.4 Resetting Medicines Field Values. No return
 		function ResetMEDFieldValues(){
-			
-			MEDData['Comment']="NONE";
+                    MEDData['Cmmnt']="NONE";
 			
 		}
 		//eof
 		
 		//3.5 Resetting Injuries Field Values. No return
 		function ResetINJFieldValues(){
-			
-			INJData['Comment']="NONE";
+                    INJData['Cmmnt']="NONE";	
 			
 		}
 		//eof
 		
+                
 		//3.6 Resetting Body Composition Field Values. No return
 		function ResetBCFieldValues(){
-			
-			BodyCompData['Weight']="NONE";
-			BodyCompData['FatMass']="NONE";
-			BodyCompData['MuscleMass']="NONE";
-			BodyCompData['BMI']="NONE";
-			BodyCompData['FatPer']="NONE";
-			BodyCompData['InBodyScore']="NONE";
-			BodyCompData['BasMet']="NONE";
-			BodyCompData['ViscFat']="NONE";
-			BodyCompData['Flex']="NONE";
-			BodyCompData['MR']="NONE";
-			
+                    
+                    BodyCompData['Weight']=0;
+                    BodyCompData['TargetWeight']=0;
+                    BodyCompData['FatMass']=0;
+                    BodyCompData['MuscleMass']=0;
+                    BodyCompData['BMI']=0;
+                    BodyCompData['FatPer']=0;
+                    BodyCompData['InBodyScore']=0;
+                    BodyCompData['BasMet']=0;
+                    BodyCompData['ViscFat']=0;
+                    BodyCompData['Flex']=0;
+                    BodyCompData['MR']=0;
+                    BodyCompData['Repetitions']=0;
+                    BodyCompData['HydrtnLvl']=0;
+                    BodyCompData['FatCntrl']=0;
+                    BodyCompData['MuscleCntrl']=0;
+                    BodyCompData['Cmmnt']="NONE";			
+                    BodyCompData['OtherVarName']="";
+                    BodyCompData['OtherVarValue']=0;                      
 		}
 		
 		
 		//3.7 Resetting physiological Field Values. No return
 		function ResetPVFieldValues(){
 			
-			//FIXME: add content
-			
+                    PVData['HeartFreq']=0;
+                    PVData['BldPrssr']=0;
+                    PVData['Glycemia']=0;
+                    PVData['SO2']=0;
+                    PVData['WaistCirc']=0;
+                    PVData['VO2Max']=0;
+                    PVData['Cmmnt']="NONE";
+                    PVData['OtherVarName']="";
+                    PVData['OtherVarValue']=0;			
 		}
 		//eof
+                
 		
+                //3.8 Resetting Questionnaire data
+                function ResetQuestFieldValues(){
+                    QuestData['Cmmnt']="NONE";
+                }
+                
+                
+                //3.9 Resetting Individualization data
+                function ResetIndFieldValue(){
+                    IndData['Cmmnt']="NONE";
+                }
+                
+                //3.10 Resetting Nutrition data
+                function ResetNtrtnFieldValue(){
+                    NtrtnData['Cmmnt']="NONE";
+                }
+                
+                //3.11 PhysioTherapy data
+                
+                function ResetPTFieldValue(){
+                    PhysThrpyData['Cmmnt']="NONE";                
+                }
+                
+               
 		//function to check parameters and store URL Params in vars
 		//returns 1 if params are valid, if invalid:0	(invalid=>params are NULL, NONE or undefined)
 		//tested ok		
@@ -231,11 +302,56 @@ var fetch = angular.module('fetch', []);
 				APPData['Obesity'] = "NONE";
 			}	
 			
-			
+			if (typeof $scope.Dyslpdm_Input_Model !== 'undefined' && $scope.Dyslpdm_Input_Model !== null && $scope.Dyslpdm_Input_Model !== "") {
+				APPData['Dyslipidemia'] = $scope.Dyslpdm_Input_Model;
+			}else{
+				APPData['Dyslipidemia'] = "NONE";
+			}
+                        
+			if (typeof $scope.Dprssn_Input_Model !== 'undefined' && $scope.Dprssn_Input_Model !== null && $scope.Dprssn_Input_Model !== "") {
+				APPData['Depression'] = $scope.Dprssn_Input_Model;
+			}else{
+				APPData['Depression'] = "NONE";
+			} 
+                        
+			if (typeof $scope.Tobacco_Input_Model !== 'undefined' && $scope.Tobacco_Input_Model !== null && $scope.Tobacco_Input_Model !== "") {
+				APPData['Tobacco'] = $scope.Tobacco_Input_Model;
+			}else{
+				APPData['Tobacco'] = "NONE";
+			}   
+                        
+			if (typeof $scope.Alcohol_Input_Model !== 'undefined' && $scope.Alcohol_Input_Model !== null && $scope.Alcohol_Input_Model !== "") {
+				APPData['Alcohol'] = $scope.Alcohol_Input_Model;
+			}else{
+				APPData['Alcohol'] = "NONE";
+			}  
+
+			if (typeof $scope.Sdntrsm_Input_Model !== 'undefined' && $scope.Sdntrsm_Input_Model !== null && $scope.Sdntrsm_Input_Model !== "") {
+				APPData['Sedentarism'] = $scope.Sdntrsm_Input_Model;
+			}else{
+				APPData['Sedentarism'] = "NONE";
+			}
+                        
+			if (typeof $scope.APP_Cmmnt_Input_Model !== 'undefined' && $scope.APP_Cmmnt_Input_Model !== null && $scope.APP_Cmmnt_Input_Model !== "") {
+				APPData['Cmmnt'] = $scope.APP_Cmmnt_Input_Model;
+			}else{
+				APPData['Cmmnt'] = "NONE";
+			}                         
+               
 			$debug_string = "\nHypertension="+APPData['Hypertension'];
 			$debug_string +="\nDiabetes="+APPData['Diabetes'] ;
 			$debug_string +="\nCardiomyopathy="+APPData['Cardiomyopathy'];
-			$debug_string +="\nObesity="+APPData['Obesity'];
+			$debug_string +="\nObesity="+APPData['Obesity'];                        
+                        $debug_string = "\nHypertension="+APPData['Hypertension'];
+                        $debug_string +="\nDiabetes="+ APPData['Diabetes'];
+                        $debug_string +="\nCardiomyopathy="+APPData['Cardiomyopathy'];
+                        $debug_string +="\nObesity="+APPData['Obesity'];
+                        $debug_string +="\Dyslipidemia="+APPData['Dyslipidemia'];
+                        $debug_string +="\nSedentarism="+APPData['Sedentarism'];
+                        $debug_string +="\nDepression="+APPData['Depression'];
+                        $debug_string +="\nAlcohol="+APPData['Alcohol'];
+                        $debug_string +="\nAlcohol="+APPData['Tobacco'];
+                        $debug_string +="\nComment="+APPData['Cmmnt'];
 			
 			alert("(DEBUG)Function ReadAPPData() executed. Results:"+$debug_string); //(DEBUG)
 			
@@ -245,12 +361,11 @@ var fetch = angular.module('fetch', []);
 
 		//function to read APNP vars. No return
 		function ReadAPNPData(){
-
-			
+            
 			if (typeof $scope.APNP_Cmmnt_Input_Model !== 'undefined' && $scope.APNP_Cmmnt_Input_Model !== null && $scope.APNP_Cmmnt_Input_Model !== "") {
-				APNPData['Comment'] = $scope.APNP_Cmmnt_Input_Model;
+				APNPData['Cmmnt'] = $scope.APNP_Cmmnt_Input_Model;
 			}else{
-				APNPData['Comment'] = "NONE";
+				APNPData['Cmmnt'] = "NONE";
 			}
 			
 		}	
@@ -261,9 +376,9 @@ var fetch = angular.module('fetch', []);
 			
 			
 			if (typeof $scope.AQX_Cmmnt_Input_Model !== 'undefined' && $scope.AQX_Cmmnt_Input_Model !== null && $scope.AQX_Cmmnt_Input_Model !== "") {
-				AQXData['Comment'] = $scope.AQX_Cmmnt_Input_Model;
+				AQXData['Cmmnt'] = $scope.AQX_Cmmnt_Input_Model;
 			}else{
-				AQXData['Comment'] = "NONE";
+				AQXData['Cmmnt'] = "NONE";
 			}			
 			
 		}
@@ -274,9 +389,9 @@ var fetch = angular.module('fetch', []);
 			
 			
 			if (typeof $scope.MED_Cmmt_Input_Model !== 'undefined' && $scope.MED_Cmmt_Input_Model !== null) {
-				MEDData['Comment'] = $scope.MED_Cmmt_Input_Model;
+				MEDData['Cmmnt'] = $scope.MED_Cmmt_Input_Model;
 			}else{
-				MEDData['Comment'] = "NONE";
+				MEDData['Cmmnt'] = "NONE";
 			}	
 			
 			
@@ -286,13 +401,11 @@ var fetch = angular.module('fetch', []);
 		//function to read INJuries vars. No return
 		function ReadINJData(){
 
-			
 			if (typeof $scope.INJ_Cmmt_Input_Model !== 'undefined' && $scope.INJ_Cmmt_Input_Model !== null) {
-				INJData['Comment'] = $scope.INJ_Cmmt_Input_Model;
+				INJData['Cmmnt'] = $scope.INJ_Cmmt_Input_Model;
 			}else{
-				INJData['Comment'] = "NONE";
+				INJData['Cmmnt'] = "NONE";
 			}
-					
 			
 		}
 		//eof
@@ -309,71 +422,107 @@ var fetch = angular.module('fetch', []);
 			}else{
 				BodyCompData['Weight'] = "NONE";
 			}			
-			
-			
+
+			if (typeof $scope.TrgtWght_BC_Input_Model !== 'undefined' && $scope.TrgtWght_BC_Input_Model !== null && $scope.TrgtWght_BC_Input_Model !== "") {
+				BodyCompData['TargetWeight'] = $scope.TrgtWght_BC_Input_Model;
+			}else{
+				BodyCompData['TargetWeight'] = "NONE";
+			}   
+                        
 			if (typeof $scope.FatMass_BC_Input_Model !== 'undefined' && $scope.FatMass_BC_Input_Model !== null && $scope.FatMass_BC_Input_Model !== "") {
 				BodyCompData['FatMass'] = $scope.FatMass_BC_Input_Model;
 			}else{
 				BodyCompData['FatMass'] = "NONE";
 			}			
-			
-			
+
 			if (typeof $scope.MuscleMass_BC_Input_Model !== 'undefined' && $scope.MuscleMass_BC_Input_Model !== null && $scope.MuscleMass_BC_Input_Model !== "") {
 				BodyCompData['MuscleMass'] = $scope.MuscleMass_BC_Input_Model;
 			}else{
 				BodyCompData['MuscleMass'] = "NONE";
 			}
-			
-			
+
 			if (typeof $scope.BMI_BC_Input_Model !== 'undefined' && $scope.BMI_BC_Input_Model !== null && $scope.BMI_BC_Input_Model !== "") {
 				BodyCompData['BMI'] = $scope.BMI_BC_Input_Model;
 			}else{
 				BodyCompData['BMI'] = "NONE";
 			}
 
-			
-			if (typeof $scope.FatPer_CC_Input_Model !== 'undefined' && $scope.FatPer_CC_Input_Model !== null && $scope.FatPer_CC_Input_Model !== "") {
-				BodyCompData['FatPer'] = $scope.FatPer_CC_Input_Model;
+			if (typeof $scope.FatPer_BC_Input_Model !== 'undefined' && $scope.FatPer_CC_Input_Model !== null && $scope.FatPer_BC_Input_Model !== "") {
+				BodyCompData['FatPer'] = $scope.FatPer_BC_Input_Model;
 			}else{
 				BodyCompData['FatPer'] = "NONE";
 			}
 
-			
-			if (typeof $scope.InBodyScore_CC_Input_Model !== 'undefined' && $scope.InBodyScore_CC_Input_Model !== null && $scope.InBodyScore_CC_Input_Model !== "") {
-				BodyCompData['InBodyScore'] = $scope.InBodyScore_CC_Input_Model;
+			if (typeof $scope.InBodyScore_BC_Input_Model !== 'undefined' && $scope.InBodyScore_BC_Input_Model !== null && $scope.InBodyScore_BC_Input_Model !== "") {
+				BodyCompData['InBodyScore'] = $scope.InBodyScore_BC_Input_Model;
 			}else{
 				BodyCompData['InBodyScore'] = "NONE";
 			}
 
-			if (typeof $scope.BasMet_CC_Input_Model !== 'undefined' && $scope.BasMet_CC_Input_Model !== null && $scope.BasMet_CC_Input_Model !== "") {
-				BodyCompData['BasMet'] = $scope.BasMet_CC_Input_Model;
+			if (typeof $scope.BasMet_BC_Input_Model !== 'undefined' && $scope.BasMet_BC_Input_Model !== null && $scope.BasMet_BC_Input_Model !== "") {
+				BodyCompData['BasMet'] = $scope.BasMet_BC_Input_Model;
 			}else{
 				BodyCompData['BasMet'] = "NONE";
 			}
 
-				
-			if (typeof $scope.ViscFat_CC_Input_Model !== 'undefined' && $scope.ViscFat_CC_Input_Model !== null && $scope.ViscFat_CC_Input_Model !== "") {
-				BodyCompData['ViscFat'] = $scope.ViscFat_CC_Input_Model;
+			if (typeof $scope.ViscFat_BC_Input_Model !== 'undefined' && $scope.ViscFat_BC_Input_Model !== null && $scope.ViscFat_BC_Input_Model !== "") {
+				BodyCompData['ViscFat'] = $scope.ViscFat_BC_Input_Model;
 			}else{
 				BodyCompData['ViscFat'] = "NONE";
 			}
 
-			if (typeof $scope.Flex_CC_Input_Model !== 'undefined' && $scope.Flex_CC_Input_Model !== null && $scope.Flex_CC_Input_Model !== "") {
-				BodyCompData['Flex'] = $scope.Flex_CC_Input_Model;
+			if (typeof $scope.Flex_BC_Input_Model !== 'undefined' && $scope.Flex_BC_Input_Model !== null && $scope.Flex_BC_Input_Model !== "") {
+				BodyCompData['Flex'] = $scope.Flex_BC_Input_Model;
 			}else{
 				BodyCompData['Flex'] = "NONE";
 			}
-			
-			if (typeof $scope.MR_CC_Input_Model !== 'undefined' && $scope.MR_CC_Input_Model !== null && $scope.MR_CC_Input_Model !== "") {
-				BodyCompData['MR'] = $scope.MR_CC_Input_Model;
+
+			if (typeof $scope.MR_BC_Input_Model !== 'undefined' && $scope.MR_BC_Input_Model !== null && $scope.MR_BC_Input_Model !== "") {
+				BodyCompData['MR'] = $scope.MR_BC_Input_Model;
 			}else{
 				BodyCompData['MR'] = "NONE";
 			}
+
+			if (typeof $scope.Rep_BC_Input_Model !== 'undefined' && $scope.Rep_BC_Input_Model !== null && $scope.Rep_BC_Input_Model !== "") {
+				BodyCompData['Repetitions'] = $scope.Rep_BC_Input_Model;
+			}else{
+				BodyCompData['Repetitions'] = "NONE";
+			}
+
+			if (typeof $scope.HydrtnLvl_BC_Input_Model !== 'undefined' && $scope.HydrtnLvl_BC_Input_Model !== null && $scope.HydrtnLvl_BC_Input_Model !== "") {
+				BodyCompData['HydrtnLvl'] = $scope.HydrtnLvl_BC_Input_Model;
+			}else{
+				BodyCompData['HydrtnLvl'] = "NONE";
+			}
+
+
+                        
+			if (typeof $scope.MsclCntrl_BC_Input_Model !== 'undefined' && $scope.MsclCntrl_BC_Input_Model !== null && $scope.MsclCntrl_BC_Input_Model !== "") {
+				BodyCompData['MuscleCntrl'] = $scope.MsclCntrl_BC_Input_Model;
+			}else{
+				BodyCompData['MuscleCntrl'] = "NONE";
+			} 
+                        
+			if (typeof $scope.FatCntrl_BC_Input_Model !== 'undefined' && $scope.FatCntrl_BC_Input_Model !== null && $scope.FatCntrl_BC_Input_Model !== "") {
+				BodyCompData['FatCntrl'] = $scope.GrsCntrl_BC_Input_Model;
+			}else{
+				BodyCompData['FatCntrl'] = "NONE";
+			}  
+                    
+			if (typeof $scope.BC_OtherVarName_Input_Model !== 'undefined' && $scope.BC_OtherVarName_Input_Model !== null && $scope.BC_OtherVarName_Input_Model !== "") {
+				BodyCompData['OtherVarName'] = $scope.BC_OtherVarName_Input_Model;
+			}else{
+				BodyCompData['OtherVarName'] = "NONE";
+			} 
+                        
+			if (typeof $scope.BC_OtherVarValue_Input_Model !== 'undefined' && $scope.BC_OtherVarValue_Input_Model !== null && $scope.BC_OtherVarValue_Input_Model !== "") {
+				BodyCompData['OtherVarValue'] = $scope.BC_OtherVarValue_Input_Model;
+			}else{
+				BodyCompData['OtherVarValue'] = "NONE";
+			}     
+                        
 			
-			//checkboxes
-			
-			
-			
+	
 			
 		}
 		//eof
@@ -381,17 +530,64 @@ var fetch = angular.module('fetch', []);
 		//function to read Physio Vars. No return
 		function ReadPVData(){
 			
-			
-			//FIXME:add content
-			/*
-			if (typeof $scope. !== 'undefined' && $scope. !== null && $scope. !== "") {
-				[''] = $scope.;
+			if (typeof $scope.PV_HeartRate_Input_Model !== 'undefined' && $scope.PV_HeartRate_Input_Model !== null && $scope.PV_HeartRate_Input_Model !== "") {
+				PVData['HeartFreq'] = $scope.PV_HeartRate_Input_Model;
 			}else{
-				[''] = "NONE";
-			}	
-			*/			
+				PVData['HeartFreq'] = "NONE";
+			}
+
+			if (typeof $scope.PV_BldPrssr_Input_Model !== 'undefined' && $scope.PV_BldPrssr_Input_Model !== null && $scope.PV_BldPrssr_Input_Model !== "") {
+				PVData['BldPrssr'] = $scope.PV_BldPrssr_Input_Model;
+			}else{
+				PVData['BldPrssr'] = "NONE";
+			}                    
+                        
+			if (typeof $scope.PV_Glycemia_Input_Model !== 'undefined' && $scope.PV_Glycemia_Input_Model !== null && $scope.PV_Glycemia_Input_Model !== "") {
+				PVData['Glycemia'] = $scope.PV_Glycemia_Input_Model;
+			}else{
+				PVData['Glycemia'] = "NONE";
+			}     
+
+			if (typeof $scope.PV_SO2_Input_Model !== 'undefined' && $scope.PV_SO2_Input_Model !== null && $scope.PV_SO2_Input_Model !== "") {
+				PVData['SO2'] = $scope.PV_SO2_Input_Model;
+			}else{
+				PVData['SO2'] = "NONE";
+			}                       
+
+			if (typeof $scope.PV_WaistCirc_Input_Model !== 'undefined' && $scope.PV_WaistCirc_Input_Model !== null && $scope.PV_WaistCirc_Input_Model !== "") {
+				PVData['WaistCirc'] = $scope.PV_WaistCirc_Input_Model;
+			}else{
+				PVData['WaistCirc'] = "NONE";
+			}
+                        
+			if (typeof $scope.PV_VO2Max_Input_Model !== 'undefined' && $scope.PV_VO2Max_Input_Model !== null && $scope.PV_VO2Max_Input_Model !== "") {
+				PVData['VO2Max'] = $scope.PV_VO2Max_Input_Model;
+			}else{
+				PVData['VO2Max'] = "NONE";
+			}
+                        
+			if (typeof $scope.PV_OtherVarName_Input_Model !== 'undefined' && $scope.PV_OtherVarName_Input_Model !== null && $scope.PV_OtherVarName_Input_Model !== "") {
+				PVData['OtherVarName'] = $scope.PV_OtherVarName_Input_Model;
+			}else{
+				PVData['OtherVarName'] = "NONE";
+			}                        
+
+			if (typeof $scope.PV_OtherVarValue_Input_Model !== 'undefined' && $scope.PV_OtherVarValue_Input_Model !== null && $scope.PV_OtherVarValue_Input_Model !== "") {
+				PVData['OtherVarValue'] = $scope.PV_OtherVarValue_Input_Model;
+			}else{
+				PVData['OtherVarValue'] = "NONE";
+			} 
+   
 		}
 		//eof
+
+
+                //function to read Nutrition data
+                //FIXME: add here
+                
+                
+                //function to read Physiotherapy data
+                //FIXMe: add here
 
 
 		//-----APP functions ---------	
@@ -399,14 +595,19 @@ var fetch = angular.module('fetch', []);
 		//function to return APP Insert dB string
 		function CreateAPPInsertString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=InsertAPP&PatientIDToken";
-			URL += "&HyprtnsnToken="+APPData.Hypertension;
-			URL += "&DbtsToken="+APPData.Diabetes;
-			URL += "&CrdmpthyToken="+APPData.Cardiomyopathy;
-			URL += "&ObstyToken="+APPData.Obesity;
-			alert("(DEBUG)CreateAPPUpdateString() executed. Return URL="+URL);
-			return URL;
-			
+			var URL = "../engine/dBInterface.php?ActionDBToken=InsertAPP&PatientID_Token="+URLParams.ID;
+                        
+                        if(APPData['Hypertension']!=="NONE")URL+="&Hypertension_Token="+APPData['Hypertension'];
+                        if(APPData['Diabetes ']!=="NONE")URL+="&Diabetes_Token="+APPData['Diabetes'];
+                        if(APPData['Cardiomyopathy']!=="NONE")URL+="&Cardiomyopathy_Token="+APPData['Cardiomyopathy'];
+                        if(APPData['Obesity']!=="NONE")URL+="&Obesity_Token="+APPData['Obesity'];
+                        if(APPData['Dyslipidemia']!=="NONE")URL+="&Dyslipidemia_Token="+APPData['Dyslipidemia'];                        
+                        if(APPData['Depression']!=="NONE")URL+="&Depression_Token="+APPData['Depression'];
+                        if(APPData['Alcohol']!=="NONE")URL+="&Alcohol_Token="+APPData['Alcohol'];
+                        if(APPData['Tobacco']!=="NONE")URL+="&Tobacco_Token="+APPData['Tobacco'];
+                        if(APPData['Cmmnt']!=="NONE")URL+="&APP_Cmmnt_Token="+APPData['Cmmnt'];
+                        if(APPData['Sedentarism']!=="NONE")URL+="&APP_Cmmnt_Token="+APPData['Sedentarism'];
+                        return URL;
 		}
 		//eof	
 
@@ -415,13 +616,22 @@ var fetch = angular.module('fetch', []);
 		//tested ok
 		function CreateAPPUpdateString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateAPP&RowIDToken="+URLParams.Row_ID;
-			URL += "&HyprtnsnToken="+APPData.Hypertension;
-			URL += "&DbtsToken="+APPData.Diabetes;
-			URL += "&CrdmpthyToken="+APPData.Cardiomyopathy;
-			URL += "&ObstyToken="+APPData.Obesity;
-			alert("(DEBUG)CreateAPPUpdateString() executed. Return URL="+URL);
-			return URL;
+			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateAPP&PatientID_Token="+URLParams.ID;
+                        if(APPData['Hypertension']!=="NONE")URL+="&Hypertension_Token="+APPData['Hypertension'];
+                        if(APPData['Diabetes ']!=="NONE")URL+="&Diabetes_Token="+APPData['Diabetes'];
+                        if(APPData['Cardiomyopathy']!=="NONE")URL+="&Cardiomyopathy_Token="+APPData['Cardiomyopathy'];
+                        if(APPData['Obesity']!=="NONE")URL+="&Obesity_Token="+APPData['Obesity'];
+                        if(APPData['Dyslipidemia']!=="NONE")URL+="&Dyslipidemia_Token="+APPData['Dyslipidemia'];                        
+                        if(APPData['Depression']!=="NONE")URL+="&Depression_Token="+APPData['Depression'];
+                        if(APPData['Alcohol']!=="NONE")URL+="&Alcohol_Token="+APPData['Alcohol'];
+                        if(APPData['Tobacco']!=="NONE")URL+="&Tobacco_Token="+APPData['Tobacco'];
+                        if(APPData['Cmmnt']!=="NONE")URL+="&APP_Cmmnt_Token="+APPData['Cmmnt'];
+                        if(APPData['Sedentarism']!=="NONE")URL+="&APP_Cmmnt_Token="+APPData['Sedentarism'];
+                        return URL;
+                        
+                        
+                        
+                        
 			
 		}
 		//eof
@@ -429,7 +639,7 @@ var fetch = angular.module('fetch', []);
 		//function to return APP SelectdB String
 		function SelectAPPSelectString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=SelectAPP&PatientIDToken";
+			var URL = "../engine/dBInterface.php?ActionDBToken=SelectAPP&PatientID_Token";
 			return URL;
 		}
 		//eof
@@ -439,8 +649,8 @@ var fetch = angular.module('fetch', []);
 		//function to return APNP Insert dB string
 		function CreateAPNPInsertString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=InsertAPNP&PatientIDToken";
-			URL += "&AQXCmmtToken="+APNPData.Comment;
+			var URL = "../engine/dBInterface.php?ActionDBToken=InsertAPNP&PatientID_Token";
+			URL += "&APNP_Cmmnt_Token="+APNPData['Cmmnt'];
 			return URL;
 		
 		}
@@ -449,8 +659,9 @@ var fetch = angular.module('fetch', []);
 		//function to return APNP Updated dB string
 		function CreateAPNPUpdateString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateAPNP&RowIDToken="+URLParams.Row_ID;
-			URL += "&AQXCmmtToken="+APNPData.Comment;
+                        //FIXME: where to read the RowID
+			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateAPNP&RowID_Token="+URLParams.RowID;
+			URL += "&APNP_Cmmnt_Token="+APNPData['Cmmnt'];
 			return URL;
 		
 		}
@@ -459,7 +670,7 @@ var fetch = angular.module('fetch', []);
 		//function to select APNP Select dB String
 		function CreateAPNPSelectString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=SelectAPNP&PatientIDToken";
+			var URL = "../engine/dBInterface.php?ActionDBToken=SelectAPNP&PatientID_Token";
 			return URL;
 		}
 		//eof
@@ -470,23 +681,24 @@ var fetch = angular.module('fetch', []);
 		//function to return MED Insert dB string
 		function CreateMEDInsertString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=InsertMED&PatientIDToken";
-			URL += "&MedCmmtToken="+MEDData.Comment;
+			var URL = "../engine/dBInterface.php?ActionDBToken=InsertMED&PatientID_Token";
+			URL += "&Cmmnt_Token="+MEDData['Cmmnt'];
 			return URL;
 		}
 		
 		//function to return MED Update dB string
 		function CreateMEDUpdateString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateMED&RowIDToken="+URLParams.Row_ID;
-			URL += "&MedCmmtToken="+MEDData.Comment;
+                        //FIXME:read the RowID from some control, not from URLParams
+			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateMED&RowID_Token="+URLParams.RowID;
+			URL += "&MED_Cmmnt_Token="+MEDData['Cmmnt'];
 			return URL;
 		}
 		
 		//function to return MED dB Select String
 		function CreateMEDSelectString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=SelectMED&PatientIDToken";
+			var URL = "../engine/dBInterface.php?ActionDBToken=SelectMED&PatientID_Token";
 			return URL;			
 		}
 		//eof
@@ -496,8 +708,8 @@ var fetch = angular.module('fetch', []);
 		//function to return INJuries Update dB string
 		function CreateINJInsertString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=InsertINJ&PatientIDToken";
-			URL += "&INJCmmtToken="+INJData.Comment;
+			var URL = "../engine/dBInterface.php?ActionDBToken=InsertINJ&Patient_IDToken";
+			URL += "&INJ_Cmmnt_Token="+INJData['Cmmnt'];
 			return URL;			
 		}
 		//eof
@@ -505,8 +717,8 @@ var fetch = angular.module('fetch', []);
 		//function to return INJuries Update dB string
 		function CreateINJUpdateString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateINJ&RowIDToken="+URLParams.Row_ID;
-			URL += "&INJCmmtToken="+INJData.Comment;
+			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateINJ&RowID_Token="+URLParams.RowID;
+			URL += "&INJ_Cmmnt_Token="+INJData['Cmmnt'];
 			return URL;			
 		}
 		//eof
@@ -514,7 +726,7 @@ var fetch = angular.module('fetch', []);
 		//function to return INJ Select dB String
 		function CreateINJSelectString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=SelectINJ&PatientIDToken";
+			var URL = "../engine/dBInterface.php?ActionDBToken=SelectINJ&PatientID_Token";
 			return URL;				
 		}
 		//eof
@@ -522,18 +734,26 @@ var fetch = angular.module('fetch', []);
 		//-----Physio functions ---------
 		
 		//function to return Physio Insert dB string
-		function CreatePVUpdateString(){
-			
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdatePV";
-			//FIXME:add content
-			return URL;
+		function CreatePVInsertString(){
+
+                    var URL = "../engine/dBInterface.php?ActionDBToken=InsertHistoryTest";
+                    URL+="&PatientID_Token="+URLParams.ID;
+                    if(PVData['HeartFreq']!=="NONE")URL+="&HeartFreq_Token="+PVData['HeartFreq'];
+                    if(PVData['BldPrssr']!=="NONE")URL+="&BldPrssr_Token="+PVData['BldPrssr'];
+                    if(PVData['Glycemia']!=="NONE")URL+="&Glycemia_Token="+PVData['Glycemia'];
+                    if(PVData['SO2']!=="NONE")URL+="&SO2_Token="+PVData['SO2'];
+                    if(PVData['WaistCirc']!=="NONE")URL+="&WaistCirc_Token="+PVData['WaistCirc'];
+                    if(PVData['VO2Max']!=="NONE")URL+="&VO2Max_Token="+PVData['VO2Max'];
+                    if(PVData['OtherVarName']!=="NONE"&&PVData['OtherVarValue']!=="NONE")URL+="&"+PVData['OtherVarName']+"="+PVData['OtherVarValue'];
+                    alert("(DEBUG)CreatePVInsertString()-Return URL="+URL);
+                    return URL;
 		}
 		//eof
 		
 		//function to return Physio Update dB string
 		function CreatePVUpdateString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdatePV&RowIDToken="+URLParams.Row_ID;
+			var URL = "../engine/dBInterface.php?ActionDBToken=UpdatePV&RowIDToken="+URLParams.RowID;
 			//FIXME:add content
 			return URL;
 		}
@@ -553,17 +773,17 @@ var fetch = angular.module('fetch', []);
 		function CreateBodyCompInsertString(){
 			
 			var URL = "../engine/dBInterface.php?ActionDBToken=InsertBodyComp";
-			URL += "&PatientIDToken="+URLParams.ID;
-			URL += "&WeightToken="+BodyCompData.Weight;
-			URL += "&FatMassToken="+BodyCompData.FatMass;
-			URL += "&MuscleMassToken="+BodyCompData.MuscleMass
-			URL += "&BMIToken="+BodyCompData.BMI;
-			URL += "&FatPerToken="+BodyCompData.FatPer;
-			URL += "&InBodyScore="+BodyCompData.InBodyScore;
-			URL += "&BasMetToken="+BodyCompData.BasMet;
-			URL += "&ViscFatToken="+BodyCompData.ViscFat;
-			URL += "&FlexToken="+BodyCompData.Flex;
-			URL += "&MRToken="+BodyCompData.MR;
+			URL += "&PatientID_Token="+URLParams.ID;
+			if(BodyCompData.Weight!=="NONE")URL += "&Weight_Token="+BodyCompData.Weight;
+			if(BodyCompData.FatMass!=="NONE")URL += "&FatMass_Token="+BodyCompData.FatMass;
+			if(BodyCompData.MuscleMass!=="NONE")URL += "&MuscleMass_Token="+BodyCompData.MuscleMass;
+			if(BodyCompData.BMI!=="NONE")URL += "&BMIToken="+BodyCompData.BMI;
+			if(BodyCompData.FatPer!=="NONE")URL += "&FatPer_Token="+BodyCompData.FatPer;
+			if(BodyCompData.InBodyScore!=="NONE")URL += "&InBodyScore_Token="+BodyCompData.InBodyScore;
+			if(BodyCompData.BasMet!=="NONE")URL += "&BasMet_Token="+BodyCompData.BasMet;
+			if(BodyCompData.ViscFat!=="NONE")URL += "&ViscFat_Token="+BodyCompData.ViscFat;
+			if(BodyCompData.Flex!=="NONE")URL += "&Flex_Token="+BodyCompData.Flex;
+			if(BodyCompData.MR!=="NONE")URL += "&MR_Token="+BodyCompData.MR;
 			alert("(DEBUG)CreateBodyCompInsertString() executed. Return URL="+URL);
 			return URL;
 			
@@ -573,7 +793,7 @@ var fetch = angular.module('fetch', []);
 		//function to return body Comp Update dB string
 		function CreateBodyCompUpdateString(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateBodyComp&RowIDToken="+URLParams.Row_ID;
+			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateBodyComp&RowIDToken="+URLParams.RowID;
 			URL += "&PatientIDToken="+URLParams.ID;
 			URL += "&WeightToken="+BodyCompData.Weight;
 			URL += "&FatMassToken"+BodyCompData.FatMass;
@@ -599,7 +819,18 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 		
-		
+		//2. Create <patient> Search string, by ID arg (taken from URL "ID" arg)
+		// returns URL string
+                           
+		function CreatePatientSearchStringByID () {
+			
+			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectPatient";
+			URLstring+="&PatientID_Token="+URLParams.ID;
+			//alert("(DEBUG)CreatePatientSearchString() - Patient Search String="+URLstring);
+			return URLstring;
+			
+		}
+		//end of function		
 		
 		//validating input field to prevent the user to enter invalid words or chars
 		//returns true is field value is valid
@@ -689,6 +920,22 @@ var fetch = angular.module('fetch', []);
 			
 		}
 		
+                $scope.PV_Save=function(){
+                
+                    ResetPVFieldValues();
+                    ReadPVData();
+                    CalldBEngine(CreatePVInsertString(),"PVData");
+                    alert("(DEBUG)PV_Save()-executed");
+                
+                }
+                
+                $scope.BC_Save=function(){
+                    
+                    ResetBCFieldValues();
+                    ReadBCData();
+                    CreateBodyCompInsertString();
+                    
+                }
 
 		
 		//7. Function to call php server file, in $address
@@ -707,6 +954,32 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 
+		//7.3 Function to call php server file, in $address
+		//FIXME: add the .error part
+		function CalldBEngine(URLstring,OutputType) {			
+			
+			
+			//alert("(DEBUG)Function CallPHPServerFile() calling"); //(DEBUG)			
+			$http.get(URLstring)
+			.success(function(data){
+				
+			if(OutputType=="CompanyList"){	
+				$scope.CompanyList = data; //companyID list from mySQL
+				$scope.CompanyList.push("");//empty options
+			}else if(OutputType=="data"){
+				$scope.data=data;
+			}else if(OutputType=="PatientData"){
+				$scope.PatientData=data;
+			}else if(OutputType=="PVData"){
+				$scope.PVData=data;
+			}
+			
+			})
+			
+			//alert("(DEBUG)Function CalldBEngine() executed on URL="+URLstring); //(DEBUG)
+
+		}
+		//eof	
 		
 		
 		//8. Init Function to call Main with parameter Type
@@ -737,22 +1010,20 @@ var fetch = angular.module('fetch', []);
 		// return true if succesfully executed
 		function Main (Type) {	
 			
-			//alert("(DEBUG)Main()-starting with Type="+Type);
+			//alert("(DEBUG)Main()-starting with Type="+Type); 
 			
+                        
+                        
 			//check parameters
+                        
 			if(CheckURLParameters()==true){
-				
-				if(Type=='Patient' && URLParams.Action=="EditPatient"){
+
+				if(Type=='Patient' && URLParams.Action=="SearchPatient"){
 					
-					CallPHPServerFile(CreatePatientSearchStringByID());
+					CalldBEngine(CreatePatientSearchStringByID(),"PatientData");
+                                        //alert("(DEBUG)Main()- Search patient executed");
 					return true;
-				}
-				else if (Type=='Company' && URLParams.Action=="EditCompany"){
-					
-					CallPHPServerFile(CreateCompanySearchStringByID());
-					return true;
-				}
-				else{
+				}else{
 					//ActionParam is undefined
 					//alert("(DEBUG)Main - Finishing Main without search");
 					return false;
@@ -762,6 +1033,7 @@ var fetch = angular.module('fetch', []);
 				
 			}else{
 				//failed the URL args validation
+                                //alert("(DEBUG)Main()- Ending because of Invalid Args. Return  FALSE");
 				return false;
 			}
 					
