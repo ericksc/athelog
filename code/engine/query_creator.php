@@ -109,12 +109,12 @@ function ReadPatientHistoryParams($array_input){
     if (isset($array_input['Fromdate_Token'])) {
         $fromdate = get_array_element_by_key_pull(untoken_array($array_input), 'Fromdate');
         unset($array_input['Fromdate_Token']);
-        $query .= " AND CONVERT(  " . set_value_list($fromdate) . ", DATETIME ) <= `ModDate`";
+        $query .= " AND CONVERT(  " . set_value_list($fromdate) . ", DATE ) <= `ModDate`";
     }
     if (isset($array_input['Todate_Token'])) {
         $Todate = get_array_element_by_key_pull(untoken_array($array_input), 'Todate');
         unset($array_input['Todate_Token']);
-        $query .= " AND `ModDate` < CONVERT(  " . set_value_list($Todate) . ", DATETIME ) ";
+        $query .= " AND `ModDate` < CONVERT(  " . set_value_list($Todate) . ", DATE ) ";
     }
     if (!empty($array_input)) {
         $query .= " AND `Test` IN (" . set_value_list(untoken_array($array_input)). ") ";      
