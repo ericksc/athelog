@@ -93,7 +93,6 @@ function InsertEvaluationHistoryParams($array_input) {
     } 
     $query = "INSERT INTO " . $DBtables['evaluationhistory'] . "(" . set_key_list($pivot_array). ",Test, Value" . ")";
     $query .= "VALUES" . $output;
-    print $query;
     ConexionDB_JSON($query);        
 }
 function InsertGenericParams($array_input, $tablename) { 
