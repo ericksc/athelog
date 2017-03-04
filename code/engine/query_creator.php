@@ -93,6 +93,7 @@ function InsertEvaluationHistoryParams($array_input) {
     } 
     $query = "INSERT INTO " . $DBtables['evaluationhistory'] . "(" . set_key_list($pivot_array). ",Test, Value" . ")";
     $query .= "VALUES" . $output;
+    print $query;
     ConexionDB_JSON($query);        
 }
 function InsertGenericParams($array_input, $tablename) { 
@@ -101,6 +102,28 @@ function InsertGenericParams($array_input, $tablename) {
     $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
     ConexionDB_JSON($query);        
 }
+function ReadPatientHistoryParams($array_input){
+    global $DBtables;
+    $patient = get_array_element_by_key_pull(untoken_array($array_input), 'PatientID');
+    unset($array_input['PatientID_Token']);
+    $query = "SELECT * FROM " . $DBtables['evaluationhistory'] . " WHERE " . set_key_list($patient) . " = " . set_value_list($patient)  ;
+    if (isset($array_input['Fromdate_Token'])) {
+        $fromdate = get_array_element_by_key_pull(untoken_array($array_input), 'Fromdate');
+        unset($array_input['Fromdate_Token']);
+        $query .= " AND CONVERT(  " . set_value_list($fromdate) . ", DATETIME ) <= `ModDate`";
+    }
+    if (isset($array_input['Todate_Token'])) {
+        $Todate = get_array_element_by_key_pull(untoken_array($array_input), 'Todate');
+        unset($array_input['Todate_Token']);
+        $query .= " AND `ModDate` < CONVERT(  " . set_value_list($Todate) . ", DATETIME ) ";
+    }
+    if (!empty($array_input)) {
+        $query .= " AND `Test` IN (" . set_value_list(untoken_array($array_input)). ") ";      
+    }
+    $query .= "GROUP BY" . " `Test` " . " ORDER BY " . "`ModDate`" . " DESC";
+    ConexionDB_JSON($query); 
+}
+
 function InsertParams($array_input, $tablename){
     $result_check = getCheckparams($array_input, $tablename, 'EXIST', FALSE);
     if ($result_check[0]['EXIST'] == 'FALSE') {
