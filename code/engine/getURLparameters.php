@@ -36,11 +36,12 @@ $queryfunctions = array(
   'SelectBodyComp' => function($array_parameters) { ReadEvaluationConstParams($array_parameters);},
   'dummytest' => function($array_parameters) { InsertParams($array_parameters, 'users');},
   'InsertHistoryTest' => function($array_parameters) { InsertEvaluationHistoryParams($array_parameters);},
-  'ReadPatientHistoryVars' => function($array_parameters) { ReadPatientHistoryParams($array_parameters);}, 
+  'ReadPatientHistoryVars' => function($array_parameters) { ReadPatientHistoryParams($array_parameters);},
+   'ReadPatientHistoryVars2' => function($array_parameters) { ReadPatientHistoryParams2($array_parameters);},
   'ReadPatientVars' => function($array_parameters) { ReadPatientBlockParams($array_parameters);}, 
   'InsertPatient' => function($array_parameters) { InsertPatientParams($array_parameters);}
 );
-
+ 
 function callActionFunctions($action, $parameter)
 {
     global $queryfunctions;

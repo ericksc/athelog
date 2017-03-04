@@ -28,6 +28,15 @@ function ReadPatientParams($array_input) {
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);    
 }
+
+function ReadPatientParams2($array_input) {  
+    global $DBtables;
+    $query = "SELECT * FROM " . $DBtables['evaluationhistory'] . " WHERE ";
+    $query .= where_like_value(untoken_array($array_input));
+    ConexionDB_JSON($query);    
+}
+
+
 function getCheckparams($array_input, $tablename, $label, $enableJSON=FALSE) {  
     global $DBtables;
     $query = "SELECT CASE WHEN COUNT( * ) >0 THEN  'TRUE' ELSE  'FALSE' END AS  '" . $label ."' FROM  " . $DBtables[$tablename] . " WHERE ";
@@ -122,26 +131,14 @@ function ReadPatientHistoryParams($array_input){
     $query .= "GROUP BY" . " `Test` " . " ORDER BY " . "`ModDate`" . " DESC";
     ConexionDB_JSON($query); 
 }
-function ReadPatientBlockParams($array_input){
+
+//FIXME:added for debuggin (Ramiro)
+function ReadPatientHistoryParams2 ($array_input) { 
     global $DBtables;
-    $patient = get_array_element_by_key_pull(untoken_array($array_input), 'PatientID');
-    unset($array_input['PatientID_Token']);
-    $query = "SELECT * FROM " . $DBtables['patients'] . " WHERE " . set_key_list($patient) . " = " . set_value_list($patient)  ;
-    if (isset($array_input['Fromdate_Token'])) {
-        $fromdate = get_array_element_by_key_pull(untoken_array($array_input), 'Fromdate');
-        unset($array_input['Fromdate_Token']);
-        $query .= " AND CONVERT(  " . set_value_list($fromdate) . ", DATE ) <= `ModDate`";
-    }
-    if (isset($array_input['Todate_Token'])) {
-        $Todate = get_array_element_by_key_pull(untoken_array($array_input), 'Todate');
-        unset($array_input['Todate_Token']);
-        $query .= " AND `ModDate` < CONVERT(  " . set_value_list($Todate) . ", DATE ) ";
-    }/*
-    if (!empty($array_input)) {
-        $query .= " AND `Test` IN (" . set_value_list(untoken_array($array_input)). ") ";      
-    }
-    $query .= "GROUP BY" . " `Test` " . " ORDER BY " . "`ModDate`" . " DESC";*/
-    ConexionDB_JSON($query); 
+    ///evaluationhistory
+    $query = "SELECT * FROM " . $DBtables['evaluationhistory'] . " WHERE ";
+    $query .= where_like_value(untoken_array($array_input));
+    ConexionDB_JSON($query);    
 }
 
 function InsertParams($array_input, $tablename){

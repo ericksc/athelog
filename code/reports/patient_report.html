@@ -261,7 +261,76 @@
 
                                                                     </table>	
 
+                                                                    <br>  
+                                                                    
+                                                                    DEBUG TABLE
+                                                                    <br><br>
+                                                                    <table border="1px">
+                                                                    <!--FIXME:delete all ng-repeat and correct "valor actual"-->	
 
+                                                                            <tr>
+                                                                                    <th>cedula</th>
+                                                                                    <th>Test</th>
+                                                                                    <th>Value</th>
+                                                                                    <th>ModData</th>
+                                                                                    <th>Modifier</th>
+                                                                                    <th>FFD</th>s
+
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <th>Cedula</th>
+                                                                                    <td ng-repeat="patients in ReportData">{{patients.PatientID}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <th>Test</th>
+                                                                                    <td ng-repeat="patients in ReportData">{{patients.Test}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <th>Value</th>
+                                                                                    <td ng-repeat="patients in ReportData">{{patients.Value}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <th>ModData</th>
+                                                                                    <td ng-repeat="patients in ReportData">{{patients.ModDate}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <th>Modifier</th>
+                                                                                    <td ng-repeat="patients in ReportData">{{patients.Modifier}}</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <th>FFD</th>
+                                                                                    <td ng-repeat="patients in ReportData">{{patients.FFD}}</td>
+                                                                            </tr>
+
+                                                                    </table>	
+                                                                    
+                                                                    <br><br>
+                                                                             <table class="table table-hover">
+                                                                                    <thead>
+                                                                                            <tr>
+                                                                                                    <th>Cedula</th>
+                                                                                                    <th>Test</th>
+                                                                                                    <th>Value</th>
+                                                                                                    <th>Modifier</th>
+                                                                                                    <th>ModDate</th>
+                                                                                            </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                            <tr ng-repeat="Test in ReportData | filter:searchFilter">
+                                                                                                    <td>{{Test.PatientID}}</td>
+                                                                                                    <td>{{Test.Test}}</td>
+                                                                                                    <td>{{Test.Value}}</td>
+                                                                                                    <td>{{Test.ModifierID}}</td>
+                                                                                                    <td>{{Test.ModDate}}</td>
+	
+
+                                                                                            </tr>
+                                                                                    </tbody>
+                                                                            </table>
+                                                                    
+                                                                    <br><br>
+
+    
 
                                                             </form>	     	
                                                         </div><!--------- End of Search results ------->				
@@ -282,7 +351,6 @@
                                                                             <tr>
                                                                                     <th>Dato</th>
                                                                                     <th>Valor actual</th>
-
                                                                             </tr>
                                                                             <tr>
                                                                                     <th>Fecha Inicial(dd-mm-aaaa)</th>
@@ -293,7 +361,7 @@
                                                                                     <td><input name="EndDate_Field" type="date"  runat="server" ng-init="inputVal=''" ng-model="EndDate_Input_Model" required></td>
                                                                                     
                                                                             </tr>                                                                            
-                                                                            
+                                                                       
                                                                             
                                                                     </table>
                                                                             
@@ -310,7 +378,6 @@
                                                                         <br>
 
                                                                         <!--------- Search results ------->
-                                                                        <div>
                                                                             <input type="text" ng-model="searchFilter" class="form-control">
                                                                             <table class="table table-hover">
                                                                                     <thead>
@@ -324,11 +391,11 @@
                                                                                     </thead>
                                                                                     <tbody>
                                                                                             <tr ng-repeat="Test in ReportData | filter:searchFilter">
-                                                                                                    <td>{{Test.HeartFreq}}</td>
-                                                                                                    <td>{{Test.HeartFreq_Test}}</td>
-                                                                                                    <td>{{Test.FirstSurname}}</td>
-                                                                                                    <td>{{Test.SecondSurname}}</td>
-                                                                                                    <td>{{Test.Email}}</td>
+                                                                                                    <td>{{Test.PatientID}}</td>
+                                                                                                    <td>{{Test.First_Forename}}</td>
+                                                                                                    <td>{{Test.Mail}}</td>
+                                                                                                    <td>{{Test.ModifierID}}</td>
+                                                                                                    <td>{{Test.LastMod}}</td>
 	
 
                                                                                             </tr>
@@ -341,17 +408,19 @@
                                                                                     <tr>
                                                                                             <th>Dato</th>
                                                                                             <th>Valor actual</th>
-
                                                                                     </tr>
                                                                                     <tr>
                                                                                             <th>Cedula</th>
-                                                                                            <td ng-repeat="patients in ReportData">{{patients.HeartFreq_Test}}</td>
+                                                                                            <td ng-repeat="patients in ReportData">{{patients.PatientID}}</td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                             <th>Nombre</th>
-                                                                                            <td ng-repeat="patients in ReportData">{{patients.BldPrssr}}</td>
+                                                                                            <td ng-repeat="patients in ReportData">{{patients.Forename}}</td>
                                                                                     </tr>
-
+                                                                                    <tr>
+                                                                                            <th>Mail</th>
+                                                                                            <td ng-repeat="patients in ReportData">{{patients.Mail}}</td>
+                                                                                    </tr>     
                                                                             </table>                                                                            
                                                                             
                                                                             
@@ -359,7 +428,6 @@
                                                                             
                                                                             
                                                                             
-                                                                        </div>
                                                                         <!-- ------- End of Search results -->
 
                                                                 </form>
