@@ -15,6 +15,7 @@ $update_table = "";
 $array_parameters = array();
 
 $queryfunctions = array(
+  'Login' => function($array_parameters) { UserLogin($array_parameters);},  
   'SelectCompany' => function($array_parameters) { ReadCompanyParams($array_parameters);},
   'SelectUser'    => function($array_parameters) { ReadUsersParams($array_parameters);},          
   'SelectPatient' => function($array_parameters) { ReadPatientParams($array_parameters);},
@@ -37,7 +38,7 @@ $queryfunctions = array(
   'dummytest' => function($array_parameters) { InsertParams($array_parameters, 'users');},
   'InsertHistoryTest' => function($array_parameters) { InsertEvaluationHistoryParams($array_parameters);},
   'ReadPatientHistoryVars' => function($array_parameters) { ReadPatientHistoryParams($array_parameters);},
-   'ReadPatientHistoryVars2' => function($array_parameters) { ReadPatientHistoryParams2($array_parameters);},
+  'ReadPatientHistoryVars2' => function($array_parameters) { ReadPatientHistoryParams2($array_parameters);},
   'ReadPatientVars' => function($array_parameters) { ReadPatientBlockParams($array_parameters);}, 
   'InsertPatient' => function($array_parameters) { InsertPatientParams($array_parameters);}
 );
