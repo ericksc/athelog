@@ -383,17 +383,17 @@
                                                                                     <thead>
                                                                                             <tr>
                                                                                                     <th>Cedula</th>
-                                                                                                    <th>Nombre</th>
-                                                                                                    <th>Primer Apellido</th>
-                                                                                                    <th>Segundo Apellido</th>
-                                                                                                    <th>Email</th>
+                                                                                                    <th>Test</th>
+                                                                                                    <th>Valor</th>
+                                                                                                    <th>ModifierID</th>
+                                                                                                    <th>LastMod</th>
                                                                                             </tr>
                                                                                     </thead>
                                                                                     <tbody>
-                                                                                            <tr ng-repeat="Test in ReportData | filter:searchFilter">
+                                                                                            <tr ng-repeat="Test in ReportDataOrg | filter:searchFilter">
                                                                                                     <td>{{Test.PatientID}}</td>
-                                                                                                    <td>{{Test.First_Forename}}</td>
-                                                                                                    <td>{{Test.Mail}}</td>
+                                                                                                    <td>{{Test.Test}}</td>
+                                                                                                    <td>{{Test.Value}}</td>
                                                                                                     <td>{{Test.ModifierID}}</td>
                                                                                                     <td>{{Test.LastMod}}</td>
 	
@@ -411,16 +411,20 @@
                                                                                     </tr>
                                                                                     <tr>
                                                                                             <th>Cedula</th>
-                                                                                            <td ng-repeat="patients in ReportData">{{patients.PatientID}}</td>
+                                                                                            <td ng-repeat="patients in ReportDataOrg">{{patients.PatientID}}</td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                             <th>Nombre</th>
-                                                                                            <td ng-repeat="patients in ReportData">{{patients.Forename}}</td>
+                                                                                            <td ng-repeat="patients in ReportDataOrg">{{patients.Test}}</td>
                                                                                     </tr>
                                                                                     <tr>
                                                                                             <th>Mail</th>
-                                                                                            <td ng-repeat="patients in ReportData">{{patients.Mail}}</td>
-                                                                                    </tr>     
+                                                                                            <td ng-repeat="patients in ReportDataOrg">{{patients.Value}}</td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                            <th>Mail</th>
+                                                                                            <td ng-repeat="patients in ReportDataOrg">{{patients.ModifierID}}</td>
+                                                                                    </tr>                                                                                     
                                                                             </table>                                                                            
                                                                             
                                                                             

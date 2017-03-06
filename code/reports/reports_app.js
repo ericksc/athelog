@@ -3,7 +3,7 @@ var fetch = angular.module('fetch', []);
 	fetch.controller('dbCtrl', ['$scope', '$http', function ($scope, $http) {
 		
 		
-		alert("Executing Report_APP controller v1.48");
+		alert("Executing Report_APP controller v1.49");
 		
 		//------------1. USER CONST -----------------------
 		var GeneralGlobals ={};
@@ -881,13 +881,21 @@ var fetch = angular.module('fetch', []);
                     URL+="&Fromdate_Token=2000-01-01";
                     URL+="&Todate_Token=2050-01-01";
                     
+                    /*
                     URL+="&HeartFreq_Test=HeartFreq";
                     URL+="&BldPrssr_Test=BldPrssr";
                     URL+="&Glycemia_Test=Glycemia";
                     URL+="&SO2_Test=SO2";
                     URL+="&WaistCirc_Test=WaistCirc";
                     URL+="&VO2Max_Test=VO2Max";
-          
+                    */
+                    URL+="&HeartFreq_Token=HeartFreq";
+                    URL+="&BldPrssr_Token=BldPrssr";
+                    URL+="&Glycemia_Token=Glycemia";
+                    URL+="&SO2_Token=SO2";
+                    URL+="&WaistCirc_Token=WaistCirc";
+                    URL+="&VO2Max_Token=VO2Max";
+                    
                     alert("(DEBUG)CreatePatientReportGeneration()-Returning URL="+URL);
                     return URL;
                     
@@ -1072,6 +1080,9 @@ var fetch = angular.module('fetch', []);
 			}else if(OutputType=="ReportData"){
 				$scope.ReportData=data;
                                 alert("using ReportData");
+			}else if(OutputType=="ReportDataOrg"){
+				$scope.ReportDataOrg=data;
+                               //alert("using ReportData");
 			}			
 			})
 			
@@ -1120,7 +1131,7 @@ var fetch = angular.module('fetch', []);
 				if(Type=='Patient' && URLParams.Action=="GeneratePatientReport"){
 					
 					CalldBEngine(CreatePatientSearchStringByID(),"PatientData");
-                                        
+                                        CalldBEngine(CreatePatientReportGeneration(),"ReportDataOrg");
                                         CalldBEngine(CreatePatientReportGeneration2(),"ReportData");
                                         
                                         //alert("(DEBUG)Main()- Search patient executed");
