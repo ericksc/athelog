@@ -1,6 +1,6 @@
 <?php
-include("DBArrayQuery.php");
-include("session.php");
+include_once "DBArrayQuery.php";
+include_once "session.php";
 //include("conexionDB.php");
 
 //FIXME: move to appropiate file
@@ -8,15 +8,16 @@ function EncryptPassword($string_pass){
     return hash("sha256", $string_pass);
 }
 
-function LogoutParams($array_input){
+function LogoutParams(){
     
     SessionDestroy();
+    print "LogoutParams()";
     
 }
 
 
 
-//function to Check User/Pass. 
+//function to Check User/Pass. Intended to echo valuee to return it to Interface
 //Return >0 if User/Pass match
 //Return 0 if no User/Pass match
 //Return -1 if Pass/User equals "NONE"
@@ -76,6 +77,8 @@ function CheckLoginParams($array_input) {
     //end of if
 }
 //eof
+
+
 
 function ReadCompanyListParams($array_input) { 
     global $DBtables;

@@ -1,8 +1,6 @@
 <?php
 include('session.php');
 session_start();
-
-//SessionStart("123444");
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,5 +1,5 @@
 <?php
-include("query_creator.php");
+include_once "query_creator.php";
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,7 +16,7 @@ $array_parameters = array();
 
 $queryfunctions = array(
   'CheckLoginCredentials' => function($array_parameters) { CheckLoginParams($array_parameters);},  
-  'Logout' => function($array_parameters) { LogoutParams($array_parameters);},  
+  'Logout' => function($array_parameters) { LogoutParams();},  
   'SelectCompany' => function($array_parameters) { ReadCompanyParams($array_parameters);},
   'SelectUser'    => function($array_parameters) { ReadUsersParams($array_parameters);},          
   'SelectPatient' => function($array_parameters) { ReadPatientParams($array_parameters);},

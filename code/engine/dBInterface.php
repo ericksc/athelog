@@ -1,5 +1,5 @@
 <?php
-include("conexionDB.php");
+include_once "conexionDB.php";
 include("getURLparameters.php");
 
 $array_parameters = getquerycomponents_array(getGETarray());

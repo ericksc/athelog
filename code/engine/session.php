@@ -86,7 +86,7 @@ function ReadUserGroup($userid){
 //$j='ojo';
 //echo "<br>array element=".$array[$j];
 //echo "<br>usergroupasint element=".$UserGroupAsInt['Editor'];
-echo "<br>usergroupasint elementx2=".$UserGroupAsInt['Editor'];
+//echo "<br>usergroupasint elementx2=".$UserGroupAsInt['Editor'];
 //echo "<br>";print_r ($UserGroupAsInt);
 //echo "<br>result of lookup=";
 //print_r (ReadUserGroup("111610820"));
