@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html ng-app="fetch">
 <!--<head> -->
 
@@ -7,19 +8,6 @@
 	<meta charset="utf-8"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<!-- FIXME: delete these unrequired lines -->	
-	<!--	
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="profiles_app.js"></script>
-	<script type="text/javascript" src="app13.js"></script>
-	
-	
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
-	-->
-	
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
 	<script type="text/javascript" src="users_app.js"></script>
@@ -135,8 +123,8 @@ article {
 
 
 
-
-<!-- <body ng-controller="dbCtrl"> -->
+<!-- controller for patient search -->
+<div ng-controller="dbCtrl" ng-init="Init('User')">
 <body >
 
 
@@ -162,7 +150,8 @@ article {
 <div id="menu_bar" class="container">
 	
 	<ul >
-		<a href="#">Bienvenido, admin</a>
+		<a href="#">Bienvenido, UserID_Tag </a>
+                <button ng-click="Logout()">Salir</button>
 	</ul>
 
 </div>
@@ -200,8 +189,7 @@ article {
 			<div id="home" class="tab-pane fade in active">
 			  <h3>Busqueda por usuario</h3>
 		  
-				<!-- controller for patient search -->
-				<div ng-controller="dbCtrl" ng-init="Init('User')">
+
 		  
 					<form>
 					
@@ -250,11 +238,12 @@ article {
 										<select name="UserGroupSelect" class="form-control"  ng-model="UserGroupSelect_Input_Model"  required>
 											<option></option>
 											<option>NONE</option>
-											<option>Guest</option>
-											<option>Viewer</option>
-											<option>Editor</option>										
-											<option>Administrator</option>
-											<option>Developer</option>												
+											<option>guest</option>
+											<option>viewer</option>
+											<option>editor</option>										
+											<option>administrator</option>
+											<option>technician</option>
+                                                                                        <option>developer</option>
 										</select>
 									</td>
 							</tr>			
@@ -308,7 +297,7 @@ article {
 						
 					</div><!--------- End of Search results ------->				
 					
-				</div><!-- ------- End of Search patient controller -->
+				
 					
 				</div>			
 			
@@ -342,6 +331,7 @@ article {
 	</div>
 
 </body>
+</div><!-- ------- End of Search patient controller -->
 
 </html>
 
