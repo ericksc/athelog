@@ -9,12 +9,11 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to login  screen v1.7");
+		alert("(DEBUG)Welcome to login  screen v1.8");
 		
 		var UserData = {};
 		UserData['UserID_FieldValue']="NONE";
 		UserData['Password_FieldValue']="NONE";
-		UserData['PassHash']="NONE";
 
 		//to read URL params var
 		var URLParams = {};
@@ -29,7 +28,7 @@ var fetch = angular.module('fetch', []);
 			
 			UserData.UserID_FieldValue="NONE";
 			UserData.Password_FieldValue="NONE";
-			alert("(DEBUG)ResetUserFieldValues() executed. Values. \nUserID="+UserData.UserID_FieldValue+"\nPass="+UserData.Password_FieldValue);	
+			//alert("(DEBUG)ResetUserFieldValues() executed. Values. \nUserID="+UserData.UserID_FieldValue+"\nPass="+UserData.Password_FieldValue);	
 			
 		}
 		
@@ -76,23 +75,23 @@ var fetch = angular.module('fetch', []);
 		//2.3 function to read username/password fields
 		function ReadUserFields(){
 			
-			alert("(DEBUG)ReadUserFields() starting");
+			//alert("(DEBUG)ReadUserFields() starting");
 			
-			if (typeof $scope.Username_Input_Model !== 'undefined' && $scope.Username_Input_Model !== null && $scope.Username_Input_Model !== "") {
-				UserData['UserID_FieldValue'] = $scope.Username_Input_Model.toLowerCase();
+			if (typeof $scope.UserID_Input_Model !== 'undefined' && $scope.UserID_Input_Model !== null && $scope.UserID_Input_Model !== "") {
+				UserData['UserID_FieldValue'] = $scope.UserID_Input_Model;
 			}else{
 				UserData['UserID_FieldValue'] = "NONE";
 			}			
 			
-			alert("(DEBUG)ReadUserFields() - reading password");
+			//alert("(DEBUG)ReadUserFields() - reading password");
 			
 			if (typeof $scope.Password_Input_Model !== 'undefined' && $scope.Password_Input_Model !== null && $scope.Password_Input_Model !== "") {
-				UserData['Password_FieldValue'] = $scope.Password_Input_Model.toLowerCase();
+				UserData['Password_FieldValue'] = $scope.Password_Input_Model;
 			}else{
 				UserData['Password_FieldValue'] = "NONE";
 			}				
 			
-			alert("(DEBUG)ReadUserFields() executed. Values="+UserData.UserID_FieldValue+","+UserData.Password_FieldValue);
+			//alert("(DEBUG)ReadUserFields() executed. Values="+UserData.UserID_FieldValue+","+UserData.Password_FieldValue);
 					
 		}
 		//eof
@@ -103,14 +102,22 @@ var fetch = angular.module('fetch', []);
 			
 			//alert("(DEBUG)CreateLoginString()-starting");			
 			var URL = "../engine/dBInterface.php?";
-			URL += "ActionDBToken=Login"; 
-			URL += "&UserIDToken="+UserData.UserID_FieldValue;
-			URL += "&PasswordToken="+UserData.Password_FieldValue;
+			URL += "ActionDBToken=CheckLoginCredentials"; 
+			URL += "&UserID_Token="+UserData.UserID_FieldValue;
+			URL += "&Password_Token="+UserData.Password_FieldValue;
 			alert("(DEBUG)CreateLoginString() executed. Return URL="+URL);
 			return URL;
 			
 		}
 		//eof		
+                
+                function CreateLogoutString(){
+                    
+                    var URL = "../engine/dBInterface.php?";
+                    URL += "ActionDBToken=Logout";
+                    return URL;
+                }
+                //eof
 		
 		//2.5 validating input field to prevent the user to enter invalid words or chars
 		//returns true is field value is valid
@@ -207,14 +214,14 @@ var fetch = angular.module('fetch', []);
 
 		//2.7 function to send Login user/pass over server. Server returns TRUE if login was succesfull
 		//intended to be called from HTML button
-		$scope.LoginRequest = function(){
+		$scope.Login = function(){
 			
 			
-			//alert ("(DEBUG)-SearchCompany() - starting");
+			//alert ("(DEBUG)-Login() - starting");
 			ResetUserFieldValues();
 			ReadUserFields();		
-			CallPHPServerFile(CreateLoginString());
-			//alert ("(DEBUG)-SearchCompany() - executed");	
+			CalldBEngine(CreateLoginString(),"LoginData");
+			alert ("(DEBUG)-Login() - executed");	
 						
 		}
 		//eof		
@@ -262,6 +269,7 @@ var fetch = angular.module('fetch', []);
 
 		//2.10 Function to call php server file, in $address
 		//FIXME: add the .error part
+                //FIXME: add ont time out to $http.get
 		function CallPHPServerFile(URLstring) {			
 			
 			
@@ -276,12 +284,47 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 		
+		//7.3 Function to call php server file, in $address
+		//FIXME: add the .error part
+		function CalldBEngine(URLstring,OutputType) {			
+			
+			
+			//alert("(DEBUG)Function CallPHPServerFile() calling"); //(DEBUG)			
+			$http.get(URLstring)
+			.success(function(data){
+				
+			if(OutputType=="CompanyList"){	
+				$scope.CompanyList = data; //companyID list from mySQL
+			}else if(OutputType=="data"){
+				$scope.data=data;
+			}else if(OutputType=="PatientData"){
+				$scope.PatientData=data;
+			}else if(OutputType=="PVData"){
+				$scope.PVData=data;
+			}else if(OutputType=="ReportData"){
+				$scope.ReportData=data;
+                                alert("using ReportData");
+			}else if(OutputType=="ReportDataOrg"){
+				$scope.ReportDataOrg=data;
+                               //alert("using ReportData");
+			}else if(OutputType=="LoginData"){
+				$scope.LoginData=data;
+                                alert("LoginData="+$scope.LoginData);
+			}
+                        
+                        
+                        
+			})
+			
+			//alert("(DEBUG)Function CalldBEngine() executed on URL="+URLstring); //(DEBUG)
 
+		}
+		//eof	
 		
 		
 		//debug function
 		$scope.dg = function(){
-			alert("(DEBUG) Oh yeaaaahhh!(Patient)");
+			alert("(DEBUG) Oh yeaaaahhh!(User). Data="+$scope.LoginData);
 		}
 		
 		

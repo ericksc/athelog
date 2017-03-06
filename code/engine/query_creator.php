@@ -1,5 +1,6 @@
 <?php
 include("DBArrayQuery.php");
+include("session.php");
 //include("conexionDB.php");
 
 //FIXME: move to appropiate file
@@ -7,18 +8,28 @@ function EncryptPassword($string_pass){
     return hash("sha256", $string_pass);
 }
 
+function LogoutParams($array_input){
+    
+    SessionDestroy();
+    
+}
 
-function UserLogin($array_input) { 
+
+
+//function to Check User/Pass. 
+//Return >0 if User/Pass match
+//Return 0 if no User/Pass match
+//Return -1 if Pass/User equals "NONE"
+
+function CheckLoginParams($array_input) { 
+    
     global $DBtables;
     
     $UserIDValue="NONE";
     $PassValue="NONE";
     $NumberOfTokens=0;//number of tokens found
     
-    //$query = "SELECT PassHash FROM " . $DBtables['users'] . " WHERE ";
-    //$query .= where_equal_value(untoken_array($array_input));
-    //print "<br>query=".$query."<br>";
-    //ConexionDB_JSON($query);
+    //print_r($array_input);
     
     foreach($array_input as $key=>$val) {
     
@@ -26,34 +37,45 @@ function UserLogin($array_input) {
         if(strcmp($key,"Password_Token")==0)$PassValue=$val;
         $NumberOfTokens++;
         
-        echo "<br>".$key.",".$val;
+        //echo "<br>".$key.",".$val;
     }
     
     //echo "<br>User="+$UserIDValue;
     //echo "<br>Pass="+$PassValue;
     
     
-    //if( strcmp($UserIDValue,"NONE")==0 || strcmp($PassValue,"NONE")==0){
-    if(1==0){
-        echo "<br>Invalid params";
-        return -1;//parameters are wrong
+    if( strcmp($UserIDValue,"NONE")==0 || strcmp($PassValue,"NONE")==0){
+    //if(1==0){
+        //echo "<br>Invalid params";
+        echo "-1";//parameters are empty "NONE"
+
     }else{
+        
         
         $query = "SELECT UserID, count(*) FROM " . $DBtables['users'] . " WHERE 1";
         $query.= " AND UserID='".$UserIDValue."'";
         $query.= " AND PassHash='".EncryptPassword($PassValue)."'";
-        echo "<br>query=".$query;
-        $result=ConexionDB_rawdata($query);//result of query
-        echo "<br>Resultado=";
-        print_r($result);//full result
-        echo "<br>Result[1]=".(string)$result[1];
-        return 0;
+        //echo "<br>query=".$query;
+        $rawdB_result=ConexionDB_rawdata($query);//result of query
+        //echo "<br>Resultado Raw=".print_r($result);//full result
+        
+        //echo "<br>rawdB_result".$rawdB_result["count(*)"];
+        //echo "<br>rawdB_result[0]['count(*)']=".$rawdB_result[0]["count(*)"];//final result
+
+        $result = $rawdB_result[0]["count(*)"];//the rawdB_result is a matrix where desired element is in [0]["count(*)"] position
+       
+        if($result==1){
+            
+            SessionStart($UserIDValue);
+            //echo "<br>SessionStarting";
+        }
+        
+        echo $result;
         
     }
     //end of if
 }
-
-
+//eof
 
 function ReadCompanyListParams($array_input) { 
     global $DBtables;

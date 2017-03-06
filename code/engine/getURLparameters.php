@@ -15,7 +15,8 @@ $update_table = "";
 $array_parameters = array();
 
 $queryfunctions = array(
-  'Login' => function($array_parameters) { UserLogin($array_parameters);},  
+  'CheckLoginCredentials' => function($array_parameters) { CheckLoginParams($array_parameters);},  
+  'Logout' => function($array_parameters) { LogoutParams($array_parameters);},  
   'SelectCompany' => function($array_parameters) { ReadCompanyParams($array_parameters);},
   'SelectUser'    => function($array_parameters) { ReadUsersParams($array_parameters);},          
   'SelectPatient' => function($array_parameters) { ReadPatientParams($array_parameters);},

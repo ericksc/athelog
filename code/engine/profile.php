@@ -1,5 +1,8 @@
 <?php
 include('session.php');
+session_start();
+
+//SessionStart("123444");
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,7 +13,16 @@ include('session.php');
 <body>
 <div id="profile">
 <b id="welcome">Welcome : <i><?php echo $UserName_Param; ?></i></b>
-<b id="logout"><a href="logout.php">Log Out</a></b>
+<br><b id="welcome">Welcome : 
+    
+    <i><?php 
+
+        //PrintSessionInfo();
+               print "<br>\nSession user=". $_SESSION['UserID'];
+    print "<br>\nSession date=". $_SESSION['Date'];
+        
+    ?></i></b>
+<br><b id="logout"><a href="logout.php">Log Out</a></b>
 </div>
 </body>
 </html>
