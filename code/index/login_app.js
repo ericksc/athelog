@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to login  screen v1.8");
+		alert("(DEBUG)Welcome to login  screen v1.9");
 		
 		var UserData = {};
 		UserData['UserID_FieldValue']="NONE";
@@ -19,7 +19,9 @@ var fetch = angular.module('fetch', []);
 		var URLParams = {};
 		URLParams['Action'] = "NONE";
 		URLParams['ID'] = "NONE";
-
+                
+                //
+                var GlobalLoginData="";
 
 		//-------------3. FUNCTIONS-----------------------------
 		
@@ -221,7 +223,10 @@ var fetch = angular.module('fetch', []);
 			ResetUserFieldValues();
 			ReadUserFields();		
 			CalldBEngine(CreateLoginString(),"LoginData");
-			alert ("(DEBUG)-Login() - executed");	
+			alert ("(DEBUG)-Login() - executed");
+                        
+                        alert("scope.Login()-LoginData="+$scope.LoginData);
+                        alert("scope.Login-GlobalLoginData="+GlobalLoginData);
 						
 		}
 		//eof		
@@ -279,7 +284,7 @@ var fetch = angular.module('fetch', []);
 			$scope.data = data;
 			})
 			
-			alert("(DEBUG)Function CallPHPServerFile() executed"); //(DEBUG)
+			//alert("(DEBUG)Function CallPHPServerFile() executed"); //(DEBUG)
 
 		}
 		//eof
@@ -309,7 +314,8 @@ var fetch = angular.module('fetch', []);
                                //alert("using ReportData");
 			}else if(OutputType=="LoginData"){
 				$scope.LoginData=data;
-                                alert("LoginData="+$scope.LoginData);
+                                GlobalLoginData=Content(data);
+                                //alert("LoginData="+$scope.LoginData);
 			}
                         
                         
