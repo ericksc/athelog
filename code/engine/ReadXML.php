@@ -8,68 +8,117 @@
 
 
 //global vars
+
 $xml="";//xml file
 
-//global for mail
-/*
-$UserProfileCreated=[];
-$UserProfileDataChanged
-UserAccessDataChanged
-UserProfileFlaggedForDeletion
-UserProfileDeleted
-PatientProfileCreated
-PatientProfileDataChanged
-PatientProfileFlaggedForDeletion
-PatientProfileDeleted
-CompanyProfileCreated
-CompanyProfileDataChanged
-CompanyProfileFlaggedForDeletion
-CompanyProfileDeleted        
-*/
-//print "\nRead XML";
+//global arrays for mail
+$UserProfileCreatedMessage=[];$UserProfileCreatedReceivers=[];
+$UserProfileDataChangedMessage=[];$UserProfileDataChangedReceivers=[];
+$UserAccessDataChangedMessage=[];$UserAccessDataChangedReceivers=[];
+$UserProfileFlaggedForDeletionMessage=[];$UserProfileFlaggedForDeletionReceivers=[];
+$UserProfileDeletedMessage=[];$UserProfileDeletedReceivers=[];
+$PatientProfileCreatedMessage=[];$PatientProfileCreatedReceivers=[];
+$PatientProfileDataChangedMessage=[];$PatientProfileDataChangedReceivers=[];
+$PatientProfileFlaggedForDeletionMessage=[];$PatientProfileFlaggedForDeletionReceivers=[];
+$PatientProfileDeletedMessage=[];$PatientProfileDeletedReceivers=[];
+$CompanyProfileCreatedMessage=[];$CompanyProfileCreatedReceivers=[];
+$CompanyProfileDataChangedMessage=[];$CompanyProfileDataChangedReceivers=[];
+$CompanyProfileFlaggedForDeletionMessage=[];$CompanyProfileFlaggedForDeletionReceivers=[];
+$CompanyProfileDeletedMessage=[];$CompanyProfileDeletedReceivers=[];
 
-
-
-function CheckServerConfigXML() {
+function ReadServerConfigXML() {
     global $xml;
     $xml=simplexml_load_file("ServerConfig.xml") or die("Error: Cannot create object");
+    //print_r($xml);
 }
 
-function ReadServerConfigXML_Mail(){
+function MailArrayLoad(){
     
-   
-    $xml = simplexml_load_file("ServerConfig.xml");
-    $xml2 = simplexml_load_file("books.xml") or die("Error: Cannot create object");
-    $items = array();
-    //print_r($response);
-    
-    /*
-    foreach ($response->Notifications->Mail->xpath('//Message') as $item)
-    {
-        $Type = (string) $item['Type'];
-        foreach ($item->xpath('Section') as $attr)
-        {
-            $Info = (string) $attr['Info'];
-            $items[$Type][$Info] = (string) $attr;
-        }
-    }*/
+    global $xml;
+    global $UserProfileCreatedMessage;
+    global $UserProfileCreatedReceivers;
 
-    echo "<br>Content of XML";   
-    //echo "<br>".$xml->Message[0]['Type'];
-    echo"<br>Message Type";
-    echo "<br>".$xml->Notifications->Mail->Message[0]['Type'];
-    echo "<br>".$xml->Notifications->Mail->Message[1]['Type'];
-    echo "<br>".$xml->Notifications->Mail->Message[2]['Type'];
-    echo "<br>".$xml->Notifications->Mail->Message[3]['Type'];
+    //for "user created" mail
+    $UserProfileCreatedMessage=(array)$xml->Notifications->Mail->Message[0];
+    $UserProfileCreatedReceivers=(array)$xml->Notifications->Mail->Message[0]->Receivers; 
+    //echo "<br>array_message=";print_r($UserProfileCreatedMessage);
+    /*as a reference:
+    $UserProfileCreatedMessage['Subject'];//subject
+    $UserProfileCreatedMessage['Body'][0];//body info
+    $UserProfileCreatedMessage['Body'][1];//userid
+    $UserProfileCreatedMessage['Body'][2];//name
+    $UserProfileCreatedMessage['Body'][3];//username
+    $UserProfileCreatedMessage['Body'][4];//password
+    $UserProfileCreatedMessage['Body'][5];//warning
+    $UserProfileCreatedMessage['Body'][6];//farewell
+    $UserProfileCreatedMessage['Body'][7];//modifierid
+    $UserProfileCreatedMessage['Footer'];//footer
+    $UserProfileCreatedMessage['Logo'];//logo path
+    $UserProfileCreatedReceivers['Technician'];//tech
+    $UserProfileCreatedReceivers['Developer'];//developer
+    $UserProfileCreatedReceivers['Owner'];//owner
+    $UserProfileCreatedReceivers['User'];//user      
+    */
     
-    //echo "<br>".$xml2->book[0]['category'];
-    //echo "<br>".$xml->Message[0]->Subject;
+    //profile changed message mail
+    $UserProfileDataChangedMessage=(array)$xml->Notifications->Mail->Message[1];
+    $UserProfileDataChangedReceivers=(array)$xml->Notifications->Mail->Message[1]->Receivers; 
     
+    //profile access data changed mail
+    $UserAccessDataChangedMessage=(array)$xml->Notifications->Mail->Message[2];
+    $UserAccessDataChangedReceivers=(array)$xml->Notifications->Mail->Message[2]->Receivers;
     
-    //print_r($items);
+    //profile flagged for delete mail
+    $UserProfileFlaggedForDeletionMessage=(array)$xml->Notifications->Mail->Message[3];
+    $UserProfileFlaggedForDeletionReceivers=(array)$xml->Notifications->Mail->Message[3]->Receivers;
+    
+    //profile deleted message mail
+    $UserProfileDeletedMessage=(array)$xml->Notifications->Mail->Message[4];
+    $UserProfileDeletedReceivers=(array)$xml->Notifications->Mail->Message[4]->Receivers;
+    
+    $PatientProfileCreatedMessage=(array)$xml->Notifications->Mail->Message[5];
+    $PatientProfileCreatedReceivers=(array)$xml->Notifications->Mail->Message[5]->Receivers;    
+    
+    $PatientProfileDataChangedMessage=(array)$xml->Notifications->Mail->Message[6];
+    $PatientProfileDataChangedReceivers=(array)$xml->Notifications->Mail->Message[6]->Receivers;
+
+    $PatientProfileFlaggedForDeletionMessage=(array)$xml->Notifications->Mail->Message[7];
+    $PatientProfileFlaggedForDeletionReceivers=(array)$xml->Notifications->Mail->Message[7]->Receivers;
+
+    $PatientProfileDeletedMessage=(array)$xml->Notifications->Mail->Message[8];
+    $PatientProfileDeletedReceivers=(array)$xml->Notifications->Mail->Message[8]->Receivers;    
+
+    $CompanyProfileCreatedMessage=(array)$xml->Notifications->Mail->Message[9];
+    $CompanyProfileCreatedReceivers=(array)$xml->Notifications->Mail->Message[9]->Receivers;
+
+    $CompanyProfileDataChangedMessage=(array)$xml->Notifications->Mail->Message[10];
+    $CompanyProfileDataChangedReceivers=(array)$xml->Notifications->Mail->Message[10]->Receivers;
+    
+    $CompanyProfileFlaggedForDeletionMessage=(array)$xml->Notifications->Mail->Message[11];
+    $CompanyProfileFlaggedForDeletionReceivers=(array)$xml->Notifications->Mail->Message[11]->Receivers;
+    
+    $CompanyProfileDeletedMessage=(array)$xml->Notifications->Mail->Message[12];
+    $CompanyProfileDeletedReceivers=(array)$xml->Notifications->Mail->Message[12]->Receivers;
+    
     
 }
 //eof
+
+//---loading arrays
+
+
+
+    $UserProfileCreated=array(
+        
+        "Subject"=>0,
+        
+        
+    );
+
+
+//-end of loading arrays
+
+
 
 function ReadBooks(){
     
@@ -81,8 +130,10 @@ function ReadBooks(){
 }
 
 print "\nv1.0";
-//CheckServerConfigXML();
-ReadServerConfigXML_Mail();
+ReadServerConfigXML();
+MailArrayLoad();
+//echo "<br>";print_r($array);
+
 //ReadBooks();
 /*
 echo $xml->book[0]->title . "<br>";
