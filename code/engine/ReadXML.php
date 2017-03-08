@@ -26,13 +26,57 @@ $CompanyProfileDataChangedMessage=[];$CompanyProfileDataChangedReceivers=[];
 $CompanyProfileFlaggedForDeletionMessage=[];$CompanyProfileFlaggedForDeletionReceivers=[];
 $CompanyProfileDeletedMessage=[];$CompanyProfileDeletedReceivers=[];
 
+//global arrays for mail notification
+$TechnicianMailAccounts="";
+$DeveloperMailAccounts="";
+$OwnerMailAccounts="";
+
+
+// FUNCT DEF
+
+
 function ReadServerConfigXML() {
     global $xml;
     $xml=simplexml_load_file("ServerConfig.xml") or die("Error: Cannot create object");
     //print_r($xml);
 }
 
-function MailArrayLoad(){
+function MailAccountsArrayLoad() {
+    
+    global $xml;
+    $TechnicianMailAccountsArray;
+    $DeveloperMailAccountsArray;
+    $OwnerMailAccountsArray; 
+    global $TechnicianMailAccounts;
+    global $DeveloperMailAccounts;
+    global $OwnerMailAccounts;
+    
+    $TechnicianMailAccountsArray=(array)$xml->Notifications->Mail->TechnicianAccount;
+    echo "<br>TechnicianMailAccountsArray=";print_r($TechnicianMailAccountsArray);echo ". Imploding=".implode(',',$TechnicianMailAccountsArray);
+    if(is_array($TechnicianMailAccountsArray['account'])==false)$TechnicianMailAccounts=implode(',',$TechnicianMailAccountsArray);
+    else $TechnicianMailAccounts=implode(',',$TechnicianMailAccountsArray['account']);
+    
+        
+    $DeveloperMailAccountsArray=(array)$xml->Notifications->Mail->DeveloperAccount;
+    //echo "<br>DeveloperMailAccountsArray=";print_r($DeveloperMailAccountsArray);
+    if(is_array($DeveloperMailAccountsArray['account'])==false)$DeveloperMailAccounts=implode(',',$DeveloperMailAccountsArray);
+    else $DeveloperMailAccounts=implode(',',$DeveloperMailAccountsArray['account']);
+
+    
+    $OwnerMailAccountsArray=(array)$xml->Notifications->Mail->OwnerAccount;
+    $OwnerMailAccounts=implode(',',$OwnerMailAccountsArray);
+    if(is_array($OwnerMailAccountsArray['account'])==false)$OwnerMailAccounts=implode(',',$OwnerMailAccountsArray);
+    else $OwnerMailAccounts=implode(',',$OwnerMailAccountsArray['account']);    
+    
+    echo "<br><br>Mailing Lists:";
+    echo "<br>TechnicianMailAccounts=".$TechnicianMailAccounts;
+    //echo "<br>DeveloperMailAccounts=".$DeveloperMailAccounts; 
+    //echo "<br>OwnerMailAccounts=".$OwnerMailAccounts;     
+    
+}
+//eof
+
+function MailMessagesArrayLoad(){
     
     global $xml;
     global $UserProfileCreatedMessage;
@@ -42,6 +86,8 @@ function MailArrayLoad(){
     $UserProfileCreatedMessage=(array)$xml->Notifications->Mail->Message[0];
     $UserProfileCreatedReceivers=(array)$xml->Notifications->Mail->Message[0]->Receivers; 
     //echo "<br>array_message=";print_r($UserProfileCreatedMessage);
+    //echo "<br>UserProfileCreatedReceivers=";print_r($UserProfileCreatedReceivers);
+    
     /*as a reference:
     $UserProfileCreatedMessage['Subject'];//subject
     $UserProfileCreatedMessage['Body'][0];//body info
@@ -63,6 +109,7 @@ function MailArrayLoad(){
     //profile changed message mail
     $UserProfileDataChangedMessage=(array)$xml->Notifications->Mail->Message[1];
     $UserProfileDataChangedReceivers=(array)$xml->Notifications->Mail->Message[1]->Receivers; 
+    //echo "<br>$UserProfileDataChangedReceivers=";print_r($UserProfileDataChangedReceivers);
     
     //profile access data changed mail
     $UserAccessDataChangedMessage=(array)$xml->Notifications->Mail->Message[2];
@@ -107,31 +154,16 @@ function MailArrayLoad(){
 //---loading arrays
 
 
-
-    $UserProfileCreated=array(
-        
-        "Subject"=>0,
-        
-        
-    );
-
-
 //-end of loading arrays
 
+// END OF FUNCT DEF
 
 
-function ReadBooks(){
-    
-    echo "<br>Books";
-    $xml=simplexml_load_file("books.xml") or die("Error: Cannot create object");
-    echo $xml->book[0]['category'] . "<br>";
-    echo $xml->book[1]->title['lang']; 
-    
-}
 
 print "\nv1.0";
 ReadServerConfigXML();
-MailArrayLoad();
+MailMessagesArrayLoad();
+MailAccountsArrayLoad();
 //echo "<br>";print_r($array);
 
 //ReadBooks();
