@@ -7,8 +7,7 @@
  */
 
 
-//global vars
-
+//---------------  GLOBAL VARS ------------
 $xml="";//xml file
 
 //global arrays for mail
@@ -35,11 +34,25 @@ $OwnerMailAccounts="";
 // FUNCT DEF
 
 
+
 function ReadServerConfigXML() {
     global $xml;
     $xml=simplexml_load_file("ServerConfig.xml") or die("Error: Cannot create object");
     //print_r($xml);
 }
+
+function ReadInstallationOwner(){
+
+    global $xml;
+    
+    echo "<br>ReadInstallationOwner()";
+    
+    $InstallationInfo=(array)$xml->InstallationInfo;
+    $InstallationOwner=$InstallationInfo['Owner'];
+    return $InstallationOwner;
+    
+}
+//eof
 
 function MailAccountsArrayLoad() {
     
@@ -164,6 +177,7 @@ print "\nv1.0";
 ReadServerConfigXML();
 MailMessagesArrayLoad();
 MailAccountsArrayLoad();
+//ReadInstallationOwner();
 //echo "<br>";print_r($array);
 
 //ReadBooks();
