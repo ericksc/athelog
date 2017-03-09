@@ -108,7 +108,7 @@ function ReadPatientParams($array_input) {
 }
 function ReadAllPatientHistorybyCompanyID($array_input){
     global $DBtables;
-    $query = "SELECT * FROM " . $DBtables['patients'] ;
+    $query = "SELECT `Patients`.PatientID, `Patients`.Forename, `Patients`.MiddleName, `Patients`.FirstSurname, `Patients`.SecondSurname, `Patients`.Email, `Patients`.Phone, `Patients`.BirthDate, `Patients`.JoinDate, `Patients`.Gender, `Patients`.Status, `Patients`.Income, `Companies`.CompanyID, `Companies`.Phone, `Companies`.Email, `Companies`.Address, `Companies`.Status, `Companies`.LastMod, `Companies`.ModifierID, `EvaluationHistory`.Test, `EvaluationHistory`.Value, `EvaluationHistory`.Unit, `EvaluationHistory`.ModDate, `EvaluationHistory`.FFD FROM " . $DBtables['patients'] ;
     $query .= " JOIN " . $DBtables['company'] . " ON  `Patients`.CompanyID =  `Companies`.CompanyID ";
     $query .= " JOIN " . $DBtables['evaluationhistory'];
     $query .= " ON  `EvaluationHistory`.PatientID =  `Patients`.PatientID ";
