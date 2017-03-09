@@ -11,7 +11,7 @@ and open the template in the editor.
     <InstallationInfo>
         <SystemName>Alfa</SystemName>
         <Version>1.0</Version>
-        <Owner>Bicoyed S.A</Owner>
+        <Owner>Bicoyed</Owner>
         <Developer>Athelog.net</Developer>
     </InstallationInfo>
     
@@ -32,20 +32,23 @@ and open the template in the editor.
         <Mail>
             
             <TechnicianAccount>
-                <account>soporte@bicoyed.com</account>                
+                <account Number="1">info@athelog.net</account>
+				<account Number="2">rvargas@athelog.net</account>
             </TechnicianAccount>
             <DeveloperAccount>
-                <account>rvargas@athelog.net</account>
-                <account>esalas@athelog.net</account>                    
+                <account Number="1">rvargas@athelog.net</account>
+				<account Number="2">info@athelog.net</account>
             </DeveloperAccount>           
             <OwnerAccount>
-                <account>soporte@bicoyed.com</account>                    
+                <account Number="1">ramirovq@gmail.com</account>
+				<account Number="2">rvq25@hotmail.com</account> 				
             </OwnerAccount>  
             
                         
                                                 
             <Message Type="UserProfileCreated">
                 <Subject>Bicoyed: Bienvenido al programa de salud</Subject>
+                <Dear>Estimado(a)</Dear>
                 <Body Section="Info">Bicoyed le saluda y le da la bienvenida al programa de salud. Sus datos de acceso al programa son los siguientes:</Body>
                 <Body Section="UserID">Cedula:</Body>
                 <Body Section="Name">Nombre:</Body>
@@ -58,10 +61,10 @@ and open the template in the editor.
                 <Logo>NONE</Logo>
                 
                 <Receivers>
-                    <Technician>CC</Technician>
+                    <Technician>NO</Technician>
                     <Developer>BC</Developer>
                     <Owner>BC</Owner>
-                    <User>TO</User>
+                    <User>NONE</User>
                 </Receivers>
                                                 
             </Message>
