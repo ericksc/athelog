@@ -106,7 +106,15 @@ function ReadPatientParams($array_input) {
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);    
 }
-
+function ReadAllPatientHistorybyCompanyID($array_input){
+    global $DBtables;
+    $query = "SELECT * FROM " . $DBtables['patients'] ;
+    $query .= " JOIN " . $DBtables['company'] . " ON  `Patients`.CompanyID =  `Companies`.CompanyID ";
+    $query .= " JOIN " . $DBtables['evaluationhistory'];
+    $query .= " ON  `EvaluationHistory`.PatientID =  `Patients`.PatientID ";
+    $query .= "WHERE `Companies`.CompanyID = " . set_value_list(untoken_array($array_input));
+    ConexionDB_JSON($query);
+}
 function ReadPatientParams2($array_input) {  
     global $DBtables;
     $query = "SELECT * FROM " . $DBtables['evaluationhistory'] . " WHERE ";
