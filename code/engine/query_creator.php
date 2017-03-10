@@ -112,7 +112,7 @@ function ReadAllPatientHistorybyCompanyID($array_input){
     $query .= " JOIN " . $DBtables['company'] . " ON  `Patients`.CompanyID =  `Companies`.CompanyID ";
     $query .= " JOIN " . $DBtables['evaluationhistory'];
     $query .= " ON  `EvaluationHistory`.PatientID =  `Patients`.PatientID ";
-    $query .= "WHERE `Companies`.CompanyID = " . set_value_list(untoken_array($array_input));
+    $query .= "WHERE `Companies`.CompanyID = " . set_value_list(untoken_array(get_array_element_by_key($array_input, 'CompanyID_Token')));
     ConexionDB_JSON($query);
 }
 function ReadPatientParams2($array_input) {  
