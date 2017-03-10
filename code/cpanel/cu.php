@@ -13,7 +13,8 @@ if(ReadUserGroup($_SESSION['UserID'])['IntUG']<4){
     
 }else{
     echo "<br>Ejecutando";
-    $pagecontents = file_get_contents("edit_users.html");
+    //echo file_get_contents("create_users.html");
+    $pagecontents = file_get_contents("create_users.html");
     echo str_replace("UserID_Tag", $_SESSION['UserID'], $pagecontents); 
 }
 

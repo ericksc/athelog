@@ -14,8 +14,9 @@ if(ReadUserGroup($_SESSION['UserID'])['IntUG']<3){
 }else{
     //echo "<br>Ejecutando";
     //echo file_get_contents("search_users.html");
-    $pagecontents = file_get_contents("search_profiles.html");
+    $pagecontents = file_get_contents("company_report.html");
     echo str_replace("UserID_Tag", $_SESSION['UserID'], $pagecontents); 
 }
 
 ?>   
+

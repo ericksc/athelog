@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		//alert("(DEBUG)Welcome to profile screen v55");
+		//alert("(DEBUG)Welcome to profile screen v1.57");
 		
 		//globals to hide Patient/Company text
 		//FIXME:check if this is really required
@@ -326,56 +326,56 @@ var fetch = angular.module('fetch', []);
 			var URL = "../engine/dBInterface.php?ActionDBToken=SelectPatient";
 		
 			if(PatientData.PatientID_FieldValue !=="NONE"){
-				URL+="&PatientIDToken="+PatientData.PatientID_FieldValue;
+				URL+="&PatientID_Token="+PatientData.PatientID_FieldValue;
 			}
 
 			if(PatientData.Forename_FieldValue !=="NONE"){
-				URL+="&ForenameToken="+PatientData.Forename_FieldValue;
+				URL+="&Forename_Token="+PatientData.Forename_FieldValue;
 			}
 
 			if(PatientData.FirstSurname_FieldValue !=="NONE"){
-				URL+="&FirstSurnameToken="+PatientData.FirstSurname_FieldValue;
+				URL+="&FirstSurname_Token="+PatientData.FirstSurname_FieldValue;
 			}
 
 			if(PatientData.SecondSurname_FieldValue !=="NONE"){
-				URL+="&SecondSurnameToken="+PatientData.SecondSurname_FieldValue;
+				URL+="&SecondSurname_Token="+PatientData.SecondSurname_FieldValue;
 			}
 
 			if(PatientData.PatientPhone_FieldValue !=="NONE"){
-				URL+="&PhoneToken="+PatientData.PatientPhone_FieldValue;
+				URL+="&Phone_Token="+PatientData.PatientPhone_FieldValue;
 			}
 
 			if(PatientData.PatientEmail_FieldValue !=="NONE"){
-				URL+="&EmailToken="+PatientData.PatientEmail_FieldValue;
+				URL+="&Email_Token="+PatientData.PatientEmail_FieldValue;
 			}
 
 			if(PatientData.CompanyID_FieldValue !=="NONE"){
-				URL+="&CompanyIDToken="+PatientData.CompanyID_FieldValue;
+				URL+="&CompanyID_Token="+PatientData.CompanyID_FieldValue;
 			}
 
 			if(PatientData.Site_FieldValue !=="NONE"){
-				URL+="&SiteToken="+PatientData.Site_FieldValue;
+				URL+="&Site_Token="+PatientData.Site_FieldValue;
 				
 			}
 
 			
 			if(PatientData.Department_FieldValue !=="NONE"){
-				URL+="&DepartmentToken="+PatientData.Department_FieldValue;
+				URL+="&Department_Token="+PatientData.Department_FieldValue;
 			}
 
 			if(PatientData.BirthDate_FieldValue !=="NONE"){
-				URL+="&BirthDateToken="+PatientData.BirthDate_FieldValue;
+				URL+="&BirthDate_Token="+PatientData.BirthDate_FieldValue;
 			}
 
 			if(PatientData.Gender_FieldValue !=="NONE"){
-				URL+="&GenderToken="+PatientData.Gender_FieldValue;
+				URL+="&Gender_Token="+PatientData.Gender_FieldValue;
 			}
 			
 			if(PatientData.PatientAddress_FieldValue !=="NONE"){
-				URL+="&AddressToken="+PatientData.PatientAddress_FieldValue;
+				URL+="&Address_Token="+PatientData.PatientAddress_FieldValue;
 			}
 			
-			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
+			//alert("(DEBUG)CreatePatientSearchString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -518,19 +518,19 @@ var fetch = angular.module('fetch', []);
 			var URL = "../engine/dBInterface.php?ActionDBToken=SelectCompany";
 
 			if(CompanyData.CompanyID2_FieldValue!=="NONE"){
-				URL += "&CompanyID2Token="+CompanyData.CompanyID2_FieldValue;
+				URL += "&CompanyID_Token="+CompanyData.CompanyID2_FieldValue;
 			}
 
 			if(CompanyData.CompanyEmail_FieldValue!=="NONE"){
-				URL += "&CompanyEmailToken="+CompanyData.CompanyEmail_FieldValue;
+				URL += "&Email_Token="+CompanyData.CompanyEmail_FieldValue;
 			}			
 			
 			if(CompanyData.CompanyPhone_FieldValue!=="NONE"){
-				URL += "&CompanyPhoneToken="+CompanyData.CompanyPhone_FieldValue;
+				URL += "&Phone_Token="+CompanyData.CompanyPhone_FieldValue;
 			}	
 	
 			if(CompanyData.Address_FieldValue!=="NONE"){
-				URL += "&AddressToken="+CompanyData.Address_FieldValue;
+				URL += "&Address_Token="+CompanyData.Address_FieldValue;
 			}
 			
 			//alert("(DEBUG)CreateCompanySearchString()-ending.URL="+URL);
@@ -544,7 +544,7 @@ var fetch = angular.module('fetch', []);
 			
 			//alert("(DEBUG)CreateCompanyEditString()- starting");
 			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateCompany";
-			URL += "&CompanyIDToken="+URLParams.ID;
+			URL += "&CompanyID_Token="+URLParams.ID;
 			
 			/*	
 			if(CompanyData.CompanyID2_FieldValue!=="NONE"){
@@ -742,7 +742,7 @@ var fetch = angular.module('fetch', []);
 		function CreatePatientSearchStringByID () {
 			
 			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectPatient";
-			URLstring+="&PatientIDToken="+URLParams.ID;
+			URLstring+="&PatientID_Token="+URLParams.ID;
 			//alert("(DEBUG)CreatePatientSearchString() - Patient Search String="+URLstring);
 			return URLstring;
 			
@@ -848,7 +848,16 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 		
-
+                $scope.Logout = function(){
+                    
+                    var URL = "../engine/dBInterface.php?ActionDBToken=Logout";
+                    alert("(DEBUG)Logout()-Logging off");
+                    CalldBEngine(URL,"data");
+                    Redirect("../index/login.html");
+                    
+                }
+                //eof
+                
 		/*5. Function to read vars from URL string
 		intended to get "Action" and "ID" for patients and companies
 		Its called this way:		var first = getUrlVars()["Action"]; var second = getUrlVars()["ID"];*/
@@ -880,7 +889,26 @@ var fetch = angular.module('fetch', []);
 
 		}
 		//eof
-		
+                //
+		//7.3 Function to call php server file, in $address
+		//FIXME: add the .error part
+		function CalldBEngine(URLstring,OutputType) {			
+			
+			
+                        alert("(DEBUG)Function CallPHPServerFile() calling"); //(DEBUG)			
+			$http.get(URLstring)
+			.success(function(data){
+				
+			if(OutputType=="CompanyList"){	
+				$scope.CompanyList = data; //companyID list from mySQL
+				$scope.CompanyList.push("");//empty options
+			}else if(OutputType=="data"){
+				$scope.data=data;
+			}
+			
+			})
+                }        
+                        
 		//8. Function to check if Patient has been succesfully created into database
 		//returns TRUE if patient do exists
 		function CheckIfPatientExists(){

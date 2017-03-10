@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to users screen v1.51");
+		alert("(DEBUG)Welcome to users screen v1.52");
 		
 		//scope vars
 				
@@ -35,11 +35,7 @@ var fetch = angular.module('fetch', []);
 		URLParams['ID'] = "NONE";
 		URLParams['Message'] = "NONE";
 		
-		//to set permissions - must read from Login system
-		//FIXME:read from login system
-		var UserSession={};
-		UserSession['UserID']="NONE";
-			
+		
 		//-------------2. FUNCTIONS-----------------------------
 		
 		//0.Resetting user values read from input text fields
@@ -469,7 +465,12 @@ var fetch = angular.module('fetch', []);
 			
 		}
 		//eof
-			
+		
+                function Redirect($URL){
+                    
+                    window.location = $URL;
+                }
+                
 		
 		//function to search patient by ID, Surname, Forename, Company, etc
 		//intended to be called from HTML
@@ -499,7 +500,18 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof	
 
-	
+                $scope.Logout = function(){
+                    
+                    var URL = "../engine/dBInterface.php?ActionDBToken=Logout";
+                    alert("(DEBUG)Logout()-Logging off");
+                    CalldBEngine(URL,"data");
+                    Redirect("../index/login.html");
+                    
+                }
+                //eof
+                
+                
+                
 		//function to store updated company into dB
 		$scope.EditUser = function(){
 			

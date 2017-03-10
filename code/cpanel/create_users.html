@@ -1,4 +1,11 @@
+<?php
+include('../engine/session.php');
+session_start();
 
+echo $_SESSION['UserID'];
+//echo "<br>PHP working";
+//echo "<br>Hello";
+?>
 	<html ng-app="fetch">
 	<!--<head> -->
 
@@ -124,9 +131,9 @@
 
 
 
+    <!-- controller for user search -->
+    <div id="UserController" ng-controller="dbCtrl" ng-init="Init('User')">
 
-
-	<!-- <body ng-controller="dbCtrl"> -->
 	<body >
 
 
@@ -153,7 +160,7 @@
 		
 	
 		<ul >
-			<a href="#">Bienvenido, Usuario</a>
+			<a href="#">Bienvenido, UserID_Tag</a><button ng-click="Logout()">Salir</button>
 		</ul>
 
 	</div>
@@ -192,8 +199,7 @@
 				<div id="home" class="tab-pane fade in active">
 				  <h3>Crear nuevo usuario</h3>
 			  
-					<!-- controller for user search -->
-					<div id="UserController" ng-controller="dbCtrl" ng-init="Init('User')">
+
 			  
 						<!--------- Search results ------->
 						<div>
@@ -261,6 +267,7 @@
 											<option>Viewer</option>
 											<option>Editor</option>										
 											<option>Administrator</option>
+                                                                                        <option>Technician</option>
 											<option>Developer</option>												
 										</select>
 									</td>	
@@ -319,7 +326,7 @@
 						<!--end of user popup modal -->
 
 						
-					</div><!-- ------- End of Search user controller -->
+					
 
 				</div><!-- End of users tab -->			
 				
@@ -354,6 +361,8 @@
 		</div>
 
 	</body>
-
+        </div><!-- ------- End of Search user controller -->
+        
+        
 	</html>
 

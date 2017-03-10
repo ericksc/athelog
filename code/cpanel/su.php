@@ -9,7 +9,7 @@ echo "<br>UG as int=".ReadUserGroup($_SESSION['UserID'])['IntUG'];
 //forcing redirect
 if(ReadUserGroup($_SESSION['UserID'])['IntUG']<3){
     echo "<br>Redirigiendo a login";    
-    //header('Location: ' . '../index/login.html');
+    header('Location: ' . '../index/login.html');
     
 }else{
     echo "<br>Ejecutando";

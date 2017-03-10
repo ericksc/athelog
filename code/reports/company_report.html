@@ -123,10 +123,8 @@
 	</style>
 
 
-
-
-
-	<!-- <body ng-controller="dbCtrl"> -->
+        <!-- controller for patient search -->
+        <div id="CompanyController" ng-controller="dbCtrl" ng-init="Init('Company')">
 	<body >
 
 
@@ -153,7 +151,8 @@
 		
 	
 		<ul >
-			<a href="#">Bienvenido, Usuario</a>
+                    <a href="#">Bienvenido, UserID_Tag </a>
+                    <button ng-click="Logout()">Salir</button>
 		</ul>
 
 	</div>
@@ -193,8 +192,7 @@
 				<div id="home" class="tab-pane fade in active">
 				  <h3>Perfil de empresa</h3>
 			  
-					<!-- controller for patient search -->
-					<div id="CompanyController" ng-controller="dbCtrl">
+
 			  
 						<!--------- Search results ------->
 						<div>
@@ -209,31 +207,23 @@
 										</tr>
 										<tr>
 											<th>ID Empresa</th>
-											<td ng-repeat="patients in data">{{patients.PatientID}}</td>
-											<td><input name="CompanyID2_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="CompanyID2_Input_Model" no-special-char required></td>	
+											<td ng-repeat="company in CompanyData">{{company.CompanyID}}</td>
 											<!--<td>validation={{CompanyForm.CompanyID2_Field.$valid}}</td>-->
 										</tr>
 										<tr>
 											<th>Telefono</th>
-											<td ng-repeat="patients in data">{{patients.Forename}}</td>
-											<td><input name="CompanyPhone_Field" type="number"  runat="server" ng-init="inputVal=''" ng-model="CompanyPhone_Input_Model" required></td>
+											<td ng-repeat="company in CompanyData">{{company.Phone}}</td>
 											<!--<td>validation={{CompanyForm.CompanyPhone_Field.$valid}}</td>-->
 										</tr>
 										<tr>
 											<th>Email</th>
-											<td ng-repeat="patients in data">{{patients.Email}}</td>
-											<td><input name="CompanyEmail_Field" type="email"  runat="server" ng-init="inputVal=''" ng-model="CompanyEmail_Input_Model" required></td>
+											<td ng-repeat="company in CompanyData">{{company.Email}}</td>
 											<!--<td>validation={{CompanyForm.CompanyEmail_Field.$valid}}</td>-->
-										</tr>
-										<tr>
-											<th>Fecha entrada al programa</th>
-											<td ng-repeat="patients in data">{{patients.JoinDate}}</td>
 										</tr>
 
 										<tr>
 											<th>Direccion</th>
-											<td ng-repeat="patients in data">{{patients.Address}}</td>
-											<td><input name="CompanyAddress_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="CompanyAddress_Input_Model" required></td>
+											<td ng-repeat="company in CompanyData">{{company.Address}}</td>
 											<!--<td>validation={{CompanyForm.CompanyAddress_Field.$valid}}</td>-->
 										</tr>
 										
@@ -245,41 +235,76 @@
 						</form>		
 						</div><!--------- End of Search results ------->				
 
-						
-					</div><!-- ------- End of Search patient controller -->
 
 				</div><!-- End of patient tab -->			
 				
 				<div id="menu1" class="tab-pane fade">
 					<h3>Generar reporte de empresa</h3>
 					
-					<!-- controller for company search -->
-					<!--<div>-->
-					<div id="CompanyController" ng-controller="dbCtrl">  			
-						
+					
 							<form name="CompanyForm">
 
-                                                                <!-- Search Filters -->
-                                                                <div>
+                                                                    <!-- Search Filters -->
+                                                                
+                                                                    <table border="1px">
+                                                                    <!--FIXME:delete all ng-repeat and correct "valor actual"-->	
+
+                                                                            <tr>
+                                                                                    <th>Dato</th>
+                                                                                    <th>Valor actual</th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <th>Fecha Inicial(dd-mm-aaaa)</th>
+                                                                                    <td><input name="StartDateCompany_Field" type="date"  runat="server" ng-init="inputVal=''" ng-model="StartDateCompany_Input_Model" required></td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <th>Fecha Final(dd-mm-aaaa)</th>
+                                                                                    <td><input name="EndDateCompany_Field" type="date"  runat="server" ng-init="inputVal=''" ng-model="EndDateCompany_Input_Model" required></td>
+                                                                                    
+                                                                            </tr>                                                                            
+                                                                       
+                                                                            
+                                                                    </table>
+                                                                            
+                                                                    <br><button ng-click="GenerateCompanyReport()">Generar</button> 
+
+                                                                    <!-- Report area -->
+                                                                             <table class="table table-hover">
+                                                                                    <thead>
+                                                                                            <tr>
+                                                                                                    <th>Empresa</th>
+                                                                                                    <th>Cedula</th>
+                                                                                                    <th>Variable</th>
+                                                                                                    <th>Valor</th>
+                                                                                                    <th>Modificador</th>
+                                                                                                    <th>Fecha ult/cambio</th>
+                                                                                            </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                            <tr ng-repeat="Test in ReportData | filter:searchFilter">
+                                                                                                    <td>{{Test.CompanyID}}</td>
+                                                                                                    <td>{{Test.PatientID}}</td>
+                                                                                                    <td>{{Test.Test}}</td>
+                                                                                                    <td>{{Test.Value}}</td>
+                                                                                                    <td>{{Test.ModifierID}}</td>
+                                                                                                    <td>{{Test.ModDate}}</td>
+	
+
+                                                                                            </tr>
+                                                                                    </tbody>
+                                                                            </table>
                                                                     
-                                                                    <button ng-click="GenerateCompanyReport()">Generar</button>
-                                                                 
-                                                                </div>
-                                                                <!-- end of Search filters -->
-                                                                
-                                                                <br>
-                                                                
-								<!--------- Search results ------->
-								<div>
-								
-								
-								</div>
-								<!-- ------- End of Search results -->
-						
+                                                                    <!-- end of report area-->            
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
 							</form>
 
 						
-					</div><!-- End of controller for Company -->	
+						
 					
 				</div> <!--End of Company Search tab-->
 				
@@ -314,6 +339,7 @@
 		</div>
 
 	</body>
-
+        </div><!-- End of controller for Company -->
+        
 	</html>
 

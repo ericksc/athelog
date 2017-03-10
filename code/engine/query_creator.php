@@ -1,7 +1,7 @@
 <?php
 include_once "DBArrayQuery.php";
 include_once "session.php";
-//include("conexionDB.php");
+//include_once "Notifications_Mail.php";
 
 //FIXME: move to appropiate file
 function EncryptPassword($string_pass){
@@ -227,7 +227,7 @@ function ReadPatientHistoryParams2 ($array_input) {
     ConexionDB_JSON($query);    
 }
 
-function InsertParams($array_input, $tablename){
+function InsertUsersParams2($array_input, $tablename){
     $result_check = getCheckparams($array_input, $tablename, 'EXIST', FALSE);
     if ($result_check[0]['EXIST'] == 'FALSE') {
         InsertGenericParams($array_input, $tablename);
@@ -246,7 +246,11 @@ function InsertUsersParams($array_input) {
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['users'] . "(" . set_key_list(untoken_array($array_input)) . ")";
     $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
-    ConexionDB_JSON($query);  
+    ConexionDB_JSON($query);
+    
+    //notification
+    
+    
 }
 function UpdatePatientParams($array_input) { 
     global $DBtables;

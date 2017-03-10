@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html ng-app="fetch">
 <!--<head> -->
 
@@ -5,19 +6,6 @@
 	<title>Perfiles</title> 
 	<meta charset="utf-8"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<!-- FIXME: delete these unrequired lines -->	
-	<!--	
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">  
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="profiles_app.js"></script>
-	<script type="text/javascript" src="app13.js"></script>
-	
-	
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
-	-->
 	
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.24/angular.min.js"></script>
@@ -161,7 +149,8 @@ article {
 <div id="menu_bar" class="container">
 	
 	<ul >
-		<a href="#">Bienvenido, admin</a>
+		<a href="#">Bienvenido, UserID_Tag </a>
+                <button ng-click="Logout()">Salir</button>
 	</ul>
 
 </div>
@@ -255,6 +244,7 @@ article {
 									<th>Nombre</th>
 									<th>Primer Apellido</th>
 									<th>Segundo Apellido</th>
+                                                                        <th>Empresa</th>
 									<th>Email</th>
 									<th>Acciones</th>
 								</tr>
@@ -265,10 +255,13 @@ article {
 									<td>{{patients.Forename}}</td>
 									<td>{{patients.FirstSurname}}</td>
 									<td>{{patients.SecondSurname}}</td>
+                                                                        <td>{{patients.CompanyID}}</td>
 									<td>{{patients.Email}}</td>
 									<td>
-										<a href="edit_profiles.html?Action=EditPatient&ID={{patients.PatientID}}">Editar</a>
-										<a href="report.html">Reporte</a>
+										<a href="ep.php?Action=EditPatient&ID={{patients.PatientID}}">Editar</a>
+										<a href="../reports/patient_report.html?Action=GeneratePatientReport&ID={{patients.PatientID}}">Reporte</a>
+                                                                                <a href="../evaluation/eval.php?Action=SearchPatient&ID={{patients.PatientID}}">Eval</a>
+
 									</td>		
 
 								</tr>
@@ -327,9 +320,9 @@ article {
 											<td>{{companies.Email}}</td>
 											<td>{{companies.Phone}}</td>
 											<td>
-												<a href="edit_profiles.html?Action=EditCompany&ID={{companies.CompanyID}}">Editar</a>
-												<a href="report.html">Reporte</a>
-											</td>		
+												<a href="ep.php?Action=EditCompany&ID={{companies.CompanyID}}">Editar</a>
+												<a href="../reports/cr.php?Action=GenerateCompanyReport&ID={{companies.CompanyID}}">Reporte</a>
+                                                                                        </td>		
 
 										</tr>
 									</tbody>

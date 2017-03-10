@@ -3,7 +3,7 @@ var fetch = angular.module('fetch', []);
 	fetch.controller('dbCtrl', ['$scope', '$http', function ($scope, $http) {
 		
 		
-		alert("Executing Report_APP controller v1.49");
+		//alert("Executing Report_APP controller v1.50");
 		
 		//------------1. USER CONST -----------------------
 		var GeneralGlobals ={};
@@ -103,7 +103,11 @@ var fetch = angular.module('fetch', []);
                 var FilterData={};
                 FilterData['StartDate']="NONE";
                 FilterData['FromDate']="NONE";
-               
+                
+                var FilterDataCompany={};
+                FilterDataCompany['StartDate']="NONE";
+                FilterDataCompany['FromDate']="NONE";     
+                
 		//--------------END OF VARS ----------------------------
 	
 	
@@ -115,6 +119,13 @@ var fetch = angular.module('fetch', []);
                     FilterData['FromDate']="NONE";                
                 }
 		//3.1 Resetting APP Field Values. no return
+                
+                function ResetFilterDataCompany(){
+                    
+                    FilterDataCompany['StartDate']="NONE";
+                    FilterDataCompany['FromDate']="NONE";  
+                    
+                }
                 
 		function ResetAPPFieldValues(){
                     
@@ -362,7 +373,7 @@ var fetch = angular.module('fetch', []);
                         $debug_string +="\nAlcohol="+APPData['Tobacco'];
                         $debug_string +="\nComment="+APPData['Cmmnt'];
 			
-			alert("(DEBUG)Function ReadAPPData() executed. Results:"+$debug_string); //(DEBUG)
+			//alert("(DEBUG)Function ReadAPPData() executed. Results:"+$debug_string); //(DEBUG)
 			
 		
 		}
@@ -436,7 +447,22 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof                
                 
-                
+		//function to read <Company> report fikter. No return
+		function ReadFilterDataCompany(){
+
+			if (typeof $scope.StartDateCompany_Input_Model !== 'undefined' && $scope.StartDateCompany_Input_Model !== null && $scope.StartDateCompany_Input_Model !== "") {
+				FilterDataCompany['StartDate'] = $scope.StartDateCompany_Input_Model;
+			}else{
+				FilterDataCompany['StartDate'] = "NONE";
+			}
+                        
+			if (typeof $scope.EndDateCompany_Input_Model !== 'undefined' && $scope.EndDateCompany_Input_Model !== null && $scope.EndDateCompany_Input_Model !== "") {
+				FilterDataCompany['FinalDate'] = $scope.EndDateCompany_Input_Model;
+			}else{
+				FilterDataCompany['FinalDate'] = "NONE";
+			}			
+		}
+		//eof                  
                 
 		//function to read Body Comp vars. No return
 		function ReadBCData(){
@@ -927,6 +953,34 @@ var fetch = angular.module('fetch', []);
                     
                 }
                 
+                function CreateCompanyReportString(){
+                
+                    var URL = "../engine/dBInterface.php?ActionDBToken=ReadAllPatientHistorybyCompanyIDVars";
+                    URL+="&CompanyID_Token="+URLParams.ID;
+                    
+                    //if(FilterData['StartDate']!=="NONE")URL+="&Fromdate_Token="+FilterData['StartDate'];
+                    //if(FilterData['FinalDate']!=="NONE")URL+="&Todate_Token="+FilterData['FinalDate'];
+                    
+                    //URL+="&Fromdate_Token=2000-01-01";
+                    //URL+="&Todate_Token=2050-01-01";
+                    
+                   
+                    //alert("(DEBUG)CreateCompanyReportString()-Returning URL="+URL);
+                    return URL;
+
+                }
+                
+		function CreateCompanySearchStringByID () {
+			
+			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectCompany";
+			URLstring+="&CompanyID_Token="+URLParams.ID;
+			//alert("(DEBUG)CreateCompanySearchStringByID() - Search String="+URLstring);
+			return URLstring;
+			
+		}
+		//end of function                
+                
+                
 		//validating input field to prevent the user to enter invalid words or chars
 		//returns true is field value is valid
 		//forbidden substring: ADD, ALTER, AND, CREATE, DELETE, DROP,  EXISTS, IF, INSERT, LIKE, OR, SELECT, UNION, UPDATE, WHERE
@@ -1040,7 +1094,17 @@ var fetch = angular.module('fetch', []);
                     
                     
                 }
+
+                $scope.GenerateCompanyReport=function(){
                 
+                    //alert("(DEBUG)GenerateCompanyReport() - Executing");
+                    ResetFilterDataCompany();
+                    ReadFilterDataCompany();
+                    
+                    CalldBEngine(CreateCompanyReportString(),"ReportData");    
+                    //alert("(DEBUG)GenerateCompanyReport() executed");
+                    
+                }
                 
                     
 		//7. Function to call php server file, in $address
@@ -1075,15 +1139,18 @@ var fetch = angular.module('fetch', []);
 				$scope.data=data;
 			}else if(OutputType=="PatientData"){
 				$scope.PatientData=data;
+			}else if(OutputType=="CompanyData"){
+				$scope.CompanyData=data;
 			}else if(OutputType=="PVData"){
 				$scope.PVData=data;
 			}else if(OutputType=="ReportData"){
 				$scope.ReportData=data;
-                                alert("using ReportData");
+                                //alert("using ReportData");
 			}else if(OutputType=="ReportDataOrg"){
 				$scope.ReportDataOrg=data;
                                //alert("using ReportData");
-			}			
+			}
+                        
 			})
 			
 			//alert("(DEBUG)Function CalldBEngine() executed on URL="+URLstring); //(DEBUG)
@@ -1136,7 +1203,13 @@ var fetch = angular.module('fetch', []);
                                         
                                         //alert("(DEBUG)Main()- Search patient executed");
 					return true;
-				}else{
+                                        
+				}else if(Type=='Company' && URLParams.Action=="GenerateCompanyReport"){
+                                
+                                        CalldBEngine(CreateCompanySearchStringByID(),"CompanyData");
+                                        //alert("(DEBUG)Main()- Search company executed");    
+                        
+                                }else{
 					//ActionParam is undefined
 					//alert("(DEBUG)Main - Finishing Main without search");
 					return false;
