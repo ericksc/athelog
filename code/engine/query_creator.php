@@ -106,7 +106,15 @@ function ReadPatientParams($array_input) {
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);    
 }
-
+function ReadAllPatientHistorybyCompanyID($array_input){
+    global $DBtables;
+    $query = "SELECT `Patients`.PatientID, `Patients`.Forename, `Patients`.MiddleName, `Patients`.FirstSurname, `Patients`.SecondSurname, `Patients`.Email, `Patients`.Phone, `Patients`.BirthDate, `Patients`.JoinDate, `Patients`.Gender, `Patients`.Status, `Patients`.Income, `Companies`.CompanyID, `Companies`.Phone, `Companies`.Email, `Companies`.Address, `Companies`.Status, `Companies`.LastMod, `Companies`.ModifierID, `EvaluationHistory`.Test, `EvaluationHistory`.Value, `EvaluationHistory`.Unit, `EvaluationHistory`.ModDate, `EvaluationHistory`.FFD FROM " . $DBtables['patients'] ;
+    $query .= " JOIN " . $DBtables['company'] . " ON  `Patients`.CompanyID =  `Companies`.CompanyID ";
+    $query .= " JOIN " . $DBtables['evaluationhistory'];
+    $query .= " ON  `EvaluationHistory`.PatientID =  `Patients`.PatientID ";
+    $query .= "WHERE `Companies`.CompanyID = " . set_value_list(untoken_array($array_input));
+    ConexionDB_JSON($query);
+}
 function ReadPatientParams2($array_input) {  
     global $DBtables;
     $query = "SELECT * FROM " . $DBtables['evaluationhistory'] . " WHERE ";

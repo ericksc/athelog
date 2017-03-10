@@ -41,6 +41,7 @@ $queryfunctions = array(
   'ReadPatientHistoryVars' => function($array_parameters) { ReadPatientHistoryParams($array_parameters);},
   'ReadPatientHistoryVars2' => function($array_parameters) { ReadPatientHistoryParams2($array_parameters);},
   'ReadPatientVars' => function($array_parameters) { ReadPatientBlockParams($array_parameters);}, 
+  'ReadAllPatientHistorybyCompanyIDVars' => function($array_parameters) { ReadAllPatientHistorybyCompanyID($array_parameters);},            
   'InsertPatient' => function($array_parameters) { InsertPatientParams($array_parameters);}
 );
  
