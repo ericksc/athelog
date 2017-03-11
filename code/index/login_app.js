@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to login  screen v1.9");
+		alert("(DEBUG)Welcome to login  screen v2.9");
 		
 		var UserData = {};
 		UserData['UserID_FieldValue']="NONE";
@@ -21,7 +21,8 @@ var fetch = angular.module('fetch', []);
 		URLParams['ID'] = "NONE";
                 
                 //
-                var GlobalLoginData="";
+                var GlobalLoginData={};
+                GlobalLoginData['LoginSuccessful']=0;
 
 		//-------------3. FUNCTIONS-----------------------------
 		
@@ -221,13 +222,24 @@ var fetch = angular.module('fetch', []);
 			
 			//alert ("(DEBUG)-Login() - starting");
 			ResetUserFieldValues();
-			ReadUserFields();		
+			ReadUserFields();
 			CalldBEngine(CreateLoginString(),"LoginData");
 			alert ("(DEBUG)-Login() - executed");
                         
                         alert("scope.Login()-LoginData="+$scope.LoginData);
-                        alert("scope.Login-GlobalLoginData="+GlobalLoginData);
-						
+                        //alert("scope.Login()-GlobalLoginData="+GlobalLoginData);
+                        
+                        //setTimeout(function(){}, 500); 
+                        
+                        if($scope.LoginData==1){
+                            //alert("value is 1");
+                            window.location.replace("../profiles/sp.php");
+                        }else{
+                            alert("ERROR - Datos de acceso incorrectos");
+                            
+                        }
+                        
+                        
 		}
 		//eof		
 		
@@ -252,7 +264,7 @@ var fetch = angular.module('fetch', []);
 				alert("ERROR - Datos de acceso incorrecto");
 			}
 			*/
-			window.location.replace("../profiles/search_profiles.html");
+			window.location.replace("../index/index.php");
 			
 		}
 		//eof
@@ -293,35 +305,32 @@ var fetch = angular.module('fetch', []);
 		//FIXME: add the .error part
 		function CalldBEngine(URLstring,OutputType) {			
 			
-			
+                        
 			//alert("(DEBUG)Function CallPHPServerFile() calling"); //(DEBUG)			
 			$http.get(URLstring)
 			.success(function(data){
-				
-			if(OutputType=="CompanyList"){	
-				$scope.CompanyList = data; //companyID list from mySQL
-			}else if(OutputType=="data"){
-				$scope.data=data;
-			}else if(OutputType=="PatientData"){
-				$scope.PatientData=data;
-			}else if(OutputType=="PVData"){
-				$scope.PVData=data;
-			}else if(OutputType=="ReportData"){
-				$scope.ReportData=data;
-                                alert("using ReportData");
-			}else if(OutputType=="ReportDataOrg"){
-				$scope.ReportDataOrg=data;
-                               //alert("using ReportData");
-			}else if(OutputType=="LoginData"){
-				$scope.LoginData=data;
-                                GlobalLoginData=Content(data);
-                                //alert("LoginData="+$scope.LoginData);
-			}
                         
-                        
+                            if(OutputType=="CompanyList"){	
+                                    $scope.CompanyList = data; //companyID list from mySQL
+                            }else if(OutputType=="data"){
+                                    $scope.data=data;
+                            }else if(OutputType=="PatientData"){
+                                    $scope.PatientData=data;
+                            }else if(OutputType=="PVData"){
+                                    $scope.PVData=data;
+                            }else if(OutputType=="ReportData"){
+                                    $scope.ReportData=data;
+                                    alert("using ReportData");
+                            }else if(OutputType=="ReportDataOrg"){
+                                    $scope.ReportDataOrg=data;
+                                   //alert("using ReportData");
+                            }else if(OutputType=="LoginData"){
+                                    $scope.LoginData=data;
+                            }
+                       
                         
 			})
-			
+                        
 			//alert("(DEBUG)Function CalldBEngine() executed on URL="+URLstring); //(DEBUG)
 
 		}
