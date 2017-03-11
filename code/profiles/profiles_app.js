@@ -453,56 +453,51 @@ var fetch = angular.module('fetch', []);
 		function CreatePatientEditString(){
 			
 			var URL = "../engine/dBInterface.php?ActionDBToken=UpdatePatient";
-			URL+="&PatientIDToken="+URLParams.ID;
+			URL+="&PatientID_Token="+URLParams.ID;
 
 			if(PatientData.Forename_FieldValue !=="NONE"){
-				URL+="&ForenameToken="+PatientData.Forename_FieldValue;
+				URL+="&Forename_Token="+PatientData.Forename_FieldValue;
 			}
 
 			if(PatientData.FirstSurname_FieldValue !=="NONE"){
-				URL+="&FirstSurnameToken="+PatientData.FirstSurname_FieldValue;
+				URL+="&FirstSurname_Token="+PatientData.FirstSurname_FieldValue;
 			}
 
 			if(PatientData.SecondSurname_FieldValue !=="NONE"){
-				URL+="&SecondSurnameToken="+PatientData.SecondSurname_FieldValue;
+				URL+="&SecondSurname_Token="+PatientData.SecondSurname_FieldValue;
 			}
 
 			if(PatientData.PatientPhone_FieldValue !=="NONE"){
-				URL+="&PhoneToken="+PatientData.PatientPhone_FieldValue;
+				URL+="&Phone_Token="+PatientData.PatientPhone_FieldValue;
 			}
 
 			if(PatientData.PatientEmail_FieldValue !=="NONE"){
-				URL+="&EmailToken="+PatientData.PatientEmail_FieldValue;
+				URL+="&Email_Token="+PatientData.PatientEmail_FieldValue;
 			}
 
 			if(PatientData.CompanyID_FieldValue !=="NONE"){
-				URL+="&CompanyIDToken="+PatientData.CompanyID_FieldValue;
+				URL+="&CompanyID_Token="+PatientData.CompanyID_FieldValue;
 			}
 
 			
-			URL+="&SiteToken=Site1";//for demo
-			
-			//FIXME:commented out for demo	
-			/*			
 			if(PatientData.Site_FieldValue !=="NONE"){
-				URL+="&SiteToken="+PatientData.Site_FieldValue;
+				URL+="&Site_Token="+PatientData.Site_FieldValue;
 			}			
-			*/
 
 			if(PatientData.Department_FieldValue !=="NONE"){
-				URL+="&DepartmentToken="+PatientData.Department_FieldValue;
+				URL+="&Department_Token="+PatientData.Department_FieldValue;
 			}
 
 			if(PatientData.BirthDate_FieldValue !=="NONE"){
-				URL+="&BirthDateToken="+PatientData.BirthDate_FieldValue;
+				URL+="&BirthDate_Token="+PatientData.BirthDate_FieldValue;
 			}
 
 			if(PatientData.Gender_FieldValue !=="NONE"){
-				URL+="&GenderToken="+PatientData.Gender_FieldValue;
+				URL+="&Gender_Token="+PatientData.Gender_FieldValue;
 			}
 			
 			if(PatientData.PatientAddress_FieldValue !=="NONE"){
-				URL+="&AddressToken="+PatientData.PatientAddress_FieldValue;
+				URL+="&Address_Token="+PatientData.PatientAddress_FieldValue;
 			}
 			
 			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
@@ -545,23 +540,17 @@ var fetch = angular.module('fetch', []);
 			//alert("(DEBUG)CreateCompanyEditString()- starting");
 			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateCompany";
 			URL += "&CompanyID_Token="+URLParams.ID;
-			
-			/*	
-			if(CompanyData.CompanyID2_FieldValue!=="NONE"){
-				URL += "&CompanyIDToken="+CompanyData.CompanyID2_FieldValue;
-			}
-			*/
 
 			if(CompanyData.CompanyEmail_FieldValue!=="NONE"){
-				URL += "&EmailToken="+CompanyData.CompanyEmail_FieldValue;
+				URL += "&Email_Token="+CompanyData.CompanyEmail_FieldValue;
 			}			
 			
 			if(CompanyData.CompanyPhone_FieldValue!=="NONE"){
-				URL += "&PhoneToken="+CompanyData.CompanyPhone_FieldValue;
+				URL += "&Phone_Token="+CompanyData.CompanyPhone_FieldValue;
 			}	
 			
 			
-			URL += "&AddressToken=Parque Industrial C. Blancos #1550";  //just for demo
+			URL += "&Address_Token=Parque Industrial C. Blancos #1550";  //just for demo
 			//FIXME:for demo this is commented out	
 			/*
 			if(CompanyData.Address_FieldValue!=="NONE"){
@@ -730,7 +719,7 @@ var fetch = angular.module('fetch', []);
 		function CreateCompanySearchStringByID () {
 			
 			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectCompany";
-			URLstring+="&CompanyID2Token="+URLParams.ID;
+			URLstring+="&CompanyID_Token="+URLParams.ID;
 			//alert("(DEBUG)CreateCompanySearchStringbyID() - Company Search String="+URLstring);
 			return URLstring;
 			
