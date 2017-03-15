@@ -1,6 +1,11 @@
 <?php
 include_once "DBArrayQuery.php";
 include_once "session.php";
+require('../library/Pivot.php');
+
+use SimpleExcel\SimpleExcel;
+
+require_once('../SimpleExcel/SimpleExcel.php');
 //include_once "Notifications_Mail.php";
 
 //FIXME: move to appropiate file
@@ -8,6 +13,29 @@ function EncryptPassword($string_pass){
     return hash("sha256", $string_pass);
 }
 
+$averageCbk = function($reg)
+{
+    return round($reg['clicks']/$reg['users'],2);
+};
+
+function simpleHtmlTable($data)
+{
+    // do you like spaghetti? 
+    echo "<table border='1'>";
+    echo "<thead>";
+    foreach (array_keys($data[0]) as $item) {
+        echo "<td><b>{$item}<b></td>";
+    }
+    echo "</thead>";
+    foreach ($data as $row) {
+        echo "<tr>";
+        foreach ($row as $item) {
+            echo "<td>{$item}</td>";
+        }
+        echo "</tr>";
+    }
+    echo "</table>";
+}
 function LogoutParams(){
     
     SessionDestroy();
@@ -112,8 +140,47 @@ function ReadAllPatientHistorybyCompanyID($array_input){
     $query .= " JOIN " . $DBtables['company'] . " ON  `Patients`.CompanyID =  `Companies`.CompanyID ";
     $query .= " JOIN " . $DBtables['evaluationhistory'];
     $query .= " ON  `EvaluationHistory`.PatientID =  `Patients`.PatientID ";
-    $query .= "WHERE `Companies`.CompanyID = " . set_value_list(untoken_array($array_input));
+    $query .= "WHERE `Companies`.CompanyID = " . set_value_list(untoken_array(get_array_element_by_key($array_input, 'CompanyID_Token')));
     ConexionDB_JSON($query);
+}
+function DownloadAllPatientHistorybyCompanyID($array_input){
+    global $DBtables;
+    //$query = "SELECT `Patients`.PatientID, ";
+    //$query .= " `Patients`.Forename, `Patients`.MiddleName, `Patients`.FirstSurname, `Patients`.SecondSurname, `Patients`.Email, `Patients`.Phone, `Patients`.BirthDate, `Patients`.JoinDate, `Patients`.Gender, `Patients`.Status, `Patients`.Income,";
+    //$query = "SELECT CONCAT(  `Patients`.PatientID,  '_',  `Companies`.CompanyID ) AS  'Identificación' ,";
+    //$query .= " `Companies`.CompanyID, ";
+    $query = "SELECT `Patients`.PatientID as 'Cédula', `Patients`.Forename as 'Primer Nombre', `Patients`.MiddleName as 'Segundo Nombre', `Patients`.FirstSurname as 'Primer Apellido', `Patients`.SecondSurname as 'Segundo Apellido' , `Patients`.Department as 'Departamento' , `Patients`.Site as 'Sede' , `Companies`.CompanyID as 'Compañía' , ";
+    //$query .= "`Companies`.Phone, `Companies`.Email, `Companies`.Address, `Companies`.Status, `Companies`.LastMod, `Companies`.ModifierID, ";
+    $query .= " `EvaluationHistory`.Test as 'Exámen' , `EvaluationHistory`.Value as 'Resultado' , DATE_FORMAT(  `EvaluationHistory`.ModDate,  '%Y/%m/%d' ) AS  'Fecha' ";
+    //$query .= "`EvaluationHistory`.Unit,  `EvaluationHistory`.FFD ";
+    $query .= " FROM " . $DBtables['patients'] ;
+    $query .= " JOIN " . $DBtables['company'] . " ON  `Patients`.CompanyID =  `Companies`.CompanyID ";
+    $query .= " JOIN " . $DBtables['evaluationhistory'];
+    $query .= " ON  `EvaluationHistory`.PatientID =  `Patients`.PatientID ";
+    $query .= "WHERE `Companies`.CompanyID = " . set_value_list(untoken_array(get_array_element_by_key($array_input, 'CompanyID_Token')));
+    $query .= " ORDER BY  'Identificación',  'Fecha' ";
+    //print $query;
+    $rawdata = ConexionDB_rawdata($query);
+    //simpleHtmlTable($rawdata);
+    
+    //echo "<h2>pivot on 'host' and 'country'</h2>";
+    $data = Pivot::factory($rawdata)
+    ->pivotOn(array('Cédula', 'Compañía' ,'Exámen'))
+    ->addColumn(array('Fecha'), array('Resultado',))
+    //->fullTotal()
+    //->pivotTotal()
+    //->lineTotal()
+    ->fetch();
+    
+    simpleHtmlTable($data);
+    
+    //$excel = new SimpleExcel('xml');                    // instantiate new object (will automatically construct the parser & writer type as XML)
+     
+    //$excel->writer->setData($data);     
+
+    // add some data to the writer
+    //$excel->writer->saveFile('Reporte');   
+    //print_r($data);
 }
 function ReadPatientParams2($array_input) {  
     global $DBtables;
