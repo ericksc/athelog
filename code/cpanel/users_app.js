@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to users screen v1.52");
+		//alert("(DEBUG)Welcome to users screen v1.52");
 		
 		//scope vars
 				
@@ -89,7 +89,7 @@ var fetch = angular.module('fetch', []);
 			
 			//FIXME: add dB check before confirm this
 			if (typeof URLParams.Message === "Updated") {
-				alert("Perfil actualizado");
+				//alert("Perfil actualizado");
 				
 			}else{				
 				
@@ -98,7 +98,7 @@ var fetch = angular.module('fetch', []);
 
 			//returns TRUE just if both params are different to Null, NONE, undefined or empty
 			result = Boolean(var1_valid*var2_valid);
-			alert("(DEBUG)CheckURLParameters(). ID_Param="+URLParams.ID+",Action_Param="+URLParams.Action+"-Returning "+result);
+			//alert("(DEBUG)CheckURLParameters(). ID_Param="+URLParams.ID+",Action_Param="+URLParams.Action+"-Returning "+result);
 			return result;
 						
 			
@@ -192,7 +192,7 @@ var fetch = angular.module('fetch', []);
 			$debug_string +="\nUserGroup_FieldValue="+UserData['UserGroup_FieldValue'];			
 			$debug_string +="\nStatus_FieldValue="+UserData['Status_FieldValue'];		
 			
-			alert("(DEBUG)Function ReadUserFields() executed. Results:"+$debug_string); //(DEBUG)
+			//alert("(DEBUG)Function ReadUserFields() executed. Results:"+$debug_string); //(DEBUG)
 			
 		
 		}
@@ -244,7 +244,7 @@ var fetch = angular.module('fetch', []);
 				URL+="&UserGroup_Token="+UserData.UserGroup_FieldValue;
 			}
 			
-			alert("(DEBUG)CreateUserSearchString()-ending.URL="+URL);
+			//alert("(DEBUG)CreateUserSearchString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -273,13 +273,13 @@ var fetch = angular.module('fetch', []);
 			URL += "&MiddleName_Token="+UserData.MiddleName_FieldValue;
 			URL += "&FirstSurname_Token="+UserData.FirstSurname_FieldValue;
 			URL += "&SecondSurname_Token="+UserData.SecondSurname_FieldValue;
-			URL += "&Email_Token="+UserData.UserEmail_FieldValue;
-			URL += "&Phone_Token="+UserData.UserPhone_FieldValue;
+			URL += "&Email_Token="+UserData.Email_FieldValue;
+			URL += "&Phone_Token="+UserData.Phone_FieldValue;
 			URL += "&CompanyID_Token="+UserData.CompanyID_FieldValue;
 			URL += "&UserGroup_Token="+UserData.UserGroup_FieldValue;
 			URL += "&PassHash_Token="+UserData.PassHash_FieldValue;
 			
-			alert("(DEBUG)CreateUserInsertString()-ending.URL="+URL);
+			//alert("(DEBUG)CreateUserInsertString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -308,7 +308,7 @@ var fetch = angular.module('fetch', []);
 				URL+="&SecondSurname_Token="+UserData.SecondSurname_FieldValue;
 			}
 
-			if(UserData.UserPhone_FieldValue !=="NONE"){
+			if(UserData.Phone_FieldValue !=="NONE"){
 				URL+="&Phone_Token="+UserData.Phone_FieldValue;
 			}
 
@@ -320,15 +320,15 @@ var fetch = angular.module('fetch', []);
 				URL+="&CompanyID_Token="+UserData.CompanyID_FieldValue;
 			}
 
-			if(UserData.UserGroup !=="NONE"){
+			if(UserData.UserGroup_FieldValue !=="NONE"){
 				URL+="&UserGroup_Token="+UserData.UserGroup_FieldValue;
 			}			
 			
-			if(UserData.Status !=="NONE"){
+			if(UserData.Status_FieldValue !=="NONE"){
 				URL+="&Status_Token="+UserData.Status_FieldValue;
 			}			
 
-			alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
+			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -503,7 +503,7 @@ var fetch = angular.module('fetch', []);
                 $scope.Logout = function(){
                     
                     var URL = "../engine/dBInterface.php?ActionDBToken=Logout";
-                    alert("(DEBUG)Logout()-Logging off");
+                    //alert("(DEBUG)Logout()-Logging off");
                     CalldBEngine(URL,"data");
                     Redirect("../index/login.html");
                     
@@ -567,7 +567,6 @@ var fetch = angular.module('fetch', []);
 				
 			if(OutputType=="CompanyList"){	
 				$scope.CompanyList = data; //companyID list from mySQL
-				$scope.CompanyList.push("");//empty options
 			}else if(OutputType=="data"){
 				$scope.data=data;
 			}

@@ -169,9 +169,10 @@
 		<nav id="sidenav">
 					
 			<ul>
+                                <li><a href="../index/index.php">Indice</a></li>
 				<li><a href="#">Ayuda</a></li>
 				<li><a href="#">Acerca de</a></li>
-				<li><a href="search_profiles.html">Perfiles</a></li>
+				
 			</ul>
 		</nav>
 		<!-- END OF SIDENAV MENU -->
@@ -224,6 +225,12 @@
 									<!--<td>validation={{PatientForm.Forename_Field.$valid}}</td>-->
 								</tr>
 								<tr>
+									<th>Segundo Nombre</th>
+									<td ng-repeat="patients in data">{{patients.MiddleName}}</td>
+									<td><input name="MiddleName_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="MiddleName_Input_Model" required></td>
+									<!--<td>validation={{PatientForm.Forename_Field.$valid}}</td>-->
+								</tr>
+                                                                <tr>
 									<th>Primer Apellido</th>
 									<td ng-repeat="patients in data">{{patients.FirstSurname}}</td>
 									<td><input name="FirstSurname_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="FirstSurname_Input_Model" required></td>
@@ -265,6 +272,7 @@
 											<option></option>
 											<option>Masculino</option>
 											<option>Femenino</option>
+                                                                                        <option>No indica</option>
 										</select>
 									</td>	
 									<!--<td>validation={{PatientForm.GenderSelect.$valid}}</td>-->
@@ -277,27 +285,22 @@
 									<!--<td>validation={{PatientForm.PatientAddress_Field.$valid}}</td>-->
 								</tr>
 								<tr>
-									<th>ID Empresa</th>
-									<td ng-repeat="patients in data">{{patients.CompanyID}}</td>
-									<td>
-										<select name="CompanyIDSelect" class="form-control"  ng-model="CompanySelect_Input_Model"  required>
-											<option></option>
-											<option>Company1</option>
-											<option>Company2</option>
-										</select>
-									</td>	
-									<!--<td>validation={{PatientForm.CompanyIDSelect.$valid}}</td>-->								</tr>
+									<th>Empresa</th>
+                                                                        <td ng-repeat="patients in data">{{patients.CompanyID}}</td>
+                                                                        <td><select ng-model="CompanySelect_Input_Model" ng-options="item as item.CompanyID for item in CompanyList"></select></td>
+									<!--<td>validation={{PatientForm.CompanyIDSelect.$valid}}</td>-->								
+                                                                </tr>
 								<tr>
 									<th>Departamento</th>
 									<td ng-repeat="patients in data">{{patients.Department}}</td>
 									<td>
 										<select name="DepartmentSelect" class="form-control"  ng-model="DepartmentSelect_Input_Model" required>
 											<option></option>
-											<option>Department1</option>
-											<option>Department2</option>
+											<option>No indica</option>
+											
 										</select>
 									</td>	
-									<!--<td>validation={{PatientForm.DepartmentSelect.$valid}}</td>-->									
+									<!--<td>validation={{PatientForm.DepartmentSelect.$valid}}</td>	-->								
 								</tr>
 								<tr>
 									<th>Sede</th>
@@ -305,13 +308,18 @@
 									<td>
 										<select name="SiteSelect" class="form-control"  ng-model="SiteSelect_Input_Model" required>
 											<option></option>
-											<option>Site1</option>
-											<option>Site2</option>
+											<option>No indica</option>
+											
 										</select>
 									</td>	
 									<!--<td>validation={{PatientForm.SiteSelect.$valid}}</td>-->								
 								</tr>
-								
+								<tr>
+									<th>Ingreso Mensual</th>
+									<td ng-repeat="patients in data">{{patients.Income}}</td>
+									<td><input name="PatientIncome_Field" type="number"  runat="server" ng-init="inputVal=''" ng-model="PatientIncome_Input_Model" required></td>
+									<!--<td>validation={{PatientForm.PatientEmail_Field.$valid}}</td>-->
+								</tr>								
 							</table>	
 
 							<!--

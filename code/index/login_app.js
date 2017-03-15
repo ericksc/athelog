@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to login  screen v1.9");
+		//alert("(DEBUG)Welcome to login  screen v2.9");
 		
 		var UserData = {};
 		UserData['UserID_FieldValue']="NONE";
@@ -21,7 +21,8 @@ var fetch = angular.module('fetch', []);
 		URLParams['ID'] = "NONE";
                 
                 //
-                var GlobalLoginData="";
+                var GlobalLoginData={};
+                GlobalLoginData['LoginSuccessful']=0;
 
 		//-------------3. FUNCTIONS-----------------------------
 		
@@ -66,7 +67,7 @@ var fetch = angular.module('fetch', []);
 
 			//returns TRUE just if both params are different to Null, NONE, undefined or empty
 			result = Boolean(var1_valid*var2_valid);
-			alert("(DEBUG)CheckURLParameters(). ID_Param="+URLParams.ID+",Action_Param="+URLParams.Action+"-Returning "+result);
+			//("(DEBUG)CheckURLParameters(). ID_Param="+URLParams.ID+",Action_Param="+URLParams.Action+"-Returning "+result);
 			return result;
 						
 			
@@ -107,7 +108,7 @@ var fetch = angular.module('fetch', []);
 			URL += "ActionDBToken=CheckLoginCredentials"; 
 			URL += "&UserID_Token="+UserData.UserID_FieldValue;
 			URL += "&Password_Token="+UserData.Password_FieldValue;
-			alert("(DEBUG)CreateLoginString() executed. Return URL="+URL);
+			//alert("(DEBUG)CreateLoginString() executed. Return URL="+URL);
 			return URL;
 			
 		}
@@ -187,7 +188,7 @@ var fetch = angular.module('fetch', []);
 								return false;
 							}
 					}
-					alert("(DEBUG)CheckInputField()-executed. Returning TRUE");	
+					//("(DEBUG)CheckInputField()-executed. Returning TRUE");	
 					return true;
 				}
 
@@ -198,7 +199,7 @@ var fetch = angular.module('fetch', []);
 		//returns true if everything is valid, otherwise false
 		function CheckUserInputData(){	
 			
-			alert("(DEBUG)CheckPatientInputData() - starting"  );
+			//("(DEBUG)CheckPatientInputData() - starting"  );
 			
 			if(CheckInputField(UserData.UserID_FieldValue,"text")==false){
 				//alert("ERROR - Entrada invalida en Usuario");
@@ -221,13 +222,28 @@ var fetch = angular.module('fetch', []);
 			
 			//alert ("(DEBUG)-Login() - starting");
 			ResetUserFieldValues();
-			ReadUserFields();		
+			ReadUserFields();
 			CalldBEngine(CreateLoginString(),"LoginData");
-			alert ("(DEBUG)-Login() - executed");
+			//alert ("(DEBUG)-Login() - executed");
                         
-                        alert("scope.Login()-LoginData="+$scope.LoginData);
-                        alert("scope.Login-GlobalLoginData="+GlobalLoginData);
-						
+                        //alert("scope.Login()-LoginData="+$scope.LoginData);
+                        //alert("scope.Login()-GlobalLoginData="+GlobalLoginData);
+                        
+                        //setTimeout(function(){}, 500); 
+                            //alert("value is"+$scope.LoginData);
+                            
+                        if($scope.LoginData==1){
+                            //alert("value is 1");
+                            //window.location.replace("../profiles/sp.php");
+                            window.location.replace("../index/index.php");
+                        }else if($scope.LoginData==0){
+                            alert("ERROR - Datos de acceso incorrectos");
+                            
+                        }else{
+                            //datos no recibidos y otras situaciones
+                        }
+                        
+                        
 		}
 		//eof		
 		
@@ -252,7 +268,7 @@ var fetch = angular.module('fetch', []);
 				alert("ERROR - Datos de acceso incorrecto");
 			}
 			*/
-			window.location.replace("../profiles/search_profiles.html");
+			window.location.replace("../index/index.php");
 			
 		}
 		//eof
@@ -293,35 +309,32 @@ var fetch = angular.module('fetch', []);
 		//FIXME: add the .error part
 		function CalldBEngine(URLstring,OutputType) {			
 			
-			
+                        
 			//alert("(DEBUG)Function CallPHPServerFile() calling"); //(DEBUG)			
 			$http.get(URLstring)
 			.success(function(data){
-				
-			if(OutputType=="CompanyList"){	
-				$scope.CompanyList = data; //companyID list from mySQL
-			}else if(OutputType=="data"){
-				$scope.data=data;
-			}else if(OutputType=="PatientData"){
-				$scope.PatientData=data;
-			}else if(OutputType=="PVData"){
-				$scope.PVData=data;
-			}else if(OutputType=="ReportData"){
-				$scope.ReportData=data;
-                                alert("using ReportData");
-			}else if(OutputType=="ReportDataOrg"){
-				$scope.ReportDataOrg=data;
-                               //alert("using ReportData");
-			}else if(OutputType=="LoginData"){
-				$scope.LoginData=data;
-                                GlobalLoginData=Content(data);
-                                //alert("LoginData="+$scope.LoginData);
-			}
                         
-                        
+                            if(OutputType=="CompanyList"){	
+                                    $scope.CompanyList = data; //companyID list from mySQL
+                            }else if(OutputType=="data"){
+                                    $scope.data=data;
+                            }else if(OutputType=="PatientData"){
+                                    $scope.PatientData=data;
+                            }else if(OutputType=="PVData"){
+                                    $scope.PVData=data;
+                            }else if(OutputType=="ReportData"){
+                                    $scope.ReportData=data;
+                                    //("using ReportData");
+                            }else if(OutputType=="ReportDataOrg"){
+                                    $scope.ReportDataOrg=data;
+                                   //alert("using ReportData");
+                            }else if(OutputType=="LoginData"){
+                                    $scope.LoginData=data;
+                            }
+                       
                         
 			})
-			
+                        
 			//alert("(DEBUG)Function CalldBEngine() executed on URL="+URLstring); //(DEBUG)
 
 		}
