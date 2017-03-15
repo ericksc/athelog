@@ -169,6 +169,7 @@
 		
 			
 			<ul>
+                                <li><a href="../index/index.php">Indice</a></li>
 				<li><a href="#">Ayuda</a></li>
 				<li><a href="#">Acerca de</a></li>
 			</ul>
@@ -195,7 +196,7 @@
 				  <h3>Crear nuevo paciente</h3>
 			  
 					<!-- controller for patient search -->
-					<div id="PatientController" ng-controller="dbCtrl">
+					<div id="PatientController" ng-controller="dbCtrl" ng-init="Init('Patient')">
 			  
 						<!--------- Search results ------->
 						<div>
@@ -222,6 +223,12 @@
 									<!--<td>validation={{PatientForm.Forename_Field.$valid}}</td>-->
 								</tr>
 								<tr>
+									<th>Segundo Nombre</th>
+									<td ng-repeat="patients in data">{{patients.MiddleName}}</td>
+									<td><input name="MiddleName_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="MiddleName_Input_Model" required></td>
+									<!--<td>validation={{PatientForm.Forename_Field.$valid}}</td>-->
+								</tr>
+                                                                <tr>
 									<th>Primer Apellido</th>
 									<td ng-repeat="patients in data">{{patients.FirstSurname}}</td>
 									<td><input name="FirstSurname_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="FirstSurname_Input_Model" required></td>
@@ -254,6 +261,8 @@
 								<tr>
 									<th>Fecha entrada al programa</th>
 									<td ng-repeat="patients in data">{{patients.JoinDate}}</td>
+                                                                        <td><input name="JoinDate_Field" type="date"  runat="server" ng-init="inputVal=''" ng-model="JoinDate_Input_Model" required></td>
+
 								</tr>
 								<tr>
 									<th>Genero</th>
@@ -263,6 +272,7 @@
 											<option></option>
 											<option>Masculino</option>
 											<option>Femenino</option>
+                                                                                        <option>No indica</option>
 										</select>
 									</td>	
 									<!--<td>validation={{PatientForm.GenderSelect.$valid}}</td>-->
@@ -275,24 +285,18 @@
 									<!--<td>validation={{PatientForm.PatientAddress_Field.$valid}}</td>-->
 								</tr>
 								<tr>
-									<th>ID Empresa</th>
-									<td ng-repeat="patients in data">{{patients.CompanyID}}</td>
-									<td>
-										<select name="CompanyIDSelect" class="form-control"  ng-model="CompanySelect_Input_Model"  required>
-											<option></option>
-											<option>Company1</option>
-											<option>Company2</option>
-										</select>
-									</td>	
-									<!--<td>validation={{PatientForm.CompanyIDSelect.$valid}}</td>-->								</tr>
+									<th>Empresa</th>
+                                                                        <td><select ng-model="CompanySelect_Input_Model" ng-options="item as item.CompanyID for item in CompanyList"></select></td>
+									<!--<td>validation={{PatientForm.CompanyIDSelect.$valid}}</td>-->								
+                                                                </tr>
 								<tr>
 									<th>Departamento</th>
 									<td ng-repeat="patients in data">{{patients.Department}}</td>
 									<td>
 										<select name="DepartmentSelect" class="form-control"  ng-model="DepartmentSelect_Input_Model" required>
 											<option></option>
-											<option>Department1</option>
-											<option>Department2</option>
+											<option>No indica</option>
+											
 										</select>
 									</td>	
 									<!--<td>validation={{PatientForm.DepartmentSelect.$valid}}</td>	-->								
@@ -303,13 +307,18 @@
 									<td>
 										<select name="SiteSelect" class="form-control"  ng-model="SiteSelect_Input_Model" required>
 											<option></option>
-											<option>Site1</option>
-											<option>Site2</option>
+											<option>No indica</option>
+											
 										</select>
 									</td>	
 									<!--<td>validation={{PatientForm.SiteSelect.$valid}}</td>-->								
 								</tr>
-								
+								<tr>
+									<th>Ingreso Mensual</th>
+									<td ng-repeat="patients in data">{{patients.Income}}</td>
+									<td><input name="PatientIncome_Field" type="number"  runat="server" ng-init="inputVal=''" ng-model="PatientIncome_Input_Model" required></td>
+									<!--<td>validation={{PatientForm.PatientEmail_Field.$valid}}</td>-->
+								</tr>								
 							</table>	
 
 							<!--<button ng-click="CreatePatient()">CreatePatient()</button>-->
@@ -321,8 +330,9 @@
 						<br>
 						<!-- patient modal popup -->
 						<script type="text/javascript" src="create_profile_modal.js"></script>
-						<div class="modal-popup" ng-show="PatientForm.PatientID_Field.$valid&&PatientForm.Forename_Field.$valid&&PatientForm.FirstSurname_Field.$valid&&PatientForm.SecondSurname_Field.$valid&&PatientForm.PatientEmail_Field.$valid&&PatientForm.PatientPhone_Field.$valid&&PatientForm.BirthDate_Field.$valid&&PatientForm.GenderSelect.$valid&&PatientForm.PatientAddress_Field.$valid&&PatientForm.CompanyIDSelect.$valid&&PatientForm.DepartmentSelect.$valid&&PatientForm.SiteSelect.$valid">
-							<!-- Button HTML (to Trigger Modal) -->
+						<!--<div class="modal-popup" ng-show="PatientForm.PatientID_Field.$valid&&PatientForm.Forename_Field.$valid&&PatientForm.FirstSurname_Field.$valid&&PatientForm.SecondSurname_Field.$valid&&PatientForm.PatientEmail_Field.$valid&&PatientForm.PatientPhone_Field.$valid&&PatientForm.BirthDate_Field.$valid&&PatientForm.GenderSelect.$valid&&PatientForm.PatientAddress_Field.$valid&&PatientForm.CompanyIDSelect.$valid&&PatientForm.DepartmentSelect.$valid&&PatientForm.SiteSelect.$valid">-->
+						<div class="modal-popup">
+                                                    <!-- Button HTML (to Trigger Modal) -->
 							<input type="button" class="btn btn-lg btn-primary launch-modal" value="Guardar">
 							
 							<!-- Modal HTML -->

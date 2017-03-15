@@ -12,10 +12,12 @@ if(ReadUserGroup($_SESSION['UserID'])['IntUG']<1){
     header('Location: ' . '../index/login.html');
     
 }else{
-    echo "<br>Ejecutando";
+    echo "<br>Executing";
     //echo file_get_contents("search_users.html");
     $pagecontents = file_get_contents("index.html");
     echo str_replace("UserID_Tag", $_SESSION['UserID'], $pagecontents); 
+    
+    
 }
 
 ?>   

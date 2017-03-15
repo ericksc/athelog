@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		alert("(DEBUG)Welcome to login  screen v2.9");
+		//alert("(DEBUG)Welcome to login  screen v2.9");
 		
 		var UserData = {};
 		UserData['UserID_FieldValue']="NONE";
@@ -67,7 +67,7 @@ var fetch = angular.module('fetch', []);
 
 			//returns TRUE just if both params are different to Null, NONE, undefined or empty
 			result = Boolean(var1_valid*var2_valid);
-			alert("(DEBUG)CheckURLParameters(). ID_Param="+URLParams.ID+",Action_Param="+URLParams.Action+"-Returning "+result);
+			//("(DEBUG)CheckURLParameters(). ID_Param="+URLParams.ID+",Action_Param="+URLParams.Action+"-Returning "+result);
 			return result;
 						
 			
@@ -108,7 +108,7 @@ var fetch = angular.module('fetch', []);
 			URL += "ActionDBToken=CheckLoginCredentials"; 
 			URL += "&UserID_Token="+UserData.UserID_FieldValue;
 			URL += "&Password_Token="+UserData.Password_FieldValue;
-			alert("(DEBUG)CreateLoginString() executed. Return URL="+URL);
+			//alert("(DEBUG)CreateLoginString() executed. Return URL="+URL);
 			return URL;
 			
 		}
@@ -188,7 +188,7 @@ var fetch = angular.module('fetch', []);
 								return false;
 							}
 					}
-					alert("(DEBUG)CheckInputField()-executed. Returning TRUE");	
+					//("(DEBUG)CheckInputField()-executed. Returning TRUE");	
 					return true;
 				}
 
@@ -199,7 +199,7 @@ var fetch = angular.module('fetch', []);
 		//returns true if everything is valid, otherwise false
 		function CheckUserInputData(){	
 			
-			alert("(DEBUG)CheckPatientInputData() - starting"  );
+			//("(DEBUG)CheckPatientInputData() - starting"  );
 			
 			if(CheckInputField(UserData.UserID_FieldValue,"text")==false){
 				//alert("ERROR - Entrada invalida en Usuario");
@@ -224,19 +224,23 @@ var fetch = angular.module('fetch', []);
 			ResetUserFieldValues();
 			ReadUserFields();
 			CalldBEngine(CreateLoginString(),"LoginData");
-			alert ("(DEBUG)-Login() - executed");
+			//alert ("(DEBUG)-Login() - executed");
                         
-                        alert("scope.Login()-LoginData="+$scope.LoginData);
+                        //alert("scope.Login()-LoginData="+$scope.LoginData);
                         //alert("scope.Login()-GlobalLoginData="+GlobalLoginData);
                         
                         //setTimeout(function(){}, 500); 
-                        
+                            //alert("value is"+$scope.LoginData);
+                            
                         if($scope.LoginData==1){
                             //alert("value is 1");
-                            window.location.replace("../profiles/sp.php");
-                        }else{
+                            //window.location.replace("../profiles/sp.php");
+                            window.location.replace("../index/index.php");
+                        }else if($scope.LoginData==0){
                             alert("ERROR - Datos de acceso incorrectos");
                             
+                        }else{
+                            //datos no recibidos y otras situaciones
                         }
                         
                         
@@ -320,7 +324,7 @@ var fetch = angular.module('fetch', []);
                                     $scope.PVData=data;
                             }else if(OutputType=="ReportData"){
                                     $scope.ReportData=data;
-                                    alert("using ReportData");
+                                    //("using ReportData");
                             }else if(OutputType=="ReportDataOrg"){
                                     $scope.ReportDataOrg=data;
                                    //alert("using ReportData");

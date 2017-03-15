@@ -3,7 +3,7 @@ var fetch = angular.module('fetch', []);
 	fetch.controller('dbCtrl', ['$scope', '$http', function ($scope, $http) {
 		
 		
-		alert("Executing Eval_APP controller v1.41");
+		//alert("Executing Eval_APP controller v1.41");
 		
 		//------------1. USER CONST -----------------------
 		var GeneralGlobals ={};
@@ -353,7 +353,7 @@ var fetch = angular.module('fetch', []);
                         $debug_string +="\nAlcohol="+APPData['Tobacco'];
                         $debug_string +="\nComment="+APPData['Cmmnt'];
 			
-			alert("(DEBUG)Function ReadAPPData() executed. Results:"+$debug_string); //(DEBUG)
+			//alert("(DEBUG)Function ReadAPPData() executed. Results:"+$debug_string); //(DEBUG)
 			
 		
 		}
@@ -745,7 +745,7 @@ var fetch = angular.module('fetch', []);
                     if(PVData['WaistCirc']!=="NONE")URL+="&WaistCirc_Token="+PVData['WaistCirc'];
                     if(PVData['VO2Max']!=="NONE")URL+="&VO2Max_Token="+PVData['VO2Max'];
                     if(PVData['OtherVarName']!=="NONE"&&PVData['OtherVarValue']!=="NONE")URL+="&"+PVData['OtherVarName']+"="+PVData['OtherVarValue'];
-                    alert("(DEBUG)CreatePVInsertString()-Return URL="+URL);
+                    //alert("(DEBUG)CreatePVInsertString()-Return URL="+URL);
                     return URL;
 		}
 		//eof
@@ -784,7 +784,7 @@ var fetch = angular.module('fetch', []);
 			if(BodyCompData.ViscFat!=="NONE")URL += "&ViscFat_Token="+BodyCompData.ViscFat;
 			if(BodyCompData.Flex!=="NONE")URL += "&Flex_Token="+BodyCompData.Flex;
 			if(BodyCompData.MR!=="NONE")URL += "&MR_Token="+BodyCompData.MR;
-			alert("(DEBUG)CreateBodyCompInsertString() executed. Return URL="+URL);
+			//alert("(DEBUG)CreateBodyCompInsertString() executed. Return URL="+URL);
 			return URL;
 			
 		}
@@ -805,7 +805,7 @@ var fetch = angular.module('fetch', []);
 			URL += "&ViscFat="+BodyCompData.ViscFat;
 			URL += "&Flex="+BodyCompData.Flex;
 			URL += "&MR="+BodyCompData.MR;
-			alert("(DEBUG)CreateBodyCompUpdateString() executed. Return URL="+URL);
+			//alert("(DEBUG)CreateBodyCompUpdateString() executed. Return URL="+URL);
 			return URL;
 			
 		}

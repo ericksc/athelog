@@ -22,7 +22,7 @@ $(document).ready(function(){
 	//patients save event
 	$('#save-event').on('click',function(evt){
 		//put here code to execute when SAVE button is pressed								
-		//alert("(DEBUG)Modal() - Starting edit patient process");
+		//alert("(DEBUG)Modal() - Starting edit patient modal");
 		angular.element(document.getElementById('PatientController')).scope().EditPatient();
 		}	
 	);
