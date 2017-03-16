@@ -44,7 +44,8 @@ $queryfunctions = array(
   'ReadPatientVars' => function($array_parameters) { ReadPatientBlockParams($array_parameters);}, 
   'ReadAllPatientHistorybyCompanyIDVars' => function($array_parameters) { ReadAllPatientHistorybyCompanyID($array_parameters);},  
   'DownloadCompanyReport' => function($array_parameters) { DownloadAllPatientHistorybyCompanyID($array_parameters);},            
-  'InsertPatient' => function($array_parameters) { InsertPatientParams($array_parameters);}
+  'InsertPatient' => function($array_parameters) { InsertPatientParams($array_parameters);},
+  'InsertUserPermission' => function($array_parameters) { AddUserPermission($array_parameters,'users');}
 );
  
 function callActionFunctions($action, $parameter)

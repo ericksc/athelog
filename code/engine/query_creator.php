@@ -1,11 +1,11 @@
 <?php
 include_once "DBArrayQuery.php";
 include_once "session.php";
-require('../library/Pivot.php');
+//require('../library/Pivot.php');
 
-use SimpleExcel\SimpleExcel;
+//use SimpleExcel\SimpleExcel;
 
-require_once('../SimpleExcel/SimpleExcel.php');
+//require_once('../SimpleExcel/SimpleExcel.php');
 //include_once "Notifications_Mail.php";
 
 //FIXME: move to appropiate file
@@ -193,7 +193,9 @@ function ReadPatientParams2($array_input) {
 function getCheckparams($array_input, $tablename, $label, $enableJSON=FALSE) {  
     global $DBtables;
     $query = "SELECT CASE WHEN COUNT( * ) >0 THEN  'TRUE' ELSE  'FALSE' END AS  '" . $label ."' FROM  " . $DBtables[$tablename] . " WHERE ";
+    //$query = "SELECT * FROM  " . $DBtables[$tablename] . " WHERE ";
     $query .= where_equal_value(untoken_array($array_input));
+    //$query .= " LIMIT 1";
     $result = ConexionDB_rawdata($query);
     if($enableJSON) {
         print json_encode($result);
@@ -294,15 +296,93 @@ function ReadPatientHistoryParams2 ($array_input) {
     ConexionDB_JSON($query);    
 }
 
-function InsertUsersParams2($array_input, $tablename){
-    $result_check = getCheckparams($array_input, $tablename, 'EXIST', FALSE);
+
+//function to add more usergroup roles to an user
+function AddUserPermission($array_input, $tablename){
+    
+    global $DBtables;
+    $justID_array=array(
+        
+        'UserID'=>$array_input['UserID_Token'],
+        'CompanyID'=>$array_input['CompanyID_Token'],  
+        //'UserGroup'=>$array_input['UserGroup_Token'],//not required     
+            
+    );//reading just the ID
+    
+    //echo "<br>justID=".print_r($justID_array); 
+    
+    /*
+     1-send insertUser url from javascript, including  all tokens and usergroup (from InsertUserGroup)
+      2-compare array from #1 with getCheckparams. If EXIT = TRUE, exit function
+      3-if EXIST = False, add user
+     
+     */
+    
+    //echo "<br>Array_input=".print_r($array_input);
+    //echo "<br>justID_array=".print_r($justID_array);
+    
+    //reading the full existent record
+    $query = "SELECT * FROM ".$DBtables[$tablename]." WHERE ";
+    $query .= where_equal_value(untoken_array($justID_array));
+    $query .= " LIMIT 1";    
+    //echo "<br>query=".$query;
+    $result_check=ConexionDB_rawdata($query);
+    
+   
+    //checking if UserID already exists
+    if(empty($result_check[0])==false){
+    
+        //return FALSE and exit function
+        echo "<br>Record already exists! nothing to do here";
+        
+    }else{
+        
+        $query2 = "SELECT * FROM ".$DBtables[$tablename]." WHERE `UserID`=".$array_input['UserID_Token']." LIMIT 1";
+        //echo "<br>query2=".$query2;
+        $result2 = ConexionDB_rawdata($query2);
+        //echo "<br>result2=".print_r($result2);
+        
+        //there is existent data
+        $new_record_array = array(
+            
+            "UserID"=>$result2[0]['UserID'],
+            "PassHash"=>$result2[0]['PassHash'],
+            "Forename"=>$result2[0]['Forename'],
+            "MiddleName"=>$result2[0]['MiddleName'],
+            "FirstSurname"=>$result2[0]['FirstSurname'],
+            "SecondSurname"=>$result2[0]['SecondSurname'],
+            "Email"=>$result2[0]['Email'],
+            "Phone"=>$result2[0]['Phone'],
+            "UserGroup"=>$array_input['UserGroup_Token'],
+            "CompanyID"=>$array_input['CompanyID_Token'],
+            "Status"=>$result2[0]['active'],
+            "FFD"=>$result2[0]['FFD'],
+        );    
+        
+        //echo "<br>New register=".print_r($new_register);
+        InsertUsersParams($new_record_array);
+        
+        //FIXME: return a confirmation to user
+        
+    }
+    //ofi
+    
+    
+    /*
     if ($result_check[0]['EXIST'] == 'FALSE') {
         InsertGenericParams($array_input, $tablename);
         $result_validation = getCheckparams($array_input, $tablename, 'VALIDATE', TRUE);
+        
+        echo "<br>Inserting register";
     } else {
         print json_encode($result_check);
+        echo "<br>Inserting denied";
     }
+     
+    */
 }
+//eof
+
 function InsertCompanyParams($array_input) { 
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['company'] . "(" . set_key_list(untoken_array($array_input)) . ")";
