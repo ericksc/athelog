@@ -33,6 +33,7 @@ var fetch = angular.module('fetch', []);
 		var URLParams = {};
 		URLParams['Action'] = "NONE";
 		URLParams['ID'] = "NONE";
+                URLParams['RowID'] = "NONE";
 		URLParams['Message'] = "NONE";
 		
 		
@@ -65,6 +66,7 @@ var fetch = angular.module('fetch', []);
 			URLParams.Action=getUrlVars()["Action"];
 			URLParams.ID=getUrlVars()["ID"];
 			URLParams.Message=getUrlVars()["Message"];
+                        URLParams.RowID=getUrlVars()["RowID"];
 
 			var var1_valid=0;
 			var var2_valid=0;
@@ -277,9 +279,13 @@ var fetch = angular.module('fetch', []);
 			URL += "&Phone_Token="+UserData.Phone_FieldValue;
 			URL += "&CompanyID_Token="+UserData.CompanyID_FieldValue;
 			URL += "&UserGroup_Token="+UserData.UserGroup_FieldValue;
-			URL += "&PassHash_Token="+UserData.PassHash_FieldValue;
-			
-			//alert("(DEBUG)CreateUserInsertString()-ending.URL="+URL);
+			//URL += "&PassHash_Token="+UserData.PassHash_FieldValue;
+
+			if(UserData.Status_FieldValue ==="active" || UserData.Status_FieldValue ==="inactive" ){
+				URL += "&Status_Token="+UserData.Status_FieldValue;
+			}
+                        
+			alert("(DEBUG)CreateUserInsertString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -287,10 +293,10 @@ var fetch = angular.module('fetch', []);
 		
 		//function to return the URL string to update user profile data
 		//it uses URLParams.ID global to select user
-		function CreateUserEditString(){
+		function CreateUserEditString_old(){
 			
-			var URL = "../engine/dBInterface.php?ActionDBToken=UpdateUser";
-			URL+="&UserID_Token="+URLParams.ID;
+			var URL = "../engine/dBInterface.php";
+			URL+="?UserID_Token="+URLParams.ID;
 			
 			if(UserData.Forename_FieldValue !=="NONE"){
 				URL+="&Forename_Token="+UserData.Forename_FieldValue;
@@ -324,16 +330,154 @@ var fetch = angular.module('fetch', []);
 				URL+="&UserGroup_Token="+UserData.UserGroup_FieldValue;
 			}			
 			
-			if(UserData.Status_FieldValue !=="NONE"){
+			if(UserData.Status_FieldValue ==="active" || UserData.Status_FieldValue ==="inactive"){
 				URL+="&Status_Token="+UserData.Status_FieldValue;
 			}			
 
-			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
+                        //status, usergroup and company are specific for very userID/rowID
+                        if(UserData.Status_FieldValue !=="NONE" || UserData.UserGroup_FieldValue !=="NONE" || UserData.CompanyID_FieldValue !=="NONE"){
+                            
+                            URL+="&RowID_Token="+URLParams.RowID;
+                            URL+="&ActionDBToken=UpdateUser";
+                        }else{
+                            URL+="&ActionDBToken=UpdateUser_byUserID";
+                        }
+                        
+			alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
 			return URL;
 			
 		}
 		//eof
 
+                //function to generate update url for users <personal data>, excluding ug, company and status
+                //mode=personal, role
+                function CreateUserEditString(mode){
+                    
+                    var URL = "../engine/dBInterface.php";
+                    URL+="?UserID_Token="+URLParams.ID;
+                    
+                    if(mode==="personal"){
+                        
+                        URL+="&ActionDBToken=UpdateUser_byUserID";//will update ALL linked users
+
+			if(UserData.Forename_FieldValue !=="NONE"){
+				URL+="&Forename_Token="+UserData.Forename_FieldValue;
+			}
+
+			if(UserData.MiddleName_FieldValue !=="NONE"){
+				URL+="&MiddleName_Token="+UserData.MiddleName_FieldValue;
+			}
+			
+			if(UserData.FirstSurname_FieldValue !=="NONE"){
+				URL+="&FirstSurname_Token="+UserData.FirstSurname_FieldValue;
+			}
+
+			if(UserData.SecondSurname_FieldValue !=="NONE"){
+				URL+="&SecondSurname_Token="+UserData.SecondSurname_FieldValue;
+			}
+
+			if(UserData.Phone_FieldValue !=="NONE"){
+				URL+="&Phone_Token="+UserData.Phone_FieldValue;
+			}
+
+			if(UserData.Email_FieldValue !=="NONE"){
+				URL+="&Email_Token="+UserData.Email_FieldValue;
+			}                        
+
+                        alert("(DEBUG)CreatePatientEditString() executed,mode="+mode+",URL="+URL);
+                        return URL;
+                        
+                    }//eo personal mode
+                    else if(mode==="role"){
+                        
+                        URL+="&ActionDBToken=UpdateUser";
+                        URL+="&RowID_Token="+URLParams.RowID;
+                          
+                        
+			if(UserData.CompanyID_FieldValue !=="NONE"){
+				URL+="&CompanyID_Token="+UserData.CompanyID_FieldValue;
+			}
+
+			if(UserData.UserGroup_FieldValue !=="NONE"){
+				URL+="&UserGroup_Token="+UserData.UserGroup_FieldValue;
+			}			
+			
+			if(UserData.Status_FieldValue ==="active" || UserData.Status_FieldValue ==="inactive" ){
+				URL+="&Status_Token="+UserData.Status_FieldValue;
+			}                        
+                        
+                        alert("(DEBUG)CreatePatientEditString() executed,mode="+mode+",URL="+URL);
+                        return URL;
+                        
+                    }                   
+                    //eo role mode
+                    else {
+                        
+                        alert("(DEBUG)CreatePatientEditString() execute with invalid mode="+mode+",URL="+URL);
+                        return URL;
+                    }//invalid mode
+                    
+                }
+                //eof
+
+
+
+                //function to add new Company/Rol to existent user
+                function CreateAddPermissionString(){
+                    
+                        var URL = "../engine/dBInterface.php?ActionDBToken=InsertUserPermission&UserID_Token="+URLParams.ID;
+                        
+                        
+			if(UserData.CompanyID_FieldValue !=="NONE"){
+				URL+="&CompanyID_Token="+UserData.CompanyID_FieldValue;
+			}
+
+			if(UserData.UserGroup_FieldValue !=="NONE"){
+				URL+="&UserGroup_Token="+UserData.UserGroup_FieldValue;
+			}	                    
+                        
+                              
+                        /*
+			if(UserData.Forename_FieldValue !=="NONE"){
+				URL+="&Forename_Token="+UserData.Forename_FieldValue;
+			}                        
+                        
+			if(UserData.MiddleName_FieldValue !=="NONE"){
+				URL+="&MiddleName_Token="+UserData.MiddleName_FieldValue;
+			}  
+                        
+			if(UserData.FirstSurname_FieldValue !=="NONE"){
+				URL+="&FirstSurname_Token="+UserData.FirstSurname_FieldValue;
+			}   
+
+			if(UserData.SecondSurname_FieldValue !=="NONE"){
+				URL+="&SecondSurname_Token="+UserData.SecondSurname_FieldValue;
+			}   
+                        
+			if(UserData.Email_FieldValue !=="NONE"){
+				URL+="&Email_Token="+UserData.Email_FieldValue;
+			}
+                        
+			if(UserData.Phone_FieldValue !=="NONE"){
+				URL+="&Email_Token="+UserData.Phone_FieldValue;
+			}                        
+                        */
+                        
+                        alert("(DEBUG)CreateAddPermissionString() return URL="+URL);
+                        return URL;
+                        
+                        /*
+			URL += "&Forename_Token="+UserData.;
+			URL += "&MiddleName_Token="+UserData.;
+			URL += "&FirstSurname_Token="+UserData.;
+			URL += "&SecondSurname_Token="+UserData.;
+			URL += "&Email_Token="+UserData.;
+			URL += "&Phone_Token="+UserData.;
+			URL += "&CompanyID_Token="+UserData.CompanyID_FieldValue;
+			URL += "&UserGroup_Token="+UserData.UserGroup_FieldValue;
+                        */
+                }
+                //eof
 	
 	
 		//validating input field to prevent the user to enter invalid words or chars
@@ -450,7 +594,8 @@ var fetch = angular.module('fetch', []);
 			
 			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectUser";
 			URLstring+="&UserID_Token="+URLParams.ID;
-			//alert("(DEBUG)CreateUserSearchStringByID() - User Search String="+URLstring);
+                        URLstring+="&RowID_Token="+URLParams.RowID;
+			alert("(DEBUG)CreateUserSearchStringByID() - User Search String="+URLstring);
 			return URLstring;
 			
 		};
@@ -492,6 +637,7 @@ var fetch = angular.module('fetch', []);
 			
 			if (CheckUserInputData()==true){
 				//alert("(DEBUG)CreatePatient()-Input data is right");
+                                //CreateUserInsertString();//for debug
 				CalldBEngine(CreateUserInsertString(),"data");
 			}else{
 				//alert("ERROR - datos invalidos");				
@@ -517,7 +663,9 @@ var fetch = angular.module('fetch', []);
 			
 			//alert("(DEBUG) EditPatient() - starting");
 			ReadUserFields();			
-			CalldBEngine(CreateUserEditString(),"data");			
+			//CalldBEngine(CreateUserEditString(),"data");
+                        CalldBEngine(CreateUserEditString("personal"),"data");
+                        CalldBEngine(CreateUserEditString("role"),"data");
 		}
 		//eof
 		
@@ -531,7 +679,16 @@ var fetch = angular.module('fetch', []);
 			//alert("(DEBUG)DeletePatient() - executed");
 		}
 		//eof
-		
+                
+                //function to add new company/role to existent user
+                $scope.InsertRole = function(){
+                    
+                    ReadUserFields();
+                    CalldBEngine(CreateAddPermissionString(),"RoleData");
+                    
+                }
+		//eof
+                
 		//function to generate user password
 		
 		$scope.GeneratePassword= function(){
