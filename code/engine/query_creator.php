@@ -300,6 +300,8 @@ function ReadPatientHistoryParams2 ($array_input) {
 //function to add more usergroup roles to an user
 function AddUserPermission($array_input, $tablename){
     
+    //echo "<br>AddUserPermission()";
+    
     global $DBtables;
     $justID_array=array(
         
@@ -333,7 +335,7 @@ function AddUserPermission($array_input, $tablename){
     if(empty($result_check[0])==false){
     
         //return FALSE and exit function
-        echo "<br>Record already exists! nothing to do here";
+        //echo "<br>Record already exists! nothing to do here";
         
     }else{
         
@@ -366,20 +368,6 @@ function AddUserPermission($array_input, $tablename){
         
     }
     //ofi
-    
-    
-    /*
-    if ($result_check[0]['EXIST'] == 'FALSE') {
-        InsertGenericParams($array_input, $tablename);
-        $result_validation = getCheckparams($array_input, $tablename, 'VALIDATE', TRUE);
-        
-        echo "<br>Inserting register";
-    } else {
-        print json_encode($result_check);
-        echo "<br>Inserting denied";
-    }
-     
-    */
 }
 //eof
 
@@ -389,6 +377,9 @@ function InsertCompanyParams($array_input) {
     $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
     ConexionDB_JSON($query);  
 }
+
+
+
 function InsertUsersParams($array_input) { 
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['users'] . "(" . set_key_list(untoken_array($array_input)) . ")";
@@ -416,12 +407,25 @@ function UpdateCompanyParams($array_input) {
     print $query;
     ConexionDB_JSON($query);
 }
-function UpdateUsersParams($array_input) { 
+
+//Ramiro: updated to handle multiple users with same id, using rowid to differentiate
+//parameter $mode_userid_only= true(updates just by userid, false (requires userid and rowid)
+function UpdateUsersParams($array_input,$mode_userid_only) { 
     global $DBtables;
-    $wherecondition = get_array_element_by_key($array_input, 'UserID_Token');
+    
+    //echo "<br>UpdateUsersParams";
+    //echo "<br>array_input".print_r($array_input);
+
+    if($mode_userid_only==false)$wherecondition = array('UserID'=>$array_input['UserID_Token'],'RowID'=>$array_input['RowID_Token']);
+    else $wherecondition = array('UserID'=>$array_input['UserID_Token']);
+
     unset($array_input['UserID_Token']);
+    unset($array_input['RowID_Token']);
     $query = "UPDATE " . $DBtables['users'] . " SET " . set_key_value(untoken_array($array_input));
-    $query .= " WHERE "  . where_equal_value(untoken_array($wherecondition)) ;
+    $query .= " WHERE "  . where_equal_value(untoken_array($wherecondition)) ;//old
+        
+
+    //echo "<br>query=".$query;
     ConexionDB_JSON($query);
 }
 function LoginUserParams() {      }
