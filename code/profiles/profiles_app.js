@@ -34,6 +34,10 @@ var fetch = angular.module('fetch', []);
 		PatientData['PatientAddress_FieldValue']="NONE";
                 PatientData['Income_FieldValue']="NONE";
 		
+                //to read value from HTML <Department> create field
+                var DepartmentData = {};
+                DepartmentData['DepartmentID']="NONE";
+                
 		//to read values from HTML <Company> search fields
 		var CompanyData = {};		
 		CompanyData['CompanyID2_FieldValue']="NONE";//
@@ -89,6 +93,14 @@ var fetch = angular.module('fetch', []);
 		};
 		//end of resetting
 		
+                //Resetting department value read from HTML input(s)
+                function ResetDepartmentData(){
+                   
+                    DepartmentData['DepartmentID']="NONE";
+                    
+                }
+                //eof
+                
 		//Resetting company values read from input text fields
 		function ResetCompanyFieldValues(){
 			
@@ -334,7 +346,22 @@ var fetch = angular.module('fetch', []);
 			
 		}	
 		//eof
-		
+
+                //function to read HTML input fields related to department creation
+                function ReadDepartmentFields(){
+                    
+                    if (typeof $scope.Department_Input_Model !== 'undefined' && $scope.Department_Input_Model !== null && $scope.Department_Input_Model !== "") {
+                        DepartmentData.DepartmentID = $scope.Department_Input_Model; 
+                    }else{
+                        DepartmentData.DepartmentID = "NONE";
+                    }                    
+
+                    //alert("(DEBUG)ReadDepartmentFields() executed. \nDepartment="+DepartmentData.DepartmentID);    
+
+                }
+                //eof
+                
+                
 		//function to return patient search string, based on patient inout fields
 		function CreatePatientSearchString(){
 			
@@ -439,9 +466,14 @@ var fetch = angular.module('fetch', []);
 			URL += "&Address_Token="+PatientData.PatientAddress_FieldValue;
 			URL += "&CompanyID_Token="+PatientData.CompanyID_FieldValue;
 			URL += "&Site_Token="+PatientData.Site_FieldValue;
-                        URL += "&Income_Token="+PatientData.Income_FieldValue;
+
+			if(PatientData.Income_FieldValue !=="NONE"){
+				URL += "&Income_Token="+PatientData.Income_FieldValue;
+			}
+                        
+                        
 					
-			//alert("(DEBUG)CreatePatientInsertString()-ending.URL="+URL);
+			alert("(DEBUG)CreatePatientInsertString()-ending.URL="+URL);
 			return URL;
 			
 		}
@@ -533,6 +565,78 @@ var fetch = angular.module('fetch', []);
 			
 		}
 		//eof
+
+                //function to generate string that updates user <personal data>, ecluding company, role and so on
+                //mode=personal, company_role-status
+		function CreatePatientEditString2(mode){
+			
+			var URL = "../engine/dBInterface.php?ActionDBToken=UpdatePatient";
+			URL+="&PatientID_Token="+URLParams.ID;
+
+			if(PatientData.Forename_FieldValue !=="NONE"){
+				URL+="&Forename_Token="+PatientData.Forename_FieldValue;
+			}
+                        
+			if(PatientData.MiddleName_FieldValue !=="NONE"){
+				URL+="&MiddleName_Token="+PatientData.MiddleName_FieldValue;
+			}
+                        
+			if(PatientData.FirstSurname_FieldValue !=="NONE"){
+				URL+="&FirstSurname_Token="+PatientData.FirstSurname_FieldValue;
+			}
+
+			if(PatientData.SecondSurname_FieldValue !=="NONE"){
+				URL+="&SecondSurname_Token="+PatientData.SecondSurname_FieldValue;
+			}
+
+			if(PatientData.PatientPhone_FieldValue !=="NONE"){
+				URL+="&Phone_Token="+PatientData.PatientPhone_FieldValue;
+			}
+
+			if(PatientData.PatientEmail_FieldValue !=="NONE"){
+				URL+="&Email_Token="+PatientData.PatientEmail_FieldValue;
+			}
+
+			if(PatientData.CompanyID_FieldValue !=="NONE"){
+				URL+="&CompanyID_Token="+PatientData.CompanyID_FieldValue;
+			}
+
+			
+			if(PatientData.Site_FieldValue !=="NONE"){
+				URL+="&Site_Token="+PatientData.Site_FieldValue;
+			}			
+
+			if(PatientData.Department_FieldValue !=="NONE"){
+				URL+="&Department_Token="+PatientData.Department_FieldValue;
+			}
+
+			if(PatientData.BirthDate_FieldValue !=="NONE"){
+				URL+="&BirthDate_Token="+PatientData.BirthDate_FieldValue;
+			}
+                        
+			if(PatientData.JoinDate_FieldValue !=="NONE"){
+				URL+="&BirthDate_Token="+PatientData.JoinDate_FieldValue;
+			}
+                        
+			if(PatientData.Gender_FieldValue !=="NONE"){
+				URL+="&Gender_Token="+PatientData.Gender_FieldValue;
+			}
+			
+			if(PatientData.PatientAddress_FieldValue !=="NONE"){
+				URL+="&Address_Token="+PatientData.PatientAddress_FieldValue;
+			}
+
+                        if(PatientData.Income_FieldValue !=="NONE"){
+				URL+="&Income_Token="+PatientData.Income_FieldValue;
+			}
+			//alert("(DEBUG)CreatePatientEditString()-ending.URL="+URL);
+			return URL;
+			
+		}
+		//eof                
+                
+
+
 
 		//returns the URL string to search company profile 
 		function CreateCompanySearchString(){
@@ -767,7 +871,31 @@ var fetch = angular.module('fetch', []);
 			return URLstring;
 			
 		};
-		//end of function	
+		//end of function
+
+                
+                //function de create string to create a new department 
+                function CreateDepartmentListString(){
+                    
+                    var URL = "../engine/dBInterface.php?ActionDBToken=ListDepartment";
+                    //alert("(DEBUG)CreateDepatmentInsertString() executed. Returning URL="+URL);
+                    return URL;
+                    
+                }
+                //eof                
+
+                //function de create string to create a new department 
+                function CreateDepartmentInsertString(){
+                    
+                    var URL = "../engine/dBInterface.php?ActionDBToken=InsertDepartment";
+                    URL += "&DepartmentID_Token="+DepartmentData['DepartmentID'];
+                    //alert("(DEBUG)CreateDepatmentInsertString() executed. Returning URL="+URL);
+                    return URL;
+                    
+                }
+                //eof
+                
+                
 		
 		//function to search patient by ID, Surname, Forename, Company, etc
 		//intended to be called from HTML
@@ -846,7 +974,14 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 
-
+                //function to insert department
+                $scope.CreateDepartment = function(){
+                    
+                    ReadDepartmentFields();
+                    CalldBEngine(CreateDepartmentInsertString(),"CreateDepartment_data");
+                    
+                }
+                //eof
 		
 		//function to delete patient. Intended to be called from HTML page
 		//no return
@@ -923,6 +1058,8 @@ var fetch = angular.module('fetch', []);
 				$scope.CompanyList = data; //companyID list from mySQL
 			}else if(OutputType=="data"){
 				$scope.data=data;
+			}else if(OutputType=="DepartmentList"){
+				$scope.DepartmentList=data;
 			}
 			
 			})
@@ -1007,6 +1144,7 @@ var fetch = angular.module('fetch', []);
 			
 			//alert("(DEBUG)Main()-starting with Type="+Type);
 			CalldBEngine("../engine/dBInterface.php?ActionDBToken=ListCompany","CompanyList");
+                        CalldBEngine(CreateDepartmentListString(),"DepartmentList");
                         
 			//check parameters
 			if(CheckURLParameters()==true){
