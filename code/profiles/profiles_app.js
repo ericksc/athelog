@@ -37,6 +37,7 @@ var fetch = angular.module('fetch', []);
                 //to read value from HTML <Department> create field
                 var DepartmentData = {};
                 DepartmentData['DepartmentID']="NONE";
+                DepartmentData['DepartmentIDtoDelete']="NONE";
                 
 		//to read values from HTML <Company> search fields
 		var CompanyData = {};		
@@ -97,7 +98,7 @@ var fetch = angular.module('fetch', []);
                 function ResetDepartmentData(){
                    
                     DepartmentData['DepartmentID']="NONE";
-                    
+                    DepartmentData['DepartmentIDtoDelete']="NONE";
                 }
                 //eof
                 
@@ -356,7 +357,13 @@ var fetch = angular.module('fetch', []);
                         DepartmentData.DepartmentID = "NONE";
                     }                    
 
-                    //alert("(DEBUG)ReadDepartmentFields() executed. \nDepartment="+DepartmentData.DepartmentID);    
+                    if (typeof $scope.DepartmentSelectForDelete_Input_Model !== 'undefined' && $scope.DepartmentSelectForDelete_Input_Model !== null && $scope.DepartmentSelectForDelete_Input_Model !== "") {
+                        DepartmentData.DepartmentIDtoDelete = $scope.DepartmentSelectForDelete_Input_Model.DepartmentID; 
+                    }else{
+                        DepartmentData.DepartmentIDtoDelete = "NONE";
+                    }       
+
+                    //alert("(DEBUG)ReadDepartmentFields() executed. \nDepartmentID(insert)="+DepartmentData.DepartmentID+"\nDepartmentID(to delete)="+DepartmentData.DepartmentIDToDelete);    
 
                 }
                 //eof
@@ -895,7 +902,15 @@ var fetch = angular.module('fetch', []);
                 }
                 //eof
                 
-                
+                function CreateDepartmentDeleteString(){
+                    
+                    var URL = "../engine/dBInterface.php?ActionDBToken=DeleteDepartment";
+                    URL += "&DepartmentID_Token="+DepartmentData.DepartmentIDtoDelete;
+                    alert("(DEBUG)CreateDepartmentDeleteString() executed. Returning URL="+URL);
+                    return URL;
+                    
+                }
+                //eof                
 		
 		//function to search patient by ID, Surname, Forename, Company, etc
 		//intended to be called from HTML
@@ -983,6 +998,16 @@ var fetch = angular.module('fetch', []);
                 }
                 //eof
 		
+                //function to delete selected department
+                
+                $scope.DeleteDepartment = function(){
+                    
+                    ReadDepartmentFields();
+                    CalldBEngine(CreateDepartmentDeleteString(),"DeleteDepartment_data");
+                    
+                }                
+                
+                
 		//function to delete patient. Intended to be called from HTML page
 		//no return
 		$scope.DeletePatient = function(){
@@ -1060,7 +1085,12 @@ var fetch = angular.module('fetch', []);
 				$scope.data=data;
 			}else if(OutputType=="DepartmentList"){
 				$scope.DepartmentList=data;
+			}else if(OutputType=="DeleteDepartment_data"){
+				$scope.DeleteDepartment_data=data;
 			}
+                        
+                        
+                        
 			
 			})
                 }        
