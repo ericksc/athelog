@@ -11,7 +11,8 @@ $DBtables = array(
     'patients' => 'Patients',
     'evaluationconts' => 'EvaluationConst',
     'evaluationhistory' => 'EvaluationHistory',
-    'users' => 'Users'
+    'users' => 'Users',
+    'companydepartments' => 'CompanyDepartments'
 );
 
 ?>
