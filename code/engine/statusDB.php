@@ -23,44 +23,13 @@ function DBversionParams() {
 		
 global $query;
 $query = DBversion;
-ConexionDB_JSON($query);
-$value = ConexionDBResult_NumRowAfected($query);
-print "\nReturn value:";
-print $value;
-print "\n";
-
-ConexionDBResult_PrintArray($query);
-
-
-print_r(ConexionDB_rawdata($query));
-
-$temp = getGETarray();
-
-print_r($temp);
-
-
+ConexionDB_JSON($query,  $resulttype = MYSQLI_ASSOC);
+$value = ConexionDBResult_NumRowAfected($query,  $resulttype = MYSQLI_ASSOC);
 }
 
-/*
-printGETarray();
-print "hola\n";
-parsingGETarray();
-*/
-/*
-$temp = getGETarray();
-print_r($temp);
 
-$string1 = getQuerystatement("PatientID_Token");
-print $string1;
-*/
-
-
-
-$array_parameters = getquerycomponents_array(getGETarray());
-$action = getquery_action(getGETarray());
-callActionFunctions($action, $array_parameters);
-//$queryfunctions['ReadCompanyquery'];
-
-//ReadGenericParameters();
+ReadGenericParameters();
+ 
+ 
 ?>
 

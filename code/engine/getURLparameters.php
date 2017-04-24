@@ -47,6 +47,7 @@ $queryfunctions = array(
   'dummytest' => function($array_parameters) { InsertUsersParams2($array_parameters, 'users');},
   'InsertHistoryTest' => function($array_parameters) { InsertEvaluationHistoryParams($array_parameters);},
   'ReadPatientHistoryVars' => function($array_parameters) { ReadPatientHistoryParams($array_parameters);},
+  'ReadPatientEvaluationVars' => function($array_parameters) { ReadPatientEvaluationParams($array_parameters);},
   'ReadPatientHistoryVars2' => function($array_parameters) { ReadPatientHistoryParams2($array_parameters);},
   'ReadPatientVars' => function($array_parameters) { ReadPatientBlockParams($array_parameters);}, 
   'ReadAllPatientHistorybyCompanyIDVars' => function($array_parameters) { ReadAllPatientHistorybyCompanyID($array_parameters);},  

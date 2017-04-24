@@ -293,9 +293,15 @@ function ReadPatientHistoryParams2 ($array_input) {
     ///evaluationhistory
     $query = "SELECT * FROM " . $DBtables['evaluationhistory'] . " WHERE ";
     $query .= where_like_value(untoken_array($array_input));
-    ConexionDB_JSON($query);    
+    ConexionDB_JSON($query, $resulttype = MYSQLI_ASSOC);    
 }
-
+function ReadPatientEvaluationParams ($array_input) { 
+    global $DBtables;
+    ///evaluationhistory
+    $query = "SELECT `PatientID` , `Test`, `Value`, CONVERT  (`ModDate` , DATE) as ModDate FROM " . $DBtables['evaluationhistory'] . " WHERE ";
+    $query .= where_like_value(untoken_array($array_input));
+    ConexionDB_JSON($query, $resulttype = MYSQLI_ASSOC);    
+}
 
 //function to add more usergroup roles to an user
 function AddUserPermission($array_input, $tablename){

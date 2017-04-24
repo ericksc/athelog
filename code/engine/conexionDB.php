@@ -13,21 +13,21 @@ function ConexionDB($query){
     return $result;
 }
 
-function ConexionDB_JSON($query){
+function ConexionDB_JSON($query, $resulttype = MYSQLI_BOTH){
     $result = ConexionDB($query);
     $data = array();
     if (is_bool($result) == FALSE){
-	while ($row = mysqli_fetch_array($result)) {
+	while ($row = mysqli_fetch_array($result, $resulttype)) {
 	  $data[] = $row;
 	}
         print json_encode($data);
         }
 }
 
-function ConexionDB_rawdata($query){
+function ConexionDB_rawdata($query, $resulttype = MYSQLI_BOTH){
     $result = ConexionDB($query);
     $data = array();
-	while ($row = mysqli_fetch_array($result)) {
+	while ($row = mysqli_fetch_array($result, $resulttype)) {
 	  $data[] = $row;
 	}
     return $data;
@@ -39,10 +39,10 @@ function ConexionDBResult_NumRowAfected($query){
     return $row_cnt;
 }
 
-function ConexionDBResult_PrintArray($query){
+function ConexionDBResult_PrintArray($query, $resulttype = MYSQLI_BOTH){
     $result = ConexionDB($query);
     $data = array();
-    while ($row = mysqli_fetch_array($result)) {
+    while ($row = mysqli_fetch_array($result, $resulttype)) {
       $data[] = $row;
     }
     print_r($data);
