@@ -28,11 +28,7 @@
 
     google.load("visualization", "1", {packages:["corechart", "charteditor"]});
     $(function(){
-        var derivers = $.pivotUtilities.derivers;
-		var tpl = $.pivotUtilities.aggregatorTemplates;
-		        var sum = $.pivotUtilities.aggregatorTemplates.sum;
-        var numberFormat = $.pivotUtilities.numberFormat;
-        var intFormat = numberFormat({digitsAfterDecimal: 0});
+	var tpl = $.pivotUtilities.aggregatorTemplates;
         var renderers = $.extend($.pivotUtilities.renderers,
             $.pivotUtilities.gchart_renderers);
 
