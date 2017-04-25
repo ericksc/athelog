@@ -21,28 +21,15 @@
 
         <!-- for examples only! script to show code to user -->
         <!--<script type="text/javascript" src="show_code.js"></script>-->
+        <script type="text/javascript" src="PivotChart_patient_individual_test.js"></script>
+      
     </head>
     <body>
         <script type="text/javascript">
     // This example adds Google Chart renderers.
 
     google.load("visualization", "1", {packages:["corechart", "charteditor"]});
-    $(function(){
-	var tpl = $.pivotUtilities.aggregatorTemplates;
-        var renderers = $.extend($.pivotUtilities.renderers,
-            $.pivotUtilities.gchart_renderers);
 
-        $.getJSON("mps.json", function(mps) {
-            $("#output").pivotUI(mps, {
-                renderers: renderers,
-                cols: ["ModDate"], rows: ["Test"],
-                rendererName: "Line Chart",
-				aggregators: {
-                    "Valor de prueba": function() { return tpl.average()(["Value"])}
-                }
-            });
-        });
-     });
         </script>
 
        <!-- <p><a href="index.html">&laquo; back to PivotTable.js examples</a></p>-->
