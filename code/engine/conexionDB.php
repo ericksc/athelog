@@ -7,7 +7,7 @@
  */
 
 function ConexionDB($query){
-    // $connect = mysqli_connect("mysql.hostinger.es","u505969032_ramvq","joliewatt0123","u505969032_bicoy");
+    //$connect = mysqli_connect("mysql.hostinger.es","u505969032_ramvq","joliewatt0123","u505969032_bicoy");
     $connect = mysqli_connect("mysql.hostinger.es","u884088163_erix","L4rd_erix","u884088163_irixs");
     $result = mysqli_query($connect,$query);
     return $result;
