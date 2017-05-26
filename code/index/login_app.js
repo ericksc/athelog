@@ -232,7 +232,7 @@ var fetch = angular.module('fetch', []);
                         //setTimeout(function(){}, 500); 
                             //alert("value is"+$scope.LoginData);
                             
-                        if($scope.LoginData==1){
+                        if($scope.LoginData>=1){
                             //alert("value is 1");
                             //window.location.replace("../profiles/sp.php");
                             window.location.replace("../index/index.php");

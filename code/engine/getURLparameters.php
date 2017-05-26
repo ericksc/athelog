@@ -15,6 +15,7 @@ $update_table = "";
 $array_parameters = array();
 
 $queryfunctions = array(
+    
   'CheckLoginCredentials' => function($array_parameters) { CheckLoginParams($array_parameters);},  
   'Logout' => function($array_parameters) { LogoutParams();},  
   'SelectCompany' => function($array_parameters) { ReadCompanyParams($array_parameters);},
@@ -29,6 +30,8 @@ $queryfunctions = array(
   'ListFFDUser' => function($array_parameters) { ListFlaggedForDeleteUser();},
   'FFDUser' => function($array_parameters) { FlagForDeleteUser($array_parameters);},
   'UFFDUser' => function($array_parameters) { UnflagForDeleteUser($array_parameters);},
+  'FFDUserList' => function($array_parameters) { FlagForDeleteUserList($array_parameters);},
+  'UFFDUserList' => function($array_parameters) { UnFlagForDeleteUserList($array_parameters);},
   'InsertCompany' => function($array_parameters) { InsertCompanyParams($array_parameters);},
   'ListDepartment' => function($array_parameters) { ReadDepartmentListParams();},
   'InsertDepartment' => function($array_parameters) { InsertDepartmentParams($array_parameters);},

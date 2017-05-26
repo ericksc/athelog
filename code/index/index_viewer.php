@@ -1,4 +1,17 @@
+<?php
+//include('../engine/session.php');
+echo "<br>Executing index_viewer.php";
+//session_start();
 
+
+
+
+//$MaxUserGroup=GetMaxUG(ReadUserGroup($_SESSION['UserID']));
+//echo "<br>Session ID=".$_SESSION['UserID'];
+//echo "<br>UserGroup array=";print_r (ReadUserGroup($_SESSION['UserID']));
+//echo "<br>Max usergroup=".$MaxUserGroup;
+
+?> 
 	<html ng-app="fetch">
 	<!--<head> -->
 
@@ -125,8 +138,10 @@
 
 
 
+<?php
 
-	<!-- <body ng-controller="dbCtrl"> -->
+echo
+'	<!-- <body ng-controller="dbCtrl"> -->
 	<body >
 
               
@@ -185,7 +200,6 @@
                                   <ul class="nav nav-tabs">
                                         <li class="active"><a data-toggle="tab" href="#main">Menu</a></li>
                                         <li><a data-toggle="tab" href="#user">Usuario</a></li>
-                                        <li><a data-toggle="tab" href="#patient">Expediente</a></li>
                                   </ul>
 
 
@@ -197,45 +211,77 @@
 
                                             <h3>Acciones</h3>
 
+                                            <form>';
+
+                                            
+                                            echo '
                                             <form>
 
-                                                <table border="0px">
+                                                <table border="1px" >
+                                                        <tr>
+                                                                        <th align="center"><img border="0" alt="Usuarios" src="../common/images/users_2.png" width="100" height="100"><br>Usuarios</th>
+                                                                        <td align="center">
+                                                                            <br><a href="../cpanel/su.php">Buscar</a>
+                                                                            <br><a href="../cpanel/cu.php">Crear</a>
+                                                                            <br><a href="../cpanel/ffdu.php?Action=ListFFDUser&ID=-10">Marcados para borrar</a>
+                                                                        </td>
+                                                        </tr>';
+                                                        
+                                                        echo '<tr>
+                                                                        <th><img border="0" alt="Pacientes" src="../common/images/patient_2.png" width="100" height="100"><br>Pacientes</th>
+                                                                        <td align="center">';
+                                                        
+                                                        //printing links to patient search for every company
+                                                        foreach($MyCompanies as $key=>$val){
+                                                            //echo "<br>$key,$val";
+                                                            echo "<br><a href=../profiles/spc.php?ID=".$val.">Buscar en $val</a>";
+                                                        }                                                                                    
 
-                                                        <tr>
-                                                                        <th>Usuarios</th>
-                                                                        <td>
-                                                                            <a href="../cpanel/su.php">Buscar</a>
-                                                                            <a href="../cpanel/cu.php">Crear</a>
-                                                                            <a href="../cpanel/ffdu.php?Action=ListFFDUser&ID=-10">Marcados para borrar</a>
-                                                                        </td>
-                                                        </tr>
-                                                        <tr>
-                                                                        <th>Pacientes</th>
-                                                                        <td>
-                                                                            <a href="../profiles/sp.php">Buscar</a>
-                                                                            <a href="../profiles/cp.php">Crear</a>
-                                                                            
-                                                                        </td>
-                                                        </tr>
-                                                        <tr>
-                                                                        <th>Empresas</th>
-                                                                        <td>
-                                                                            <a href="../profiles/sp.php">Buscar</a>
-                                                                            <a href="../profiles/cp.php">Crear</a>
-                                                                            <a href="../profiles/ed.php">Departamentos</a>
-                                                                            <a href="../profiles/ffd.php">Marcados para borrar</a>
-                                                                        </td>
-                                                        </tr>
                                                         
+                                                        echo '                        
+                                                                        </td>
+                                                        </tr>';
                                                         
+
+                                                        echo '    
+                                                        <tr>
+                                                                        <th><img border="0" alt="Empresas" src="../common/images/cityscape_2.png" width="100" height="100"><br>Empresas</th>
+                                                                        <td align="center">
+                                                                            <br><a href="../profiles/sp.php">Buscar</a>
+                                                                            <br><a href="../profiles/cp.php">Crear</a>
+                                                                            <br><a href="../profiles/ed.php">Departamentos</a>
+                                                                            <br><a href="../profiles/ffd.php">Marcados para borrar</a>
+                                                                        </td>
+                                                        </tr>';
+                                                        
+                                            
+                                                        echo '<tr>';
+                                            
+                                                        echo '                <th><img border="0" alt="Mis empresas" src="../common/images/cityscape_2.png" width="100" height="100"><br>Mis empresas</th>';
+                                                        echo '                <td align="center">';
+                                                        
+                                                        foreach($MyCompanies as $key=>$val){
+                                                            //echo "<br>$key,$val";
+                                                            echo "<br><a href=../profiles/wpc.php?Action=WatchCompany&ID=".$val.">$val</a>";
+                                                        }                    
+
+                                                        echo '                </td>';
+                                                        echo '</tr> '; 
+                                                                
+                                                                
+                                                                
+                                        echo '                
                                                 </table>
                                                 
                                                 
                                             </form>                                          
                                                 
-                                        </div><!-- End of Login tab -->			
+                                        </div><!-- End of Login tab -->	';		
 
-
+                                                        
+                                                        
+                                        echo '                
+                                                        
                                         <div id="user" class="tab-pane fade">
                                           <h3>Mi perfil de usuario</h3>
 
@@ -251,43 +297,36 @@
                                                         <tr>
                                                                 <th>Cedula</th>
                                                                 <td ng-repeat="patients in data">{{patients.PatientID}}</td>
-                                                                <td><input name="PatientID_Field" type="number"  runat="server" ng-init="inputVal=''" ng-model="PatientID_Input_Model" required readonly></td>	
                                                                 <!--<td>validation={{PatientForm.PatientID_Field.$valid}}</td>-->
                                                         </tr>
                                                         <tr>
                                                                 <th>Nombre</th>
                                                                 <td ng-repeat="patients in data">{{patients.Forename}}</td>
-                                                                <td><input name="Forename_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="Forename_Input_Model" required></td>
                                                                 <!--<td>validation={{PatientForm.Forename_Field.$valid}}</td>-->
                                                         </tr>
                                                         <tr>
                                                                 <th>Primer Apellido</th>
                                                                 <td ng-repeat="patients in data">{{patients.FirstSurname}}</td>
-                                                                <td><input name="FirstSurname_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="FirstSurname_Input_Model" required></td>
                                                                 <!--<td>validation={{PatientForm.FirstSurname_Field.$valid}}</td>-->
                                                         </tr>
                                                         <tr>
                                                                 <th>Segundo Apellido</th>
                                                                 <td ng-repeat="patients in data">{{patients.SecondSurname}}</td>
-                                                                <td><input name="SecondSurname_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="SecondSurname_Input_Model" required></td>
                                                                 <!--<td>validation={{PatientForm.SecondSurname_Field.$valid}}</td>-->
                                                         </tr>
                                                         <tr>
                                                                 <th>Email</th>
                                                                 <td ng-repeat="patients in data">{{patients.Email}}</td>
-                                                                <td><input name="PatientEmail_Field" type="email"  runat="server" ng-init="inputVal=''" ng-model="PatientEmail_Input_Model" required></td>
                                                                 <!--<td>validation={{PatientForm.PatientEmail_Field.$valid}}</td>-->
                                                         </tr>
                                                         <tr>
                                                                 <th>Telefono</th>
                                                                 <td ng-repeat="patients in data">{{patients.Phone}}</td>
-                                                                <td><input name="PatientPhone_Field" type="number"  runat="server" ng-init="inputVal=''" ng-model="PatientPhone_Input_Model" required></td>
                                                                 <!--<td>validation={{PatientForm.PatientPhone_Field.$valid}}</td>-->
                                                         </tr>
                                                         <tr>
                                                                 <th>Fecha Nacimiento(dd-mm-aaaa)</th>
                                                                 <td ng-repeat="patients in data">{{patients.BirthDate}}</td>
-                                                                <td><input name="BirthDate_Field" type="date"  runat="server" ng-init="inputVal=''" ng-model="BirthDate_Input_Model" required></td>
                                                                 <!--<td>validation={{PatientForm.BirthDate_Field.$valid}}</td>-->
                                                         </tr>
                                                         <tr>
@@ -310,7 +349,6 @@
                                                         <tr>
                                                                 <th>Direccion</th>
                                                                 <td ng-repeat="patients in data">{{patients.Address}}</td>
-                                                                <td><input name="PatientAddress_Field" type="text"  runat="server" ng-init="inputVal=''" ng-model="PatientAddress_Input_Model" required></td>
                                                                 <!--<td>validation={{PatientForm.PatientAddress_Field.$valid}}</td>-->
                                                         </tr>
                                                         <tr>
@@ -385,7 +423,8 @@
 
 
             
-            </body>
-
+            </body>';
+?>
+        
 	</html>
 

@@ -9,7 +9,7 @@ var fetch = angular.module('fetch', []);
 		
 		//------------2. PROGRAM VARS (DON'T TOUCH) -------
 		
-		//alert("(DEBUG)Welcome to users screen v1.52");
+		alert("(DEBUG)Welcome to users screen v1.58");
 		
 		//scope vars
 				
@@ -251,7 +251,56 @@ var fetch = angular.module('fetch', []);
 			
 		}
 		//eof
+
+		//function to return user search string, based on patient inout fields
+                //within same company
+		function CreateUserWithinSameCompanySearchString(){
+			
+			var URL = "../engine/dBInterface.php?ActionDBToken=SelectUser";
 		
+			if(UserData.UserID_FieldValue !=="NONE"){
+				URL+="&UserID_Token="+UserData.UserID_FieldValue;
+			}
+
+			if(UserData.Forename_FieldValue !=="NONE"){
+				URL+="&Forename_Token="+UserData.Forename_FieldValue;
+			}
+
+			if(UserData.MiddleName_FieldValue !=="NONE"){
+				URL+="&MiddleName_Token="+UserData.Forename_FieldValue;
+			}			
+			
+			if(UserData.FirstSurname_FieldValue !=="NONE"){
+				URL+="&FirstSurname_Token="+UserData.FirstSurname_FieldValue;
+			}
+
+			if(UserData.SecondSurname_FieldValue !=="NONE"){
+				URL+="&SecondSurname_Token="+UserData.SecondSurname_FieldValue;
+			}
+
+			if(UserData.Phone_FieldValue !=="NONE"){
+				URL+="&Phone_Token="+UserData.Phone_FieldValue;
+			}
+
+			if(UserData.Email_FieldValue !=="NONE"){
+				URL+="&Email_Token="+UserData.PatientEmail_FieldValue;
+			}
+                        URL+="&CompanyID_Token="+URLParams.ID;
+			
+			if(UserData.Status_FieldValue !=="NONE"){
+				URL+="&Status_Token="+UserData.Status_FieldValue;
+			}
+
+			if(UserData.UserGroup_FieldValue !=="NONE"){
+				URL+="&UserGroup_Token="+UserData.UserGroup_FieldValue;
+			}
+			
+			//alert("(DEBUG)CreateUserSearchString()-ending.URL="+URL);
+			return URL;
+			
+		}
+		//eof                
+                
 		//function to return string to delete patient, by patient ID (taken from URL)
 		function CreateUserDeleteStringByID(){
 			
@@ -463,7 +512,7 @@ var fetch = angular.module('fetch', []);
 			}                        
                         */
                         
-                        alert("(DEBUG)CreateAddPermissionString() return URL="+URL);
+                        //alert("(DEBUG)CreateAddPermissionString() return URL="+URL);
                         return URL;
                         
                         /*
@@ -595,11 +644,23 @@ var fetch = angular.module('fetch', []);
 			var URLstring = "../engine/dBInterface.php?ActionDBToken=SelectUser";
 			URLstring+="&UserID_Token="+URLParams.ID;
                         URLstring+="&RowID_Token="+URLParams.RowID;
-			alert("(DEBUG)CreateUserSearchStringByID() - User Search String="+URLstring);
+			//alert("(DEBUG)CreateUserSearchStringByID() - User Search String="+URLstring);
 			return URLstring;
 			
 		};
 		//end of function
+
+
+                //create string to list all flagged-for-delete users
+                function CreateFFDUSearchString(){
+
+                    var URL = "../engine/dBInterface.php?ActionDBToken=ListFFDUser";
+                    alert("(DEBUG)CreateFFDUSearchString() executed. Return="+URL);
+                    return URL;                   
+                    
+                }
+                //eof
+
 
 		//function to create user pass generation url
 		function CreateUserPWDString(){
@@ -610,7 +671,17 @@ var fetch = angular.module('fetch', []);
 			
 		}
 		//eof
-		
+
+                //function to create string for FFD user action
+                function CreateFFDUserString(){
+                    
+                    var URL="../engine/dBInterface.php?ActionDBToken=FFDUser";
+                    URL+="&UserID_Token="+URLParams.ID+"&RowID_Token="+URLParams.RowID;
+                    alert("(DEBUG)CreateFFDUserString() executed - Return URL="+URL);
+                    return URL;
+                }
+                //eof
+                
                 function Redirect($URL){
                     
                     window.location = $URL;
@@ -628,7 +699,21 @@ var fetch = angular.module('fetch', []);
 			//alert ("(DEBUG)-SearchPatient() - executed");			
 		}
 		//eof
-		
+
+		//function to search patient by ID, Surname, Forename, etc
+                //within same company
+		//intended to be called from HTML
+		$scope.SearchUserWithinSameCompany = function(){
+			
+			//alert ("(DEBUG)-SearchPatient() - starting");
+			ResetUserFieldValues();
+			ReadUserFields();		
+			CalldBEngine(CreateUserWithinSameCompanySearchString(),"data");
+			//alert ("(DEBUG)-SearchPatient() - executed");			
+		}
+		//eof
+
+                
 		//general function to introduce a new patient in dB	
 		$scope.CreateUser = function() {			
 			
@@ -668,7 +753,8 @@ var fetch = angular.module('fetch', []);
                         CalldBEngine(CreateUserEditString("role"),"data");
 		}
 		//eof
-		
+
+               
 		//FIXME: convert to user
 		//function to delete patient. Intended to be called from HTML page
 		//no return
@@ -695,9 +781,126 @@ var fetch = angular.module('fetch', []);
 			
 			//FIXME: add content
 			
-		}
-		
+		}//eof
+
+                //function to flag user for delete
+                $scope.FFDUser= function(){
+                    
+                    CalldBEngine(CreateFFDUserString(),"FDD_Data");
+                    
+                }               
 		//eof
+
+                //function to send string with users that will be flagged for delete
+                $scope.FlagForDeletionUsers = function(){
+                    
+                    alert("(DEBUG) FlagForDeleteUsers ");
+                    $scope.UserIDArray2 = [];
+                    var UserSelector="";
+
+
+                    //$scope.UserIDArray.push("("); 
+                    angular.forEach($scope.data, function(users){
+                            
+                        UserSelector+=users.RowID+"."+users.UserID;  
+                        if (!!users.ffdu){
+                            $scope.UserIDArray2.push(UserSelector);
+                            
+                        }
+                        UserSelector="";
+                    })                    
+                    //$scope.UserIDArray.push(")");
+                    
+                     
+                    var URL = "../engine/dBInterface.php?ActionDBToken=FFDUserList";
+                    URL+="&IDs="+$scope.UserIDArray2.toString();
+                    
+                    CalldBEngine(URL,"any_data");
+                    sleep(1000);
+                    $scope.SearchUserWithinSameCompany();
+                    //alert("(DEBUG)FlagForDeleteUsers() executed. user IDs array="+$scope.UserIDArray2);
+                    alert("(DEBUG)FlagForDeleteUsers() executed. URL="+URL);    
+                    
+                }
+                //eof
+                
+                //function to send string with users that will be flagged for delete
+                $scope.UnFlagForDeletionUsers = function(){
+                    
+                    alert("(DEBUG) UnFlagForDeleteUsers ");
+                    $scope.UserIDArray3 = [];
+                    var UserSelector="";
+
+
+                    //$scope.UserIDArray.push("("); 
+                    angular.forEach($scope.data, function(users){
+                            
+                        UserSelector=users.RowID+"."+users.UserID;  
+                        if (!!users.ffdu){
+                            $scope.UserIDArray3.push(UserSelector);
+                            
+                        }
+                        UserSelector="";
+                        
+                    })                    
+                    //$scope.UserIDArray.push(")");
+                    
+                     
+                    var URL = "../engine/dBInterface.php?ActionDBToken=UFFDUserList";
+                    URL+="&IDs="+$scope.UserIDArray3.toString();
+                    
+                    CalldBEngine(URL,"any_data");
+                    
+                    sleep(1000);
+                    $scope.SearchUserWithinSameCompany();
+                    //alert("(DEBUG)FlagForDeleteUsers() executed. user IDs array="+$scope.UserIDArray3);
+                    alert("(DEBUG)FlagForDeleteUsers() executed. URL="+URL);    
+                    
+                }
+                //eof
+                
+                //function to create a delay
+                function sleep(milliseconds) {
+                    var start = new Date().getTime();
+                    for (var i = 0; i < 1e7; i++) {
+                      if ((new Date().getTime() - start) > milliseconds){
+                        break;
+                      }
+                    }
+                  }
+                //eof    
+
+                //function to send string with confirmation of Users that will be deleted
+                $scope.ConfirmFFDUser = function(){
+                    
+                    //alert("(DEBUG) ConfirmFFDUser() ");
+                    $scope.UserIDArray = [];
+                    var UserSelector="";
+
+
+                    //$scope.UserIDArray.push("("); 
+                    angular.forEach($scope.FFDU_data, function(users){
+                            
+                        UserSelector="("+users.RowID+","+users.UserID+")";  
+                        if (!!users.selected){
+                            $scope.UserIDArray.push(UserSelector);
+                            UserSelector+=",";
+                        }
+                        
+                    })                    
+                    //$scope.UserIDArray.push(")");
+                    
+                     
+                    var URL = "../engine/dBInterface.php?ActionDBToken=DeleteUser";
+                    URL+="&UserIDArray_Token="+$scope.UserIDArray.toString();
+                    
+                    CalldBEngine(URL,"DeletedUser_data");
+                    
+                    //alert("(DEBUG)ConfirmFFDUser() executed. userID array="+$scope.UserIDArray);
+                    alert("(DEBUG)ConfirmFFDUser() executed. URL="+URL);    
+                    
+                }
+                //eof
 
 		/*5. Function to read vars from URL string
 		intended to get "Action" and "ID" for patients and companies
@@ -724,7 +927,9 @@ var fetch = angular.module('fetch', []);
 				
 			if(OutputType=="CompanyList"){	
 				$scope.CompanyList = data; //companyID list from mySQL
-			}else if(OutputType=="data"){
+			}else if (OutputType=="FFDU_data"){
+                                $scope.FFDU_data = data;
+                        }else if(OutputType=="data"){
 				$scope.data=data;
 			}
 			
@@ -765,34 +970,30 @@ var fetch = angular.module('fetch', []);
 		
 		//debug function
 		$scope.dg = function(){
-			//alert("(DEBUG) Oh yeaaaahhh!(Patient)");
-			
-			//CallPHPServerFile2();
-			
-			//ReadPatientFields();
-			//CreatePatientInsertString();
-			//CreatePatientDeleteStringByID();
-			
-			
-			//CheckURLParameters();
-			//CallPHPServerFile(CreatePatientSearchStringByURL());
-			
-			//ReadPatientFields();
-			//CheckInputField(PatientData.Forename_FieldValue,"text");
-			//CheckPatientInputData();
-			/*
-			ResetVars();
-			ReadPatientFields();
-			CreatePatientInsertString();
-			CheckPatientInputFields();
-			*/
+                    
+                    
+
 		}
 		
 		//debug function for company
-		$scope.dg_company = function(){
-			//alert("(DEBUG) Starting Debug function(Company)");
-			ReadCompanyFields();
-			CreateCompanyEditString();
+		$scope.dg_user = function(){
+                    
+			alert("(DEBUG) Starting Debug function(user)");
+                        $scope.UserIDArray = [];
+                        var UserSelector="";
+
+
+                        angular.forEach($scope.FFDU_data, function(users){
+                            
+                          UserSelector="("+users.RowID+","+users.UserID+"),";  
+                            
+                          if (!!users.selected) $scope.UserIDArray.push(UserSelector);
+                        })                    
+                        
+                        alert("userid array="+$scope.UserIDArray);
+                        
+			//ReadCompanyFields();
+			//CreateCompanyEditString();
 			
 			//CheckURLParameters();
 			//CallPHPServerFile(CreateCompanySearchStringByURL());
@@ -804,6 +1005,11 @@ var fetch = angular.module('fetch', []);
 			*/
 			
 			//alert("(DEBUG)  Ending Debug function(Company)");
+                        
+                        //var id = "";
+                        //var id = $scope.SelectData.User.UserID;
+                        //alert("(DEBUG)-user id="+id);
+                       //alert("dg ending") 
 
 		}
 		
@@ -825,7 +1031,17 @@ var fetch = angular.module('fetch', []);
 					
 					CalldBEngine(CreateUserSearchStringByID(),"data");
 					return true;
+                                        
+				}else if(Type=='User' && URLParams.Action=="ListFFDUser"){
+					
+                                        //alert("Listing FFD users");
+					CalldBEngine(CreateFFDUSearchString(),"FFDU_data");
+					return true;
 				}
+                                
+                                
+                                
+                                
 				
 			}else{
 				//failed the URL args validation

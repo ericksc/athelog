@@ -293,26 +293,8 @@
 								<tr>
 									<th>Departamento</th>
 									<td ng-repeat="patients in data">{{patients.Department}}</td>
-									<td>
-										<select name="DepartmentSelect" class="form-control"  ng-model="DepartmentSelect_Input_Model" required>
-											<option></option>
-											<option>No indica</option>
-											
-										</select>
-									</td>	
+									<td><select ng-model="DepartmentSelect_Input_Model" ng-options="item as item.DepartmentID for item in DepartmentList"></td>	
 									<!--<td>validation={{PatientForm.DepartmentSelect.$valid}}</td>	-->								
-								</tr>
-								<tr>
-									<th>Sede</th>
-									<td ng-repeat="patients in data">{{patients.Site}}</td>
-									<td>
-										<select name="SiteSelect" class="form-control"  ng-model="SiteSelect_Input_Model" required>
-											<option></option>
-											<option>No indica</option>
-											
-										</select>
-									</td>	
-									<!--<td>validation={{PatientForm.SiteSelect.$valid}}</td>-->								
 								</tr>
 								<tr>
 									<th>Ingreso Mensual</th>
@@ -419,6 +401,7 @@
 									</table>									
 								
 									<!--<button ng-click="dg_company()">dg_company</button>-->
+                                                                        <br><a href="cd.php">Crear departamento</a>
 									
 								</div>
 								<!-- ------- End of Search results -->
@@ -459,6 +442,9 @@
 						</div>				
 						<!--end of company popup modal -->
 						
+                                                
+                                                 
+                                                
 						<!--button to delete company -->
 						<button ng-click="DeleteCompany()">Borrar paciente</button>
 						

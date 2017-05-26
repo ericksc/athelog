@@ -292,26 +292,8 @@
 								<tr>
 									<th>Departamento</th>
 									<td ng-repeat="patients in data">{{patients.Department}}</td>
-									<td>
-										<select name="DepartmentSelect" class="form-control"  ng-model="DepartmentSelect_Input_Model" required>
-											<option></option>
-											<option>No indica</option>
-											
-										</select>
-									</td>	
+									<td><select ng-model="DepartmentSelect_Input_Model" ng-options="item as item.DepartmentID for item in DepartmentList"></select></td>	
 									<!--<td>validation={{PatientForm.DepartmentSelect.$valid}}</td>	-->								
-								</tr>
-								<tr>
-									<th>Sede</th>
-									<td ng-repeat="patients in data">{{patients.Site}}</td>
-									<td>
-										<select name="SiteSelect" class="form-control"  ng-model="SiteSelect_Input_Model" required>
-											<option></option>
-											<option>No indica</option>
-											
-										</select>
-									</td>	
-									<!--<td>validation={{PatientForm.SiteSelect.$valid}}</td>-->								
 								</tr>
 								<tr>
 									<th>Ingreso Mensual</th>

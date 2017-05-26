@@ -93,7 +93,9 @@ function CheckLoginParams($array_input) {
 
         $result = $rawdB_result[0]["count(*)"];//the rawdB_result is a matrix where desired element is in [0]["count(*)"] position
        
-        if($result==1){
+        if($result>=1){
+
+
             
             SessionStart($UserIDValue);
             //echo "<br>SessionStarting";
@@ -107,7 +109,138 @@ function CheckLoginParams($array_input) {
 //eof
 
 
+//function to list all users that are flagged for deletion
 
+function ListFlaggedForDeleteUser(){
+    
+    global $DBtables;
+    $query = "SELECT * FROM " . $DBtables['users'] . " WHERE `FFD` = 'true'";
+    $result=ConexionDB_JSON($query);    
+    
+    //echo "<br>(DEBUG)ListFFDUser():<br>query=$query<br>Result=";
+    //print_r($result);
+    
+}
+//eof
+
+//function to flag a list of users, based in pairs (ID, RowID)
+//intented to be called from the html file
+function FlagForDeleteUserList($array_input){
+    
+    global $DBtables;
+    //print
+    $param_array = [];
+     
+    //echo "<br>FlagForDeleteUserList()";
+    //echo "<br>Array input context".print_r($array_input);
+    //echo "<br>List of data=".$array_input[IDs];
+    
+    $str = $array_input[IDs];    
+    $pairs_array =  explode (",",$str);
+   
+            
+    foreach($pairs_array as $key=>$val){
+        
+        
+        //echo "<br>pair detected=".$val;
+        $pair=explode (".",$val);
+        //$param_string = "dBInterface.php?ActionDBToken=FFDUser";
+        //$param_string .= "&RowID_Token=$pair[0]&UserID_Token=$pair[1]";
+        
+        if(isset($pair[0])&& isset($pair[1])){
+            
+            $param_array['RowID_Token']=$pair[0];
+            $param_array['UserID_Token']=$pair[1];
+            //echo ",param_array=".print_r($param_array);
+            FlagForDeleteUser($param_array);        
+        }
+            
+      
+        
+        
+        //
+    }
+    
+    
+}
+//eof
+
+//function to flag a list of users, based in pairs (ID, RowID)
+//intented to be called from the html file
+function UnFlagForDeleteUserList($array_input){
+    
+    global $DBtables;
+    //print
+    $param_array = [];
+     
+    echo "<br>UnFlagForDeleteUserList()";
+    echo "<br>Array input context".print_r($array_input);
+    echo "<br>List of data=".$array_input[IDs];
+    
+    $str = $array_input[IDs];    
+    $pairs_array =  explode (",",$str);
+   
+            
+    foreach($pairs_array as $key=>$val){
+        
+        
+        echo "<br>pair detected=".$val;
+        $pair=explode (".",$val);
+        //$param_string = "dBInterface.php?ActionDBToken=FFDUser";
+        //$param_string .= "&RowID_Token=$pair[0]&UserID_Token=$pair[1]";
+        
+        if(isset($pair[0])&& isset($pair[1])){
+            
+            $param_array['RowID_Token']=$pair[0];
+            $param_array['UserID_Token']=$pair[1];
+            echo ",param_array=".print_r($param_array);
+            UnflagForDeleteUser($param_array);        
+        }
+            
+      
+        
+        
+        //
+    }
+    
+    
+}
+//eof
+
+//function to flag a single user for delete
+function FlagForDeleteUser($array_input){
+    global $DBtables;
+   
+    $query = "UPDATE " . $DBtables['users'] . " SET `FFD` = 'true' ";
+    $query .= " WHERE ". where_equal_value(untoken_array($array_input));
+    $result=ConexionDB_JSON($query);
+    
+    //echo "<br>FlagForDeleteUser()";
+    //echo "<br>where=".where_equal_value(untoken_array($array_input));
+    //echo "<br>array_input=".print_r($array_input);
+    //echo "<br>query=".$query;
+    //echo "<br>resultado=".print_r($result);
+    
+}
+//eof
+
+//function to unflag a single user who was previously marked for delete
+function UnflagForDeleteUser($array_input){
+    global $DBtables;
+   
+    $query = "UPDATE " . $DBtables['users'] . " SET `FFD` = 'false' ";
+    $query .= " WHERE ". where_equal_value(untoken_array($array_input));
+    $result=ConexionDB_JSON($query);
+    
+    //echo "<br>FlagForDeleteUser()";
+    //echo "<br>where=".where_equal_value(untoken_array($array_input));
+    //echo "<br>query=".$query;
+    //echo "<br>resultado=".print_r($result);
+    
+}
+//eof
+
+//function to list all companies in dB
 function ReadCompanyListParams($array_input) { 
     global $DBtables;
     $query = "SELECT CompanyID FROM " . $DBtables['company'] . " WHERE 1";
@@ -128,12 +261,52 @@ function ReadCompanyParams($array_input) {
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);
 }
+
+//former function
 function ReadPatientParams($array_input) {  
     global $DBtables;
     $query = "SELECT * FROM " . $DBtables['patients'] . " WHERE ";
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);    
 }
+//function to return the companyid which a patient belongs to
+function ReadPatientCompany($PatientID, $enableJSON=FALSE) {  
+    global $DBtables;
+    $query = "SELECT CompanyID FROM " . $DBtables['patients'] . " WHERE PatientID='";
+    $query .= $PatientID."'";
+    //echo "<br>query=".$query;//DEBUG
+    $result = ConexionDB_rawdata($query)[0]['CompanyID'];
+    
+    if(empty($result)){
+        $result = "NONE";
+    }
+    
+    if($enableJSON) {
+        print json_encode($result);
+    }
+    return $result;    
+}
+
+//function to return one usergroup for an userid
+function ReadUserGroupByUserIDRowID($UserID, $RowID,$enableJSON=FALSE) {  
+    global $DBtables;
+    $query = "SELECT UserGroup FROM " . $DBtables['users'] . " WHERE UserID='";
+    $query .= $UserID."' AND RowID='$RowID'";
+    //echo "<br>query=".$query;//DEBUG
+    $result = ConexionDB_rawdata($query)[0]['UserGroup'];
+    
+    if(empty($result)){
+        $result = "NONE";
+    }
+    
+    if($enableJSON) {
+        print json_encode($result);
+    }
+    return $result;    
+}
+
+
+
 function ReadAllPatientHistorybyCompanyID($array_input){
     global $DBtables;
     $query = "SELECT `Patients`.PatientID, `Patients`.Forename, `Patients`.MiddleName, `Patients`.FirstSurname, `Patients`.SecondSurname, `Patients`.Email, `Patients`.Phone, `Patients`.BirthDate, `Patients`.JoinDate, `Patients`.Gender, `Patients`.Status, `Patients`.Income, `Companies`.CompanyID, `Companies`.Phone, `Companies`.Email, `Companies`.Address, `Companies`.Status, `Companies`.LastMod, `Companies`.ModifierID, `EvaluationHistory`.Test, `EvaluationHistory`.Value, `EvaluationHistory`.Unit, `EvaluationHistory`.ModDate, `EvaluationHistory`.FFD FROM " . $DBtables['patients'] ;
@@ -190,7 +363,7 @@ function ReadPatientParams2($array_input) {
 }
 
 
-function getCheckparams($array_input, $tablename, $label, $enableJSON=FALSE) {  
+function CheckIfRecordExists($array_input, $tablename, $label, $enableJSON=FALSE) {  
     global $DBtables;
     $query = "SELECT CASE WHEN COUNT( * ) >0 THEN  'TRUE' ELSE  'FALSE' END AS  '" . $label ."' FROM  " . $DBtables[$tablename] . " WHERE ";
     //$query = "SELECT * FROM  " . $DBtables[$tablename] . " WHERE ";
@@ -208,17 +381,43 @@ function ReadEvaluationConstParams($array_input) {
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);    
 }
+
+//function to return the companyid which an user belongs to
+function ReadUserCompany($UserID,$RowID, $enableJSON=FALSE) {  
+    global $DBtables;
+    $query = "SELECT CompanyID FROM " . $DBtables['users'] . " WHERE UserID='";
+    $query .= $UserID."' AND RowID='$RowID'";
+    //echo "<br>query=".$query;//DEBUG
+    $result = ConexionDB_rawdata($query)[0]['CompanyID'];
+    
+    if(empty($result)){
+        $result = "NONE";
+    }
+    
+    if($enableJSON) {
+        print json_encode($result);
+    }
+    return $result;    
+}
+
+
 function ReadUsersParams($array_input) {  
     global $DBtables;
     $query = "SELECT * FROM " . $DBtables['users'] . " WHERE ";
     $query .= where_like_value(untoken_array($array_input));
     ConexionDB_JSON($query);    
 }
+//array_input is received as ActionDBToken and UserIDArray_Token, which contains the list of RowID/UserID
+//UserIDArray_Token is formated as: "RowID_UserID, RowID2_UserID2,..."
 function DeleteUsersParams($array_input) {
     global $DBtables;
-    $query = "DELETE FROM " . $DBtables['users'] . " WHERE ";
-    $query .= where_equal_value(untoken_array(get_array_element_by_key($array_input), 'UserID_Token'));
-    ConexionDB_JSON($query);     
+    
+    echo "<br>DeleteUsersParams()"."<br>".$array_input['UserIDArray_Token'];
+    
+    $query = "DELETE FROM " . $DBtables['users'] . " WHERE (RowID,UserID)";
+    $query.= " IN (". $array_input['UserIDArray_Token'].")";    
+    ConexionDB_JSON($query); 
+    
 }
 function DeletePatientParams($array_input) {
     global $DBtables;
@@ -377,6 +576,38 @@ function AddUserPermission($array_input, $tablename){
 }
 //eof
 
+//function to list all departments in dB, from Table 'CompanyDepartments'
+function ReadDepartmentListParams(){
+    
+    global $DBtables;
+    $query = "SELECT DepartmentID FROM " . $DBtables['companydepartments'] . " WHERE 1 ORDER by DepartmentID ASC";
+    //echo "<br>query=".$query;
+    ConexionDB_JSON($query);    
+    
+}
+//eof
+
+function InsertDepartmentParams($array_input){
+
+    global $DBtables;
+    $query = "INSERT INTO " . $DBtables['companydepartments'] . "(" . set_key_list(untoken_array($array_input)) . ")";
+    $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
+    ConexionDB_JSON($query);      
+    
+}
+//eof
+
+function DeleteDepartmentParams($array_input){
+    
+    global $DBtables;
+    $query = "DELETE FROM " . $DBtables['companydepartments'] . " WHERE DepartmentID='".$array_input['DepartmentID_Token']."'";
+    //echo "<br>query=".$query;
+    ConexionDB_JSON($query);
+   
+}
+//eof
+
+
 function InsertCompanyParams($array_input) { 
     global $DBtables;
     $query = "INSERT INTO " . $DBtables['company'] . "(" . set_key_list(untoken_array($array_input)) . ")";
@@ -385,17 +616,41 @@ function InsertCompanyParams($array_input) {
 }
 
 
-
+//Ramiro: modified to add UserID check
 function InsertUsersParams($array_input) { 
+    
+    //echo "<br>InsertUsersParams()";
     global $DBtables;
-    $query = "INSERT INTO " . $DBtables['users'] . "(" . set_key_list(untoken_array($array_input)) . ")";
-    $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
-    ConexionDB_JSON($query);
+    $user_exists=true;
+    
+    $UserID_array=array('UserID'=>$array_input['UserID_Token']);
+    //echo "<br>UserID to check=".$UserID_array['UserID'];
+    
+    $result_check=CheckIfRecordExists($UserID_array, 'users', 'EXISTS', false);
+    $user_exists=$result_check[0]['EXISTS'];
+    //echo "<br>UserExists=".$user_exists;
+    //print_r($user_exists);
+    
+    if ($user_exists=="true" || $user_exists=="TRUE"){
+        
+        //echo "<br>User already exists. Exiting";
+        
+    }else{
+        
+        //echo "<br>Inserting new user";
+        $query = "INSERT INTO " . $DBtables['users'] . "(" . set_key_list(untoken_array($array_input)) . ")";
+        $query .= "VALUES" . "(" . insert_key_value(untoken_array($array_input)) .  ")";
+        ConexionDB_JSON($query);
+    }
+
     
     //notification
     
     
 }
+//eof
+
+
 function UpdatePatientParams($array_input) { 
     global $DBtables;
     $wherecondition = get_array_element_by_key($array_input, 'PatientID_Token');

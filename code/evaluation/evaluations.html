@@ -589,7 +589,24 @@
 		<!-- FIN DEL TAB DE INDIVIDUALIZACION-->
 		
 		<!-- TAB DE ADJUNTOS-->
+		<div id="Tab_Adjuntos" class="tab-pane">
+                    <h3>Archivos adjuntos</h3>
+                    
+                    <!--
+                    <form action="../engine/FileManagement.php" method="post" enctype="multipart/form-data">
+                        Seleccione archivo para subir
+                        <input type="file" name="fileToUpload" id="fileToUpload">
+                        <input type="submit" value="Subir" name="submit">
+                    </form>                    
+                    -->
+                    
+                    <!-- <form enctype="multipart/form-data"> -->
+                    <label>Select File to Upload</label>
+                    <input id="file_to_upload" type="file" class="form-control" />
+                    </form>                    
+                    <button onclick="uploadFile()" class="btn btn-primary">Submit</button>
 
+                </div>
 		<!-- FIN DEL TAB DE ADJUNTOS-->	
 
 		<!-- TAB DE FISIOTERAPIA-->

@@ -10,19 +10,19 @@ echo "<br>Max usergroup=".$MaxUserGroup;
 //choosing which version to select
 if(strcmp($MaxUserGroup,'developer')==0){
     echo "<br>Loading dev version";
-    $pagecontents = file_get_contents("insert_usergroup.html");
+    $pagecontents = file_get_contents("ffd_users_dev.html");
     echo str_replace("UserID_Tag", $_SESSION['UserID'], $pagecontents);
 }else if(strcmp($MaxUserGroup,'owner')==0){
     echo "<br>Loading owner version";
-    $pagecontents = file_get_contents("insert_usergroup.html");
+    $pagecontents = file_get_contents("ffd_users_dev.html");
     echo str_replace("UserID_Tag", $_SESSION['UserID'], $pagecontents);
 }else if(strcmp($MaxUserGroup,'administrator')==0){
     echo "<br>Loading admin version";
-    $pagecontents = file_get_contents("insert_usergroup.html");
+    $pagecontents = file_get_contents("ffd_users_dev.html");
     echo str_replace("UserID_Tag", $_SESSION['UserID'], $pagecontents);
 }else if(strcmp($MaxUserGroup,'editor')==0){
     echo "<br>Loading editor version";
-    $pagecontents = file_get_contents("insert_usergroup.html");
+    $pagecontents = file_get_contents("ffd_users_dev.html");
     echo str_replace("UserID_Tag", $_SESSION['UserID'], $pagecontents);
 }else if(strcmp($MaxUserGroup,'viewer')==0){
     echo "<br>Loading viewer version";

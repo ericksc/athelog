@@ -430,7 +430,66 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 		
+		//function to return patient search string, based on patient inout fields
+		function CreatePatientSearchSameCompanyString(){
+			
+			var URL = "../engine/dBInterface.php?ActionDBToken=SelectPatient";
 		
+			if(PatientData.PatientID_FieldValue !=="NONE"){
+				URL+="&PatientID_Token="+PatientData.PatientID_FieldValue;
+			}
+
+			if(PatientData.Forename_FieldValue !=="NONE"){
+				URL+="&Forename_Token="+PatientData.Forename_FieldValue;
+			}
+
+			if(PatientData.FirstSurname_FieldValue !=="NONE"){
+				URL+="&FirstSurname_Token="+PatientData.FirstSurname_FieldValue;
+			}
+
+			if(PatientData.SecondSurname_FieldValue !=="NONE"){
+				URL+="&SecondSurname_Token="+PatientData.SecondSurname_FieldValue;
+			}
+
+			if(PatientData.PatientPhone_FieldValue !=="NONE"){
+				URL+="&Phone_Token="+PatientData.PatientPhone_FieldValue;
+			}
+
+			if(PatientData.PatientEmail_FieldValue !=="NONE"){
+				URL+="&Email_Token="+PatientData.PatientEmail_FieldValue;
+			}
+
+                        URL+="&CompanyID_Token="+URLParams.ID;
+
+			if(PatientData.Site_FieldValue !=="NONE"){
+				URL+="&Site_Token="+PatientData.Site_FieldValue;
+				
+			}
+
+			
+			if(PatientData.Department_FieldValue !=="NONE"){
+				URL+="&Department_Token="+PatientData.Department_FieldValue;
+			}
+
+			if(PatientData.BirthDate_FieldValue !=="NONE"){
+				URL+="&BirthDate_Token="+PatientData.BirthDate_FieldValue;
+			}
+
+			if(PatientData.Gender_FieldValue !=="NONE"){
+				URL+="&Gender_Token="+PatientData.Gender_FieldValue;
+			}
+			
+			if(PatientData.PatientAddress_FieldValue !=="NONE"){
+				URL+="&Address_Token="+PatientData.PatientAddress_FieldValue;
+			}
+			
+			alert("(DEBUG)CreatePatientSearchSameCompanyString()-ending.URL="+URL);
+			return URL;
+			
+		}
+		//eof
+                
+                
 		//function to return string to delete patient, by patient ID (taken from URL)
 		function CreatePatientDeleteStringByID(){
 			
@@ -924,7 +983,18 @@ var fetch = angular.module('fetch', []);
 		}
 		//eof
 		
-		
+		//function to search patient by ID, Surname, Forename, Company, etc
+		//intended to be called from HTML
+		$scope.SearchPatientWithinSameCompany = function(){
+			
+			//alert ("(DEBUG)-SearchPatient() - starting");
+			ResetPatientFieldValues();
+			ReadPatientFields();		
+			CallPHPServerFile(CreatePatientSearchSameCompanyString());
+			//alert ("(DEBUG)-SearchPatient() - executed");			
+		}
+		//eof
+                //		
 		//general function to introduce a new patient in dB	
 		$scope.CreatePatient = function() {			
 			
@@ -942,7 +1012,7 @@ var fetch = angular.module('fetch', []);
 		//eof	
 
 		//function to search company by ID, Surname, Forename, Company, etc
-		//intended to be called from HTML button
+		//intended to be called from HTML button from 
 		$scope.SearchCompany = function(){
 			
 			//alert ("(DEBUG)-SearchCompany() - starting");
@@ -1189,6 +1259,16 @@ var fetch = angular.module('fetch', []);
 					CallPHPServerFile(CreateCompanySearchStringByID());
 					return true;
 				}
+                                else if (Type=='Company' && URLParams.Action=="WatchCompany"){
+					
+					CallPHPServerFile(CreateCompanySearchStringByID());
+					return true;
+				}
+				else if(Type=='Patient' && URLParams.Action=="WatchPatient"){
+					
+					CallPHPServerFile(CreatePatientSearchStringByID());
+					return true;
+				}                                
 				else{
 					//ActionParam is undefined
 					//alert("(DEBUG)Main - Finishing Main without search");
